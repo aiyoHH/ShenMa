@@ -39,9 +39,13 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+
     //Glide
     compile 'com.github.bumptech.glide:glide:3.7.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+
+   //fragmentation
+    compile 'me.yokeyword:fragmentation:0.10.7'
 
 
 }
