@@ -14,9 +14,9 @@
         android:layout_width="0dp"
         android:layout_height="150dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    </android.support.v4.view.ViewPager>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -26,5 +26,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+
+    <LinearLayout
+        android:id="@+id/points_behind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPager"
+        app:layout_constraintLeft_toLeftOf="@+id/viewPager"
+        app:layout_constraintRight_toRightOf="@+id/viewPager"
+        android:layout_marginBottom="5dp"
+        />
+
 
 </android.support.constraint.ConstraintLayout>

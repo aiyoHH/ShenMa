@@ -15,8 +15,9 @@ public interface Key {
     String PATH_CACHE = PATH_DATA + File.separator + "NetCache";
 
     interface Type{
-        int video=0;
-        int content=1;
+        int banner=0;
+        int video=1;
+        int content=2;
     }
 
 }

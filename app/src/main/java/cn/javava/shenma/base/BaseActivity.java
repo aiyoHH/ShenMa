@@ -34,8 +34,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(initLayout());
         mBinder = ButterKnife.bind(this);
         //NotificationsUtils.setStatusBar(this, Color.WHITE);
-
         initEventAndData();
+
         App.getInstance().addActivity(this);
     }
 

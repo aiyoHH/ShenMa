@@ -42,16 +42,29 @@ public class MainAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof VideoHolder){
+            ((VideoHolder) holder).setData(mContext);
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return additional+1;
+        return additional+4;
     }
 
     @Override
     public int getItemViewType(int position) {
+
+//        switch (position) {
+//            case 0:
+//                return Key.Type.banner;
+//            case 1:
+//                return Key.Type.video;
+//                default:
+//                    return Key.Type.content;
+//        }
+
         if(position==0){
             return Key.Type.video;
         }else{
