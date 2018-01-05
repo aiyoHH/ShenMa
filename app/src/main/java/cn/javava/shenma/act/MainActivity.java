@@ -1,17 +1,28 @@
 package cn.javava.shenma.act;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 
+import butterknife.BindView;
 import cn.javava.shenma.R;
+import cn.javava.shenma.base.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
+
+    @BindView(R.id.viewPager)
+    ViewPager mViewPager;
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected int initLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initEventAndData() {
+
     }
 
     @Override

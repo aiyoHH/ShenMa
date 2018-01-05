@@ -14,4 +14,9 @@ public interface Key {
     String PATH_DATA = App.getInstance().getCacheDir().getAbsolutePath() + File.separator + "data";
     String PATH_CACHE = PATH_DATA + File.separator + "NetCache";
 
+    interface Type{
+        int video=0;
+        int content=1;
+    }
+
 }

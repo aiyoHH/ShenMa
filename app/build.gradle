@@ -48,4 +48,5 @@ dependencies {
     compile 'me.yokeyword:fragmentation:0.10.7'
 
 
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
 }
