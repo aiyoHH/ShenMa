@@ -1,6 +1,7 @@
 package cn.javava.shenma.act;
 
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,9 +21,12 @@ import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.BannerAdapter;
 import cn.javava.shenma.adapter.MainAdapter;
 import cn.javava.shenma.base.BaseActivity;
+import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.utils.ScreenUtil;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.FocusLayout;
+import cn.javava.shenma.view.SpacesItemDecoration;
+import cn.jzvd.JZVideoPlayer;
 
 public class MainActivity extends BaseActivity {
 
@@ -35,7 +39,8 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.points_behind)
     LinearLayout llContainer;
 
-    List<String> mList;
+    List<String> mBannerList;
+    List<Room> mRoomList;
     MainAdapter mAdapter;
     SwitchTask task;
     FocusLayout mFocusLayout;
@@ -48,18 +53,19 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initEventAndData() {
-        mList=new ArrayList<>();
-        mList.add("https://app-cdn.siy8.com/6320/images-1514038402338.png");
-        mList.add("https://app-cdn.siy8.com/6320/images-1514876319180.png");
-        mList.add("https://app-cdn.siy8.com/6320/images-1514632576278.png");
-        mList.add("https://app-cdn.siy8.com/6320/images-1514037798443.jpg");
+        mBannerList=new ArrayList<>();
+        mRoomList=new ArrayList<>();
+
+        mBannerList.add("https://app-cdn.siy8.com/6320/images-1514038402338.png");
+        mBannerList.add("https://app-cdn.siy8.com/6320/images-1514876319180.png");
+        mBannerList.add("https://app-cdn.siy8.com/6320/images-1514632576278.png");
+        mBannerList.add("https://app-cdn.siy8.com/6320/images-1514037798443.jpg");
 
         pullInfo();
 
-        mViewPager.setAdapter(new BannerAdapter(this,mList));
+        mViewPager.setAdapter(new BannerAdapter(this,mBannerList));
 
-        for (int i = 0; i <mList.size(); i++) {
-            Log.e("lzh2017","add point="+i);
+        for (int i = 0; i <mBannerList.size(); i++) {
             ImageView point = new ImageView(this);
             point.setImageResource(i == 0 ? R.drawable.shape_point_black : R.drawable.shape_point_white);
             LinearLayout.LayoutParams params =
@@ -69,23 +75,54 @@ public class MainActivity extends BaseActivity {
         }
 
 
-        if(task == null&&mList.size()>0){
+        if(task == null&&mBannerList.size()>0){
             task = new SwitchTask();
             task.start();
         }
 
-        mAdapter = new MainAdapter(this, mList);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new MainAdapter(this, mRoomList,mRecyclerView);
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
         mRecyclerView.setAdapter(mAdapter);
 
-        mFocusLayout = new FocusLayout(this);
-        bindListener();
-        addContentView(mFocusLayout,
-                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT));//添加焦点层
+//        mFocusLayout = new FocusLayout(this);
+//        bindListener();
+//        addContentView(mFocusLayout,
+//                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT));//添加焦点层
+
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                int count = llContainer.getChildCount();
+                position = position % count;
+                for (int i = 0; i < count; i++) {
+                    ImageView iv = (ImageView) llContainer.getChildAt(i);
+                    iv.setImageResource(i == position ? R.drawable.shape_point_black : R.drawable.shape_point_white);
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        JZVideoPlayer.releaseAllVideos();
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

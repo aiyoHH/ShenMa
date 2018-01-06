@@ -1,6 +1,7 @@
 package cn.javava.shenma.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import java.util.List;
 import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.mainHolder.ContentHolder;
 import cn.javava.shenma.adapter.mainHolder.VideoHolder;
+import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.interf.Key;
 
 /**
@@ -22,12 +24,22 @@ public class MainAdapter extends RecyclerView.Adapter {
 
     Context mContext;
     LayoutInflater mInflater;
-    List<String> mList;
+    List<Room> mList;
 
-    public MainAdapter(Context context, List<String> list) {
+    public MainAdapter(Context context, List<Room> list, RecyclerView recyclerView) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         this.mList = list;
+
+        GridLayoutManager layoutManager=new GridLayoutManager(context,2);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return position==0?2:1;
+            }
+        });
+
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -50,7 +62,7 @@ public class MainAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return additional+4;
+        return additional+20;
     }
 
     @Override

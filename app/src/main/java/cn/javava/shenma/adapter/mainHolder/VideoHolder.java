@@ -26,8 +26,8 @@ public class VideoHolder extends RecyclerView.ViewHolder {
 
     public void setData(Context context){
         videoPlayer.setVisibility(View.VISIBLE);
-        videoPlayer.setUp("http://jzvd.nathen.cn/b201be3093814908bf987320361c5a73/2f6d913ea25941ffa78cc53a59025383-5287d2089db37e62345123a1be272f8b.mp4", JZVideoPlayer.SCREEN_WINDOW_LIST,"");
-        ImageLoader.load(context, "https://app-cdn.siy8.com/6320/images-1514252998637.png",videoPlayer.thumbImageView);
+        videoPlayer.setUp("http://jzvd.nathen.cn/25a8d119cfa94b49a7a4117257d8ebd7/f733e65a22394abeab963908f3c336db-5287d2089db37e62345123a1be272f8b.mp4", JZVideoPlayer.SCREEN_WINDOW_LIST,"");
+        ImageLoader.load(context, "https://app-cdn.siy8.com/6320/images-1514038402338.png",videoPlayer.thumbImageView);
 
 
 

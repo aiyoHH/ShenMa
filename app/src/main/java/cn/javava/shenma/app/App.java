@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
+import com.zego.zegoliveroom.ZegoLiveRoom;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +33,11 @@ public class App extends Application  {
         instance = this;
 
         handler = new Handler();
+
+        ZegoLiveRoom.setTestEnv(true);
+
+        // 初始化sdk
+        ZegoApiManager.getInstance().initSDK();
     }
 
 
