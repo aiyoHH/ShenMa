@@ -58,6 +58,7 @@ public class ZegoApiManager {
         }
         // 必须设置用户信息
         ZegoLiveRoom.setUser(mUserID, userName);
+
     }
 
 
