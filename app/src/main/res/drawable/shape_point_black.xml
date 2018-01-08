@@ -4,10 +4,10 @@
     
 
     <!--大小  -->
-    <size android:width="6dp"
-          android:height="6dp"/>
+    <size android:width="10dp"
+          android:height="10dp"/>
 
     <!--填充颜色  -->
-    <solid android:color="@color/colorAccent"/>
+    <solid android:color="@android:color/white"/>
     
 </shape>
