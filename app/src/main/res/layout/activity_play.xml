@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/play_viewPager"
+        android:layout_width="0dp"
+        android:layout_height="350dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/play_points_behind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/play_viewPager"
+        app:layout_constraintLeft_toLeftOf="@+id/play_viewPager"
+        app:layout_constraintRight_toRightOf="@+id/play_viewPager"
+        android:layout_marginBottom="5dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/play_counter"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/play_viewPager"
+        android:background="@color/colorFdd"
+       >
+
+
+    </LinearLayout>
+
+
+     <RelativeLayout
+         android:layout_width="0dp"
+         android:layout_height="0dp"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/play_counter">
+         <TextureView
+             android:id="@+id/textureview1"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:visibility="invisible"/>
+
+         <TextureView
+             android:id="@+id/textureview2"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:visibility="invisible"/>
+
+         <TextView
+             android:id="@+id/tv_stream_state"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_alignParentStart="true"
+             android:layout_alignParentTop="true"
+             android:background="@mipmap/background"
+             android:gravity="center"
+             android:textColor="@android:color/white"
+             android:textSize="20sp"/>
+
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="150dp"
+             android:layout_alignParentBottom="true"
+             android:layout_alignParentStart="true"
+             android:background="@color/colorFdd"
+             >
+
+
+             <RelativeLayout
+                 android:layout_width="150dp"
+                 android:layout_height="150dp">
+
+             <ImageView
+                 android:id="@+id/play_console_center"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                 android:src="@mipmap/center"
+                 android:background="@null"
+                />
+
+             <ImageButton
+                 android:id="@+id/play_up"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_above="@+id/play_console_center"
+                android:layout_centerHorizontal="true"
+                 android:layout_margin="10dp"
+                 android:background="@null"
+                 android:src="@mipmap/up"/>
+
+             <ImageButton
+                 android:id="@+id/play_right"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                 android:layout_toEndOf="@+id/play_console_center"
+                 android:layout_margin="10dp"
+                 android:background="@null"
+                 android:src="@mipmap/right"
+                />
+
+             <ImageButton
+                 android:id="@+id/play_left"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_toStartOf="@+id/play_console_center"
+                 android:layout_centerVertical="true"
+                 android:layout_margin="10dp"
+                 android:background="@null"
+                 android:src="@mipmap/left"/>
+
+             <ImageButton
+                 android:id="@+id/play_down"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@+id/play_console_center"
+                 android:background="@null"
+                 android:layout_centerHorizontal="true"
+                 android:layout_margin="10dp"
+                 android:src="@mipmap/down"/>
+             </RelativeLayout>
+
+             <ImageButton
+                 android:id="@+id/play_cancel"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                 android:layout_alignParentEnd="true"
+                 android:layout_marginEnd="20dp"
+                 android:background="@null"
+                 android:src="@mipmap/cancel"/>
+
+             <ImageButton
+                 android:id="@+id/play_confirm"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                 android:layout_toStartOf="@+id/play_cancel"
+                 android:layout_marginEnd="20dp"
+                 android:background="@null"
+                 android:src="@mipmap/confirm"/>
+             </RelativeLayout>
+
+
+     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/play_avatar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="30dp"
+        app:srcCompat="@mipmap/ic_launcher_round"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/play_counter"
+        android:layout_marginTop="20dp"
+        />
+
+
+</android.support.constraint.ConstraintLayout>
