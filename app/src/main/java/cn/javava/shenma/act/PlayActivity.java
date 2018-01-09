@@ -6,11 +6,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.zego.zegoliveroom.ZegoLiveRoom;
 import com.zego.zegoliveroom.constants.ZegoConstants;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.javava.shenma.R;
 import cn.javava.shenma.bean.Room;
 
@@ -23,6 +26,12 @@ import cn.javava.shenma.bean.Room;
  */
 
 public class PlayActivity extends AppCompatActivity{
+
+
+    @BindView(R.id.play_cancel)
+    ImageButton mBtnCancel;
+    @BindView(R.id.play_confirm)
+    ImageButton mBtnConfirm;
 
     private Room mRoom;
 
@@ -37,6 +46,8 @@ public class PlayActivity extends AppCompatActivity{
 
             setTitle(mRoom.roomName);
             setContentView(R.layout.activity_play);
+
+            ButterKnife.bind(this);
 
 //            initStreamList();
 //            initViews();
@@ -72,9 +83,12 @@ public class PlayActivity extends AppCompatActivity{
                 break;
             case KeyEvent.KEYCODE_BUTTON_C:
                 Toast.makeText(this,"...确定...",Toast.LENGTH_LONG).show();
+                mBtnConfirm.performClick();
                 break;
             case KeyEvent.KEYCODE_BACK:
                 //弹窗是否退出
+                mBtnCancel.performClick();
+               startActivity(new Intent(PlayActivity.this,ShopActivity.class));
                 return true;
         }
 

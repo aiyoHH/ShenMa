@@ -39,9 +39,10 @@
             </intent-filter>
         </activity>
 
-       <!-- <activity android:name=".act.PlayActivity"
+        <activity android:name=".act.ShopActivity"
                   android:screenOrientation="portrait"
-            />-->
+                  android:theme="@style/AppThemeShop"
+            />
     </application>
 
 </manifest>

@@ -10,4 +10,12 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="AppThemeShop" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorFb3</item>
+        <item name="colorPrimaryDark">@color/colorFb3</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
 </resources>

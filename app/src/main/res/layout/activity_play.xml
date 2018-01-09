@@ -138,8 +138,8 @@
                  android:layout_centerVertical="true"
                  android:layout_alignParentEnd="true"
                  android:layout_marginEnd="20dp"
-                 android:background="@null"
-                 android:src="@mipmap/cancel"/>
+                 android:background="@drawable/selector_btn_cancel"
+                />
 
              <ImageButton
                  android:id="@+id/play_confirm"
@@ -148,8 +148,8 @@
                  android:layout_centerVertical="true"
                  android:layout_toStartOf="@+id/play_cancel"
                  android:layout_marginEnd="20dp"
-                 android:background="@null"
-                 android:src="@mipmap/confirm"/>
+                 android:background="@drawable/selector_btn_confirm"
+                 />
              </RelativeLayout>
 
 
