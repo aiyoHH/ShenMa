@@ -39,6 +39,9 @@ public class PlayActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        startActivity(new Intent(PlayActivity.this,ShopActivity.class));
+        finish();
+
         Intent intent = getIntent();
 
         if (intent != null) {

@@ -8,6 +8,6 @@
         android:id="@+id/item_shop_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/test_1"/>
+        />
 
 </LinearLayout>
