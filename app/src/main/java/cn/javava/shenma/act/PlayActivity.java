@@ -39,8 +39,14 @@ public class PlayActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.activity_play);
         ButterKnife.bind(this);
+
+
+//        startActivity(new Intent(PlayActivity.this,ShopActivity.class));
+//        finish();
+
 //        Intent intent = getIntent();
 //
 //        if (intent != null) {
@@ -59,6 +65,7 @@ public class PlayActivity extends AppCompatActivity{
 //            Toast.makeText(this, "房间信息初始化错误, 请重新开始", Toast.LENGTH_LONG).show();
 //            finish();
 //        }
+
 
 
         // 从加速服务器拉流

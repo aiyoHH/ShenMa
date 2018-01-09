@@ -43,7 +43,7 @@ public class ShopActivity extends BaseActivity {
 
         for (int i = 0; i < 8; i++) {
            ShopBean bean=new ShopBean();
-           bean.resId=resIds[0];
+           bean.resId=resIds[i];
             mShopBeanList.add(bean);
         }
 
