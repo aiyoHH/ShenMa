@@ -25,7 +25,7 @@ public class ShopActivity extends BaseActivity {
 
 
     @BindView(R.id.shop_recycler)
-    RecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;  
 
     List<ShopBean> mShopBeanList;
 

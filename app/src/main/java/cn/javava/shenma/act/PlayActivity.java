@@ -39,24 +39,26 @@ public class PlayActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
-
-        if (intent != null) {
-            mRoom = (Room) intent.getSerializableExtra("room");
-
-            setTitle(mRoom.roomName);
-            setContentView(R.layout.activity_play);
-
-            ButterKnife.bind(this);
-
-//            initStreamList();
-//            initViews();
-//            startPlay();
-
-        } else {
-            Toast.makeText(this, "房间信息初始化错误, 请重新开始", Toast.LENGTH_LONG).show();
-            finish();
-        }
+        setContentView(R.layout.activity_play);
+        ButterKnife.bind(this);
+//        Intent intent = getIntent();
+//
+//        if (intent != null) {
+//            mRoom = (Room) intent.getSerializableExtra("room");
+//
+//            setTitle(mRoom.roomName);
+//            setContentView(R.layout.activity_play);
+//
+//            ButterKnife.bind(this);
+//
+////            initStreamList();
+////            initViews();
+////            startPlay();
+//
+//        } else {
+//            Toast.makeText(this, "房间信息初始化错误, 请重新开始", Toast.LENGTH_LONG).show();
+//            finish();
+//        }
 
 
         // 从加速服务器拉流
