@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dp1080">1440dp</dimen>
+    <dimen name="dp130">170dp</dimen>
+    <dimen name="dp400">533dp</dimen>
+    <dimen name="dp600">800dp</dimen>
+</resources>

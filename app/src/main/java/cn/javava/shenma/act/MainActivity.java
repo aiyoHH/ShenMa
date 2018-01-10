@@ -28,21 +28,26 @@ import cn.javava.shenma.view.FocusLayout;
 import cn.javava.shenma.view.SpacesItemDecoration;
 import cn.jzvd.JZVideoPlayer;
 
+
+/**
+ * Description {des}
+ *
+ * @author Li'O
+ * @date 2018/1/5
+ * Todo {TODO}.
+ */
 public class MainActivity extends BaseActivity {
 
-    private final  static int WHEEL_TIME=5000;
 
-    @BindView(R.id.viewPager)
-    ViewPager mViewPager;
+
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    @BindView(R.id.points_behind)
-    LinearLayout llContainer;
+
 
     List<String> mBannerList;
     List<Room> mRoomList;
     MainAdapter mAdapter;
-    SwitchTask task;
+
     FocusLayout mFocusLayout;
 
 
@@ -63,24 +68,9 @@ public class MainActivity extends BaseActivity {
 
         pullInfo();
 
-        mViewPager.setAdapter(new BannerAdapter(this,mBannerList));
-
-        for (int i = 0; i <mBannerList.size(); i++) {
-            ImageView point = new ImageView(this);
-            point.setImageResource(i == 0 ? R.drawable.shape_point_black : R.drawable.shape_point_white);
-            LinearLayout.LayoutParams params =
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            if (i != 0) params.leftMargin = ScreenUtil.dip2px(10);
-            llContainer.addView(point, params);
-        }
 
 
-        if(task == null&&mBannerList.size()>0){
-            task = new SwitchTask();
-            task.start();
-        }
-
-        mAdapter = new MainAdapter(this, mRoomList,mRecyclerView);
+        mAdapter = new MainAdapter(this, mRoomList,mBannerList,mRecyclerView);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
         mRecyclerView.setAdapter(mAdapter);
 
@@ -91,27 +81,7 @@ public class MainActivity extends BaseActivity {
 //                        ViewGroup.LayoutParams.MATCH_PARENT));//添加焦点层
 
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                int count = llContainer.getChildCount();
-                position = position % count;
-                for (int i = 0; i < count; i++) {
-                    ImageView iv = (ImageView) llContainer.getChildAt(i);
-                    iv.setImageResource(i == position ? R.drawable.shape_point_black : R.drawable.shape_point_white);
-                }
-            }
 
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
 
     }
 
@@ -134,24 +104,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private class SwitchTask implements Runnable {
 
-        @Override
-        public void run() {
-            int item = mViewPager.getCurrentItem();
-            mViewPager.setCurrentItem(++item);
-            UIUtils.postDelayed(this, WHEEL_TIME);
-        }
-
-        public void start() {
-            stop();
-            UIUtils.postDelayed(this, WHEEL_TIME);
-        }
-
-        public void stop() {
-            UIUtils.removeCallbacks(this);
-        }
-    }
 
     private void bindListener() {
         //获取根元素

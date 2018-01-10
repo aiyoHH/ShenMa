@@ -1,6 +1,7 @@
 package cn.javava.shenma.adapter;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,6 +44,16 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopItemHolder
     @Override
     public void onBindViewHolder(ShopItemHolder holder, int position) {
         holder.setData(mList.get(position));
+
+        holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                //获取焦点时变化
+                if (hasFocus) {
+                    ViewCompat.animate(v).scaleX(1.17f).scaleY(1.17f).translationZ(1).start();
+                }
+            }
+        });
     }
 
     @Override
