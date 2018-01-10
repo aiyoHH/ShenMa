@@ -30,8 +30,8 @@
         android:name=".app.App"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".act.MainActivity">
+        android:theme="@style/AppThemeShop">
+        <activity android:name=".act.TestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -43,6 +43,10 @@
                   android:screenOrientation="portrait"
                   android:theme="@style/AppThemeShop"
             />
+        <!--<activity android:name=".act.TestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeShop"
+            />-->
     </application>
 
 </manifest>

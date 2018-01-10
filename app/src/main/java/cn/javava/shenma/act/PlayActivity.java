@@ -93,6 +93,7 @@ public class PlayActivity extends AppCompatActivity{
             case KeyEvent.KEYCODE_BUTTON_C:
                 Toast.makeText(this,"...确定...",Toast.LENGTH_LONG).show();
                 mBtnConfirm.performClick();
+                startActivity(new Intent(PlayActivity.this,TestActivity.class));
                 break;
             case KeyEvent.KEYCODE_BACK:
                 //弹窗是否退出
