@@ -71,8 +71,9 @@ public class MainAdapter extends RecyclerView.Adapter {
                 public void onFocusChange(View v, boolean hasFocus) {
                     //获取焦点时变化
                     if (hasFocus) {
-                        Log.e("lzh2017","获取焦点-======"+position);
-                        ViewCompat.animate(v).scaleX(1.17f).scaleY(1.17f).translationZ(1).start();
+                        ViewCompat.animate(v).scaleX(1.05f).scaleY(1.05f).translationZ(0.5f).start();
+                    }else{
+                        ViewCompat.animate(v).scaleX(1.0f).scaleY(1.0f).translationZ(0f).start();
                     }
                 }
             });
