@@ -1,5 +1,6 @@
 package cn.javava.shenma.http;
 
+import cn.javava.shenma.bean.RoomO;
 import okhttp3.ResponseBody;
 import rx.Subscriber;
 
@@ -9,6 +10,6 @@ import rx.Subscriber;
 
 public interface ApiInterface {
 
-    void apiTest(Subscriber<ResponseBody> s);
+    void apiTest(Subscriber<RoomO> s,String appId);
 
 }

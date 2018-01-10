@@ -43,10 +43,10 @@
                   android:screenOrientation="portrait"
                   android:theme="@style/AppThemeShop"
             />
-        <!--<activity android:name=".act.TestActivity"
+        <activity android:name=".act.PlayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeShop"
-            />-->
+            />
     </application>
 
 </manifest>

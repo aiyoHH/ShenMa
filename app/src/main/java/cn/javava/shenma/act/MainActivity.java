@@ -20,13 +20,18 @@ import butterknife.BindView;
 import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.BannerAdapter;
 import cn.javava.shenma.adapter.MainAdapter;
+import cn.javava.shenma.app.App;
+import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.base.BaseActivity;
 import cn.javava.shenma.bean.Room;
+import cn.javava.shenma.bean.RoomO;
+import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.utils.ScreenUtil;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.FocusLayout;
 import cn.javava.shenma.view.SpacesItemDecoration;
 import cn.jzvd.JZVideoPlayer;
+import rx.Subscriber;
 
 
 /**
@@ -38,17 +43,15 @@ import cn.jzvd.JZVideoPlayer;
  */
 public class MainActivity extends BaseActivity {
 
-
-
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-
 
     List<String> mBannerList;
     List<Room> mRoomList;
     MainAdapter mAdapter;
 
     FocusLayout mFocusLayout;
+    int[] faces={R.mipmap.ic_room1,R.mipmap.ic_room2,R.mipmap.ic_room3,R.mipmap.ic_room4,R.mipmap.ic_room5,R.mipmap.ic_room6};
 
 
     @Override
@@ -60,7 +63,6 @@ public class MainActivity extends BaseActivity {
     protected void initEventAndData() {
         mBannerList=new ArrayList<>();
         mRoomList=new ArrayList<>();
-
         mBannerList.add("https://app-cdn.siy8.com/6320/images-1514038402338.png");
         mBannerList.add("https://app-cdn.siy8.com/6320/images-1514876319180.png");
         mBannerList.add("https://app-cdn.siy8.com/6320/images-1514632576278.png");
@@ -68,24 +70,11 @@ public class MainActivity extends BaseActivity {
 
         pullInfo();
 
-
-
         mAdapter = new MainAdapter(this, mRoomList,mBannerList,mRecyclerView);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
         mRecyclerView.setAdapter(mAdapter);
 
-//        mFocusLayout = new FocusLayout(this);
-//        bindListener();
-//        addContentView(mFocusLayout,
-//                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                        ViewGroup.LayoutParams.MATCH_PARENT));//添加焦点层
-
-
-
-
     }
-
-
 
 
     @Override
@@ -102,17 +91,38 @@ public class MainActivity extends BaseActivity {
 
     private void pullInfo(){
 
+        Subscriber<RoomO> subscriber=new Subscriber<RoomO>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(RoomO roomO) {
+                if (roomO.getCode() == 0) {
+                    for (RoomO.DataBean.RoomListBean roomListBean : roomO.getData().getRoom_list()) {
+                        if (roomListBean.getStream_info() == null || roomListBean.getStream_info().size() == 0) continue;
+                        Room room = new Room();
+                        room.roomIcon = R.mipmap.ic_room1;
+                        room.roomID = roomListBean.getRoom_id();
+                        room.roomName = roomListBean.getRoom_name();
+                        for (RoomO.DataBean.RoomListBean.StreamInfoBean streamInfoBean : roomListBean.getStream_info()) {
+                            room.streamList.add(streamInfoBean.getStream_id());
+                        }
+                        mRoomList.add(room);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        };
+        addSubscrebe(subscriber);
+        HttpHelper.getInstance().apiTest(subscriber, String.valueOf(ZegoApiManager.getInstance().getAppID()));
     }
 
-
-
-    private void bindListener() {
-        //获取根元素
-        View mContainerView = this.getWindow().getDecorView();//.findViewById(android.R.id.content);
-        //得到整个view树的viewTreeObserver
-        ViewTreeObserver viewTreeObserver = mContainerView.getViewTreeObserver();
-        //给观察者设置焦点变化监听
-        viewTreeObserver.addOnGlobalFocusChangeListener(mFocusLayout);
-    }
 
 }

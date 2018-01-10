@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 
+import cn.javava.shenma.bean.RoomO;
 import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.utils.SystemUtil;
 import okhttp3.Cache;
@@ -141,8 +142,8 @@ public class HttpHelper implements ApiInterface {
     };
 
     @Override
-    public void apiTest(Subscriber<ResponseBody> s) {
-        String url = "";
-        toSubscribe(httpApis.apiTest(url), s);
+    public void apiTest(Subscriber<RoomO> s, String appId) {
+        toSubscribe(httpApis.apiTest(appId), s);
     }
+
 }

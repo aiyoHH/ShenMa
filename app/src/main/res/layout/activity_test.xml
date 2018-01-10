@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <View
-        android:layout_width="@dimen/test_width"
+        android:layout_width="@dimen/dp1080"
         android:layout_height="@dimen/dp600"
         android:background="@color/colorAccent"/>
 

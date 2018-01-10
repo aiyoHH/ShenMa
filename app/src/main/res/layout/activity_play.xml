@@ -45,13 +45,13 @@
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintTop_toBottomOf="@+id/play_counter">
          <TextureView
-             android:id="@+id/textureview1"
+             android:id="@+id/play_textureview1"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:visibility="invisible"/>
 
          <TextureView
-             android:id="@+id/textureview2"
+             android:id="@+id/play_textureview2"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:visibility="invisible"/>

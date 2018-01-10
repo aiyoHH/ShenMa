@@ -4,4 +4,5 @@
     <dimen name="dp130">170dp</dimen>
     <dimen name="dp400">533dp</dimen>
     <dimen name="dp600">800dp</dimen>
+    <dimen name="sp30">38sp</dimen>
 </resources>

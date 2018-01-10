@@ -56,7 +56,6 @@ public class MainAdapter extends RecyclerView.Adapter {
         }else{
             return new ContentHolder(mInflater.inflate(R.layout.item_main_content,parent,false));
         }
-
     }
 
     @Override
@@ -64,8 +63,9 @@ public class MainAdapter extends RecyclerView.Adapter {
         if(holder instanceof VideoHolder){
             ((VideoHolder) holder).setData(mContext);
         }else if(holder instanceof  BannerHolder){
-            if(bannerList.size()>0)((BannerHolder) holder).setData(mContext,bannerList);
+           ((BannerHolder) holder).setData(mContext,bannerList);
         }else if(holder instanceof ContentHolder){
+            ((ContentHolder) holder).setData(mContext,mList.get(position-additional));
             holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -83,12 +83,11 @@ public class MainAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return additional+20;
+        return additional+mList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-
         switch (position) {
             case 0:
                 return Key.Type.banner;

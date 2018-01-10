@@ -10,7 +10,7 @@ import cn.javava.shenma.app.App;
  */
 
 public interface Key {
-    String BASE_URL = "https://6320app.siy8.com/";
+    String BASE_URL = "https://liveroom3671502238-api.zego.im/demo/";
     String PATH_DATA = App.getInstance().getCacheDir().getAbsolutePath() + File.separator + "data";
     String PATH_CACHE = PATH_DATA + File.separator + "NetCache";
 

@@ -66,6 +66,24 @@ public class SystemUtil {
         }
     }
 
+    public static boolean isAppForeground() {
+        ActivityManager activityManager = (ActivityManager) App.getInstance()
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
+                .getRunningAppProcesses();
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.processName.equals(App.getInstance().getPackageName())) {
+                if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
 
     /**
      * 移动网络开关
