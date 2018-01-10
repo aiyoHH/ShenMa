@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.BannerAdapter;
 import cn.javava.shenma.utils.ImageLoader;
@@ -37,9 +38,11 @@ public class BannerHolder extends RecyclerView.ViewHolder {
 
     public BannerHolder(View itemView) {
         super(itemView);
+        ButterKnife.bind(this,itemView);
     }
 
     public void setData(Context context,List<String> list){
+
         mViewPager.setAdapter(new BannerAdapter(context,list));
 
         for (int i = 0; i <list.size(); i++) {
