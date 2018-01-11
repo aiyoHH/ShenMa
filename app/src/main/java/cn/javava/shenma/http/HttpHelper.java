@@ -58,7 +58,7 @@ public class HttpHelper implements ApiInterface {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(headerInterceptor)
-//                .addInterceptor(logInterceptor)
+                .addInterceptor(logInterceptor)
                 .addNetworkInterceptor(cacheInterceptor)
                 .addInterceptor(cacheInterceptor)
                 .cache(cache)

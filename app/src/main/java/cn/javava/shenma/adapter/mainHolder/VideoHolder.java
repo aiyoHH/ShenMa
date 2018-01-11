@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.javava.shenma.R;
+import cn.javava.shenma.utils.ImageLoader;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 
@@ -28,9 +29,7 @@ public class VideoHolder extends RecyclerView.ViewHolder {
     }
 
     public void setData(Context context){
-        Uri uri = Uri.parse("android.resource://"+context.getPackageName()+ "/"+R.raw.demo);
         videoPlayer.setVisibility(View.VISIBLE);
-
         LinkedHashMap map = new LinkedHashMap();
         try {
             map.put(JZVideoPlayer.URL_KEY_DEFAULT, context.getAssets().openFd("local_video.mp4"));
@@ -42,7 +41,7 @@ public class VideoHolder extends RecyclerView.ViewHolder {
         dataSourceObjects[1] = this;
         videoPlayer.setUp(dataSourceObjects, 0, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "饺子快长大");
 
-       // ImageLoader.load(context, "https://app-cdn.siy8.com/6320/images-1514038402338.png",videoPlayer.thumbImageView);
+        ImageLoader.load(context, "https://app-cdn.siy8.com/6320/images-1514876319180.png",videoPlayer.thumbImageView);
 
 
 

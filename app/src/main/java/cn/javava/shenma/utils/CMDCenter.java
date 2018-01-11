@@ -274,7 +274,7 @@ public class CMDCenter {
 
     private SimpleDateFormat sDataFormat = new SimpleDateFormat("[hh:mm:ss.SSS]");
     public void printLog(String msg) {
-        Log.i(LOG_TAG, msg);
+        Log.e(LOG_TAG, msg);
 
         String now = sDataFormat.format(new Date());
         mListLog.addFirst(String.format("%s %s", now, msg));

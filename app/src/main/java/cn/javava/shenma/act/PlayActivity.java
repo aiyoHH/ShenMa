@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.internal.LinkedTreeMap;
@@ -63,6 +64,9 @@ public class PlayActivity extends AppCompatActivity{
     TextureView mTextureView1;
     @BindView(R.id.play_textureview2)
     TextureView mTextureView2;
+    @BindView(R.id.tv_stream_state)
+    TextView mTvStreamSate;
+
 
     private Room mRoom;
     private List<ZegoStream> mListStream = new ArrayList<>();
@@ -95,6 +99,8 @@ public class PlayActivity extends AppCompatActivity{
         if (intent != null) {
             mRoom = (Room) intent.getSerializableExtra("room");
 
+            Log.e("lzh2017","room ="+mRoom.toString());
+
             //setTitle(mRoom.roomName);
             setContentView(R.layout.activity_play);
 
@@ -115,6 +121,7 @@ public class PlayActivity extends AppCompatActivity{
 
         //从加速服务器拉流
         ZegoLiveRoom.setConfig(ZegoConstants.Config.PREFER_PLAY_ULTRA_SOURCE + "=1");
+        //ZegoLiveRoom.setConfig(ZegoConstants.Config.PREFER_PLAY_ULTRA_SOURCE + "=2");
 
     }
 
@@ -222,10 +229,11 @@ public class PlayActivity extends AppCompatActivity{
     }
 
     /**
-     * 初始化流信息. 当前, 一个房间内只需要2条流用于播放，少了用"空流"替代.
+     * 初始化流信息.
      */
     private void initStreamList() {
 
+        //当前, 一个房间内只需要2条流用于播放，少了用"空流"替代.
         int streamSize = mRoom.streamList.size() >= 2 ? 2 : mRoom.streamList.size();
 
         for (int index = 0; index < streamSize; index++) {
@@ -236,6 +244,7 @@ public class PlayActivity extends AppCompatActivity{
             for (int index = mListStream.size(); index < 2; index++) {
                 mListStream.add(constructStream(index, null));
             }
+            mTextureView2.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -253,7 +262,6 @@ public class PlayActivity extends AppCompatActivity{
     }
 
 
-
     private void startPlay() {
         mZegoLiveRoom.loginRoom(mRoom.roomID, ZegoConstants.RoomRole.Audience, new IZegoLoginCompletionCallback() {
             @Override
@@ -261,7 +269,8 @@ public class PlayActivity extends AppCompatActivity{
                 CMDCenter.getInstance().printLog("[onLoginCompletion], roomID: " + mRoom.roomID + ", errorCode: " + errCode + ", streamCount: " + zegoStreamInfos.length);
                 if (errCode == 0) {
                     for (ZegoStreamInfo streamInfo : zegoStreamInfos) {
-                        CMDCenter.getInstance().printLog("[onLoginCompletion], streamInfo: " + streamInfo.toString());
+                        CMDCenter.getInstance().printLog("[onLoginCompletion], streamInfo: userId=" + streamInfo.userID
+                                +" |userName="+streamInfo.userName);
 
                         if (!TextUtils.isEmpty(streamInfo.userID) &&
                                 !TextUtils.isEmpty(streamInfo.userName) && streamInfo.userName.startsWith("WWJS")) {
@@ -316,21 +325,25 @@ public class PlayActivity extends AppCompatActivity{
                 if (mListStream.get(mSwitchCameraTimes % 2).getStreamID().equals(streamID)) {
                     switch (zegoStreamQuality.quality) {
                         case 0:
+                            Log.e("lzh2017","网络悠秀");
 //                            mTvQuality.setText("网络优秀");
 //                            mIvQuality.setImageResource(R.mipmap.excellent);
 //                            mTvQuality.setTextColor(getResources().getColor(android.R.color.holo_green_light));
                             break;
                         case 1:
+                            Log.e("lzh2017","网络流畅");
 //                            mTvQuality.setText("网络流畅");
 //                            mIvQuality.setImageResource(R.mipmap.good);
 //                            mTvQuality.setTextColor(getResources().getColor(android.R.color.holo_blue_light));
                             break;
                         case 2:
+                            Log.e("lzh2017","网络缓慢");
 //                            mTvQuality.setText("网络缓慢");
 //                            mIvQuality.setImageResource(R.mipmap.average);
 //                            mTvQuality.setTextColor(getResources().getColor(R.color.bg_yellow_p));
                             break;
                         case 3:
+                            Log.e("lzh2017","网络拥堵");
 //                            mTvQuality.setText("网络拥堵");
 //                            mIvQuality.setImageResource(R.mipmap.pool);
 //                            mTvQuality.setTextColor(getResources().getColor(R.color.text_red));
@@ -363,7 +376,7 @@ public class PlayActivity extends AppCompatActivity{
                 int currentShowIndex = mSwitchCameraTimes % 2;
                 ZegoStream currentShowStream = mListStream.get(currentShowIndex);
                 if (currentShowStream.getStreamID().equals(streamID)) {
-//                    mTvStreamSate.setVisibility(View.GONE);
+                    mTvStreamSate.setVisibility(View.GONE);
                     currentShowStream.show();
                 }
 
