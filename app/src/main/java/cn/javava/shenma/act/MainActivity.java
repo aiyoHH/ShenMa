@@ -28,6 +28,7 @@ import cn.javava.shenma.bean.RoomO;
 import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.utils.ScreenUtil;
 import cn.javava.shenma.utils.UIUtils;
+import cn.javava.shenma.view.CustomMediaPlayerAssertFolder;
 import cn.javava.shenma.view.FocusLayout;
 import cn.javava.shenma.view.SpacesItemDecoration;
 import cn.jzvd.JZVideoPlayer;
@@ -50,10 +51,6 @@ public class MainActivity extends BaseActivity {
     List<Room> mRoomList;
     MainAdapter mAdapter;
 
-    FocusLayout mFocusLayout;
-    int[] faces={R.mipmap.ic_room1,R.mipmap.ic_room2,R.mipmap.ic_room3,R.mipmap.ic_room4,R.mipmap.ic_room5,R.mipmap.ic_room6};
-
-
     @Override
     protected int initLayout() {
         return R.layout.activity_main;
@@ -73,6 +70,9 @@ public class MainActivity extends BaseActivity {
         mAdapter = new MainAdapter(this, mRoomList,mBannerList,mRecyclerView);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
         mRecyclerView.setAdapter(mAdapter);
+
+        JZVideoPlayer.setMediaInterface(new CustomMediaPlayerAssertFolder());//进入此页面修改MediaInterface，让此页面的jzvd正常工作
+
 
     }
 

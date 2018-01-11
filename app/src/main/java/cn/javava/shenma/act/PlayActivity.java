@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -32,6 +33,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.javava.shenma.R;
+import cn.javava.shenma.adapter.BannerAdapter;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.interf.BoardState;
@@ -51,6 +53,8 @@ import cn.javava.shenma.utils.ZegoStream;
 public class PlayActivity extends AppCompatActivity{
 
 
+    @BindView(R.id.play_viewPager)
+    ViewPager mViewPager;
     @BindView(R.id.play_cancel)
     ImageButton mBtnCancel;
     @BindView(R.id.play_confirm)
@@ -62,6 +66,7 @@ public class PlayActivity extends AppCompatActivity{
 
     private Room mRoom;
     private List<ZegoStream> mListStream = new ArrayList<>();
+    private List<String> mListBanner = new ArrayList<>();
     private ZegoLiveRoom mZegoLiveRoom = ZegoApiManager.getInstance().getZegoLiveRoom();
     /**
      * app是否在后台.
@@ -94,6 +99,10 @@ public class PlayActivity extends AppCompatActivity{
             setContentView(R.layout.activity_play);
 
             ButterKnife.bind(this);
+
+            mListBanner.add("https://app-cdn.siy8.com/6320/images-1514632576278.png");
+
+            mViewPager.setAdapter(new BannerAdapter(this,mListBanner));
 
             initStreamList();
 //            initViews();
@@ -174,6 +183,7 @@ public class PlayActivity extends AppCompatActivity{
 
         mZegoLiveRoom.logoutRoom();
         CMDCenter.getInstance().reset();
+        finish();
 
 //        if (mCountDownTimer != null) {
 //            mCountDownTimer.cancel();
