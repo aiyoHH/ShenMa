@@ -4,14 +4,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="@dimen/dp1080"
-        android:layout_height="@dimen/dp600"
-        android:background="@color/colorAccent"/>
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/banner"/>
+
+    <Button
+        android:id="@+id/push_good"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/selector_item"
+        android:text="出货测试"
+        android:textSize="40sp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/txt_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"/>
 
 </LinearLayout>
