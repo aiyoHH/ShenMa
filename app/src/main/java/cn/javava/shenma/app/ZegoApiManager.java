@@ -79,7 +79,7 @@ public class ZegoApiManager {
 
             Toast.makeText(App.getInstance(), "Zego SDK初始化成功!", Toast.LENGTH_LONG).show();
             // 初始化设置级别为"High"
-            mZegoAvConfig = new ZegoAvConfig(ZegoAvConfig.Level.High);
+            mZegoAvConfig = new ZegoAvConfig(ZegoAvConfig.Level.Low);
             mZegoLiveRoom.setAVConfig(mZegoAvConfig);
         }
     }

@@ -2,6 +2,8 @@
 <resources>
     <dimen name="dp1080">1080dp</dimen>
     <dimen name="dp130">130dp</dimen>
+    <dimen name="dp280">280dp</dimen>
+    <dimen name="dp330">330dp</dimen>
     <dimen name="dp400">400dp</dimen>
     <dimen name="dp600">600dp</dimen>
     <dimen name="sp30">30sp</dimen>

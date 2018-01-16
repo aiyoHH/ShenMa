@@ -3,6 +3,7 @@ package cn.javava.shenma.adapter.mainHolder;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.javava.shenma.R;
 import cn.javava.shenma.utils.ImageLoader;
+import cn.jzvd.JZUserAction;
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 
@@ -39,11 +41,19 @@ public class VideoHolder extends RecyclerView.ViewHolder {
         Object[] dataSourceObjects = new Object[2];
         dataSourceObjects[0] = map;
         dataSourceObjects[1] = this;
-        videoPlayer.setUp(dataSourceObjects, 0, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "饺子快长大");
+        videoPlayer.setUp(dataSourceObjects, 0, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
 
         ImageLoader.load(context, "https://app-cdn.siy8.com/6320/images-1514876319180.png",videoPlayer.thumbImageView);
 
-
-
+        videoPlayer.startButton.performClick();
+        videoPlayer.setJzUserAction(new JZUserAction() {
+            @Override
+            public void onEvent(int type, Object url, int screen, Object... objects) {
+                if(JZUserAction.ON_AUTO_COMPLETE==type){
+                    videoPlayer.startVideo();
+                    videoPlayer.replayTextView.setText("");
+                }
+            }
+        });
     }
 }

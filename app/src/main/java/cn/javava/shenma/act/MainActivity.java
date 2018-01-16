@@ -1,5 +1,6 @@
 package cn.javava.shenma.act;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.CustomMediaPlayerAssertFolder;
 import cn.javava.shenma.view.FocusLayout;
 import cn.javava.shenma.view.SpacesItemDecoration;
+import cn.jzvd.JZUserAction;
 import cn.jzvd.JZVideoPlayer;
 import rx.Subscriber;
 
@@ -83,8 +86,11 @@ public class MainActivity extends BaseActivity {
         JZVideoPlayer.releaseAllVideos();
     }
 
+
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
         return super.onKeyDown(keyCode, event);
     }
 

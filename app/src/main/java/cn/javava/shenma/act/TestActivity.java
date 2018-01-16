@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.javava.shenma.R;
 import cn.javava.shenma.base.BaseActivity;
+import cn.javava.shenma.fragment.ScanLoginFragment;
 import cn.javava.shenma.motordrv.YtMainBoard;
 import cn.javava.shenma.motordrv.clsConst;
 import cn.javava.shenma.motordrv.clsErrorConst;
@@ -44,7 +45,11 @@ public class TestActivity extends BaseActivity {
     @OnClick(R.id.push_good)
     void pushTest() {
 
-        openEdv();
+        ScanLoginFragment scanLoginFragment = ScanLoginFragment.getInstance("meiyou");
+        scanLoginFragment.setCancelable(false);
+        scanLoginFragment.show(getFragmentManager(), "GameResultDialog");
+
+        //openEdv();
 
     }
 

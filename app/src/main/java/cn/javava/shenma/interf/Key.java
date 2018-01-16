@@ -13,6 +13,7 @@ public interface Key {
     String BASE_URL = "https://liveroom3671502238-api.zego.im/demo/";
     String PATH_DATA = App.getInstance().getCacheDir().getAbsolutePath() + File.separator + "data";
     String PATH_CACHE = PATH_DATA + File.separator + "NetCache";
+    String DATA="data";
 
     interface Type{
         int banner=0;
