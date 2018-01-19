@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="dp1080">1080dp</dimen>
+    <dimen name="dp15">20dp</dimen>
+    <dimen name="dp30">40dp</dimen>
+    <dimen name="dp43">57dp</dimen>
     <dimen name="dp130">130dp</dimen>
     <dimen name="dp280">280dp</dimen>
     <dimen name="dp330">330dp</dimen>

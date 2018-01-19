@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.internal.LinkedTreeMap;
 import com.zego.zegoliveroom.ZegoLiveRoom;
 import com.zego.zegoliveroom.callback.IZegoLivePlayerCallback;
 import com.zego.zegoliveroom.callback.IZegoLoginCompletionCallback;
@@ -29,7 +28,6 @@ import com.zego.zegoliveroom.entity.ZegoUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,9 +36,9 @@ import cn.javava.shenma.adapter.BannerAdapter;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.interf.BoardState;
-import cn.javava.shenma.interf.CMDKey;
 import cn.javava.shenma.utils.CMDCenter;
 import cn.javava.shenma.utils.SystemUtil;
+import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.utils.ZegoStream;
 
 /**
@@ -66,6 +64,15 @@ public class PlayActivity extends AppCompatActivity{
     TextureView mTextureView2;
     @BindView(R.id.tv_stream_state)
     TextView mTvStreamSate;
+
+    @BindView(R.id.play_up)
+    ImageButton mBtnUp;
+    @BindView(R.id.play_down)
+    ImageButton mBtnDown;
+    @BindView(R.id.play_right)
+    ImageButton mBtnRight;
+    @BindView(R.id.play_left)
+    ImageButton mBtnLeft;
 
 
     private Room mRoom;
@@ -203,19 +210,21 @@ public class PlayActivity extends AppCompatActivity{
 //        Log.e("lzh2017","KeyEvent event="+event);
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                Toast.makeText(this,"左........",Toast.LENGTH_LONG).show();
+                setActivatedView(mBtnLeft);
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                Toast.makeText(this,"........右",Toast.LENGTH_LONG).show();
+                setActivatedView(mBtnRight);
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:
-                Toast.makeText(this,"...$$上$$...",Toast.LENGTH_LONG).show();
+
+                setActivatedView(mBtnUp);
                 break;
             case KeyEvent.KEYCODE_DPAD_DOWN:
-                Toast.makeText(this,"...#下#...",Toast.LENGTH_LONG).show();
+
+                setActivatedView(mBtnDown);
                 break;
             case KeyEvent.KEYCODE_BUTTON_C:
-                Toast.makeText(this,"...确定...",Toast.LENGTH_LONG).show();
+
                 mBtnConfirm.performClick();
                 startActivity(new Intent(PlayActivity.this,TestActivity.class));
                 break;
@@ -226,6 +235,17 @@ public class PlayActivity extends AppCompatActivity{
                 return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    private void setActivatedView(final ImageButton btn){
+        btn.setActivated(true);
+        UIUtils.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                btn.setActivated(false);
+            }
+        },300);
     }
 
     /**
