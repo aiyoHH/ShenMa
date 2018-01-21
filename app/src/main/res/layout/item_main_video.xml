@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp130"
+        android:layout_height="@dimen/dp43"
         android:background="@color/colorFdd"
         android:padding="10dp">
         <ImageView

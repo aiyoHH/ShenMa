@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="350dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginTop="20dp"
     android:focusable="true"
+              android:paddingTop="10dp"
+              android:paddingStart="10dp"
+              android:paddingEnd="10dp"
+              android:paddingBottom="20dp"
     android:background="@drawable/selector_item"
     >
 
-    <ImageView
-        android:id="@+id/item_main_content_icon"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:padding="10dp"
-        android:background="@color/colorFdd"/>
-
-    <TextView
-        android:id="@+id/item_main_content_des"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:singleLine="true"
-        android:textColor="@color/colorF75"
-        android:textSize="@dimen/sp30"/>
+        android:layout_height="350dp"
+        android:background="@mipmap/good_bg"
+       android:padding="10dp"
+        >
 
 
+        <ImageView
+            android:id="@+id/item_main_content_icon"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:background="#ff0000"
+            />
+
+        <TextView
+            android:id="@+id/item_main_content_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:singleLine="true"
+            android:layout_alignParentBottom="true"
+            android:text="地方就是六块腹肌阿斯利康发动机"
+            android:textColor="@color/colorF75"
+            android:textSize="@dimen/sp30"/>
+    </RelativeLayout>
 
 </LinearLayout>

@@ -27,7 +27,9 @@ import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.base.BaseActivity;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.bean.RoomO;
+import cn.javava.shenma.fragment.ScanLoginFragment;
 import cn.javava.shenma.http.HttpHelper;
+import cn.javava.shenma.http.Session;
 import cn.javava.shenma.utils.ScreenUtil;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.CustomMediaPlayerAssertFolder;
@@ -63,18 +65,16 @@ public class MainActivity extends BaseActivity {
     protected void initEventAndData() {
         mBannerList=new ArrayList<>();
         mRoomList=new ArrayList<>();
-        mBannerList.add("https://app-cdn.siy8.com/6320/images-1514038402338.png");
         mBannerList.add("https://app-cdn.siy8.com/6320/images-1514876319180.png");
         mBannerList.add("https://app-cdn.siy8.com/6320/images-1514632576278.png");
         mBannerList.add("https://app-cdn.siy8.com/6320/images-1514037798443.jpg");
 
-        pullInfo();
-
+        JZVideoPlayer.setMediaInterface(new CustomMediaPlayerAssertFolder());//进入此页面修改MediaInterface，让此页面的jzvd正常工作
         mAdapter = new MainAdapter(this, mRoomList,mBannerList,mRecyclerView);
-        mRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(15));
         mRecyclerView.setAdapter(mAdapter);
 
-        JZVideoPlayer.setMediaInterface(new CustomMediaPlayerAssertFolder());//进入此页面修改MediaInterface，让此页面的jzvd正常工作
+        pullInfo();
 
 
     }
@@ -88,9 +88,15 @@ public class MainActivity extends BaseActivity {
 
 
 
+    ScanLoginFragment loginFragment;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
+        if(!Session.login&&loginFragment==null){
+            loginFragment = ScanLoginFragment.getInstance("none");
+            loginFragment.setCancelable(false);
+            loginFragment.show(getFragmentManager(), "GameResultDialog");
+        }
         return super.onKeyDown(keyCode, event);
     }
 

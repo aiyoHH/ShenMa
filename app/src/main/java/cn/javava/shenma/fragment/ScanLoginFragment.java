@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebView;
 
 import cn.javava.shenma.R;
@@ -33,6 +35,11 @@ public class ScanLoginFragment extends DialogFragment {
         return secondFragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.DialogFragmentStyle);
+    }
 
     @Nullable
     @Override
@@ -44,9 +51,19 @@ public class ScanLoginFragment extends DialogFragment {
 
 //        webView.setJavascriptInterface(new IJsApi(this,this));
         webView.clearCache(true);
-
+        webView.setBackgroundColor(0);
         webView.loadUrl(loginUrl);
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Window window = getDialog().getWindow();
+        WindowManager.LayoutParams attributes = window.getAttributes();
+        attributes.dimAmount=0.0f;
+        attributes.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(attributes);
     }
 }

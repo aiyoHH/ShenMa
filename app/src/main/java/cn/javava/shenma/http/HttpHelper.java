@@ -82,6 +82,52 @@ public class HttpHelper implements ApiInterface {
     }
 
 
+    @Override
+    public void apiTest(Subscriber<RoomO> s, String appId) {
+        toSubscribe(httpApis.apiTest(appId), s);
+    }
+
+    @Override
+    public void obtainUserList(Subscriber<ResponseBody> subscriber) {
+        toSubscribe(httpApis.obtainUserList(),subscriber);
+    }
+
+    @Override
+    public void obtainUserInfo(Subscriber<ResponseBody> subscriber, String userId) {
+        toSubscribe(httpApis.obtainUserInfo(userId),subscriber);
+    }
+
+    @Override
+    public void obtainUserMe(Subscriber<ResponseBody> subscriber) {
+        toSubscribe(httpApis.obtainUserMe(),subscriber);
+    }
+
+    @Override
+    public void obtainLiveList(Subscriber<ResponseBody> subscriber) {
+        toSubscribe(httpApis.obtainLiveList(),subscriber);
+    }
+
+    @Override
+    public void obtainLiveRoomList(Subscriber<ResponseBody> subscriber) {
+        toSubscribe(httpApis.obtainLiveRoomList(),subscriber);
+    }
+
+    @Override
+    public void obtainQRCodePay(Subscriber<ResponseBody> subscriber) {
+        toSubscribe(httpApis.obtainQRCodePay(),subscriber);
+    }
+
+
+    @Override
+    public void checkResultPay(Subscriber<ResponseBody> subscriber,String tradeNo) {
+        toSubscribe(httpApis.checkResultPay(tradeNo),subscriber);
+    }
+
+    @Override
+    public void scanQRCodeLogin(Subscriber<ResponseBody> subscriber) {
+        toSubscribe(httpApis.scanQRCodeLogin(),subscriber);
+    }
+
     Interceptor logInterceptor = new HttpLoggingInterceptor(
             new HttpLoggingInterceptor.Logger() {
                 @Override
@@ -141,9 +187,6 @@ public class HttpHelper implements ApiInterface {
         }
     };
 
-    @Override
-    public void apiTest(Subscriber<RoomO> s, String appId) {
-        toSubscribe(httpApis.apiTest(appId), s);
-    }
+
 
 }

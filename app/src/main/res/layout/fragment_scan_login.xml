@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_width="@dimen/dp330"
+              android:layout_height="@dimen/dp330"
               android:minHeight="@dimen/dp330"
-              android:minWidth="@dimen/dp280"
+              android:minWidth="@dimen/dp330"
               android:background="@mipmap/login_bg"
+              android:paddingStart="120dp"
+              android:paddingEnd="130dp"
+              android:paddingBottom="20dp"
               >
 
     <WebView
         android:id="@+id/webview_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_marginTop="350dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>

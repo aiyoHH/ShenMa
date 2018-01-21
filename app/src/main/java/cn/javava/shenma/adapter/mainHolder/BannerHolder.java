@@ -44,7 +44,7 @@ public class BannerHolder extends RecyclerView.ViewHolder {
     public void setData(Context context,List<String> list){
 
         mViewPager.setAdapter(new BannerAdapter(context,list));
-
+        llContainer.removeAllViews();
         for (int i = 0; i <list.size(); i++) {
             ImageView point = new ImageView(context);
             point.setImageResource(i == 0 ? R.drawable.shape_point_black : R.drawable.shape_point_white);
