@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -11,12 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.zego.zegoliveroom.ZegoLiveRoom;
 import com.zego.zegoliveroom.callback.IZegoLivePlayerCallback;
 import com.zego.zegoliveroom.callback.IZegoLoginCompletionCallback;
@@ -27,15 +31,20 @@ import com.zego.zegoliveroom.entity.ZegoStreamQuality;
 import com.zego.zegoliveroom.entity.ZegoUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.BannerAdapter;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.bean.Room;
+import cn.javava.shenma.fragment.GameResultDialog;
 import cn.javava.shenma.interf.BoardState;
+import cn.javava.shenma.interf.CMDKey;
 import cn.javava.shenma.utils.CMDCenter;
 import cn.javava.shenma.utils.SystemUtil;
 import cn.javava.shenma.utils.UIUtils;
@@ -64,7 +73,6 @@ public class PlayActivity extends AppCompatActivity{
     TextureView mTextureView2;
     @BindView(R.id.tv_stream_state)
     TextView mTvStreamSate;
-
     @BindView(R.id.play_up)
     ImageButton mBtnUp;
     @BindView(R.id.play_down)
@@ -73,7 +81,10 @@ public class PlayActivity extends AppCompatActivity{
     ImageButton mBtnRight;
     @BindView(R.id.play_left)
     ImageButton mBtnLeft;
-
+    @BindView(R.id.play_boarding_countdown)
+    TextView mTvBoardingCountDown;
+    @BindView(R.id.play_apply)
+    ImageButton  btnApply;
 
     private Room mRoom;
     private List<ZegoStream> mListStream = new ArrayList<>();
@@ -88,6 +99,27 @@ public class PlayActivity extends AppCompatActivity{
      * 切换摄像头次数, 用于记录当前正在显示"哪一条流"
      */
     private int mSwitchCameraTimes = 0;
+    /**
+     * 是否继续玩.
+     */
+    private boolean mContinueToPlay = false;
+
+    /**
+     * 房间内的排队人数.
+     */
+    private int mUsersInQueue = 0;
+
+    /**
+     * "确认上机"对话框.
+     */
+    private AlertDialog mDialogConfirmGameReady;
+    /**
+     * 计时器.
+     */
+    private CountDownTimer mCountDownTimer;
+    private GameResultDialog mDialogGameResult;
+
+
 
     public static void actionStart(Activity activity, Room room) {
         Intent intent = new Intent(activity, PlayActivity.class);
@@ -118,7 +150,7 @@ public class PlayActivity extends AppCompatActivity{
             mViewPager.setAdapter(new BannerAdapter(this,mListBanner));
 
             initStreamList();
-//            initViews();
+            initViews();
             startPlay();
 
         } else {
@@ -128,7 +160,7 @@ public class PlayActivity extends AppCompatActivity{
 
         //从加速服务器拉流
         ZegoLiveRoom.setConfig(ZegoConstants.Config.PREFER_PLAY_ULTRA_SOURCE + "=1");
-        //ZegoLiveRoom.setConfig(ZegoConstants.Config.PREFER_PLAY_ULTRA_SOURCE + "=2");
+//        ZegoLiveRoom.setConfig(ZegoConstants.Config.PREFER_PLAY_ULTRA_SOURCE + "=2");
 
     }
 
@@ -161,6 +193,40 @@ public class PlayActivity extends AppCompatActivity{
 
             for(ZegoStream zegoStream : mListStream){
                 zegoStream.stopPlayStream();
+            }
+        }
+    }
+
+    protected void initViews(){
+
+    }
+
+
+    //预约上机
+    @OnClick(R.id.play_apply)
+    public void apply(){
+
+        Log.e("lzh2018","apply...........part1");
+        if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Ended) {
+            Log.e("lzh2018","apply...........part2");
+
+            CMDCenter.getInstance().apply(false, new CMDCenter.OnCommandSendCallback() {
+                @Override
+                public void onSendFail() {
+                    Log.e("lzh2018","apply...........part2A");
+                    sendCMDFail("Apply");
+                }
+            });
+        } else {
+            Log.e("lzh2018","apply...........part3");
+            if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingBoard){
+                Log.e("lzh2018","apply...........part3A");
+                CMDCenter.getInstance().cancelApply(new CMDCenter.OnCommandSendCallback() {
+                    @Override
+                    public void onSendFail() {
+                        Toast.makeText(PlayActivity.this, getString(R.string.cancel_apply_failed), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }
     }
@@ -207,20 +273,39 @@ public class PlayActivity extends AppCompatActivity{
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.e("lzh2017","KeyCode="+keyCode);
-//        Log.e("lzh2017","KeyEvent event="+event);
+
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
+                    if (mSwitchCameraTimes % 2 == 0) {
+                        CMDCenter.getInstance().moveLeft();
+                    } else {
+                        CMDCenter.getInstance().moveForward();
+                    }
+
                 setActivatedView(mBtnLeft);
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
+                if (mSwitchCameraTimes % 2 == 0) {
+                    CMDCenter.getInstance().moveRight();
+                } else {
+                    CMDCenter.getInstance().moveBackward();
+                }
                 setActivatedView(mBtnRight);
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:
-
+                if (mSwitchCameraTimes % 2 == 0) {
+                    CMDCenter.getInstance().moveBackward();
+                } else {
+                    CMDCenter.getInstance().moveLeft();
+                }
                 setActivatedView(mBtnUp);
                 break;
             case KeyEvent.KEYCODE_DPAD_DOWN:
-
+                if (mSwitchCameraTimes % 2 == 0) {
+                    CMDCenter.getInstance().moveForward();
+                } else {
+                    CMDCenter.getInstance().moveRight();
+                }
                 setActivatedView(mBtnDown);
                 break;
             case KeyEvent.KEYCODE_BUTTON_C:
@@ -244,6 +329,7 @@ public class PlayActivity extends AppCompatActivity{
             @Override
             public void run() {
                 btn.setActivated(false);
+                CMDCenter.getInstance().stopMove();
             }
         },300);
     }
@@ -438,100 +524,535 @@ public class PlayActivity extends AppCompatActivity{
                 // 只接收当前房间，当前主播发来的消息
                 if (CMDCenter.getInstance().isCommandFromAnchor(userID) && mRoom.roomID.equals(roomID)) {
                     if (!TextUtils.isEmpty(content)) {
-                        //handleRecvCustomCMD(content);
+                        handleRecvCustomCMD(content);
                     }
                 }
             }
         });
     }
 
-//    /**
-//     * 处理来自服务器的消息.
-//     */
-//    private void handleRecvCustomCMD(String msg) {
-//        CMDCenter.getInstance().printLog("[handleRecvCustomCMD], msg: " + msg);
-//
-//        Map<String, Object> map = getMapFromJson(msg);
-//        if (map == null) {
-//            CMDCenter.getInstance().printLog("[handleRecvCustomCMD] error, map is null");
-//            return;
+    private void sendCMDFail(String cmd) {
+        Toast.makeText(PlayActivity.this, getString(R.string.send_cmd_error), Toast.LENGTH_SHORT).show();
+        reinitGame();
+    }
+
+    /**
+     * 处理来自服务器的消息.
+     */
+    private void handleRecvCustomCMD(String msg) {
+        CMDCenter.getInstance().printLog("[handleRecvCustomCMD], msg: " + msg);
+
+        Map<String, Object> map = getMapFromJson(msg);
+        if (map == null) {
+            CMDCenter.getInstance().printLog("[handleRecvCustomCMD] error, map is null");
+            return;
+        }
+
+        int cmd = ((Double) map.get(CMDKey.CMD)).intValue();
+        int rspSeq = ((Double) map.get(CMDKey.SEQ)).intValue();
+        String sessionID = (String) map.get(CMDKey.SESSION_ID);
+
+        Map<String, Object> data = (Map<String, Object>) map.get("data");
+        if (data == null){
+            CMDCenter.getInstance().printLog("[handleRecvCustomCMD] error, data is null");
+            return;
+        }
+
+        switch (cmd) {
+            case CMDCenter.CMD_APPLY_RESULT:
+                handleApplyResult(rspSeq, data);
+                break;
+            case CMDCenter.CMD_REPLY_CANCEL_APPLY:
+                handleReplyCancelApply(rspSeq, sessionID, data);
+                break;
+            case CMDCenter.CMD_GAME_READY:
+                handleGameReady(rspSeq, sessionID, data);
+                break;
+            case CMDCenter.CMD_CONFIRM_BOARD_REPLY:
+                handleConfirmBoardReply(rspSeq, sessionID, data);
+                break;
+            case CMDCenter.CMD_GAME_RESULT:
+                handleGameResult(rspSeq, sessionID, data);
+                break;
+            case CMDCenter.CMD_RESPONSE_GAME_INFO:
+                handleResponseGameInfo(rspSeq, data);
+                break;
+            case CMDCenter.CMD_GAME_INFO_UPDATE:
+                handleGameInfoUpdate(data);
+                break;
+        }
+    }
+
+    /**
+     * 房间人数更新.
+     */
+    private void handleGameInfoUpdate(Map<String, Object> data) {
+        CMDCenter.getInstance().printLog("[handleGameInfoUpdate] enter");
+
+        showGameInfo(data);
+    }
+
+    /**
+     * 处理服务器返回的"预约结果".
+     */
+    private void handleApplyResult(int rspSeq, Map<String, Object> data) {
+        CMDCenter.getInstance().printLog("[handleApplyResult] enter");
+
+        if (!checkSeq(rspSeq)){
+            return;
+        }
+
+        if (!checkIsMyMsg((LinkedTreeMap<String, String>) data.get(CMDKey.PLAYER))){
+            return;
+        }
+
+        CMDCenter.getInstance().printLog("[handleApplyResult], currentSate: " + CMDCenter.getInstance().getCurrentBoardSate());
+        if (CMDCenter.getInstance().getCurrentBoardSate() != BoardState.Applying) {
+            CMDCenter.getInstance().printLog("[handleApplyResult] error, state mismatch");
+            return;
+        }
+
+        int result = ((Double) data.get(CMDKey.RESULT)).intValue();
+        if (result == 0) {
+            String sessionID = (String) data.get(CMDKey.SESSION_ID);
+            if(TextUtils.isEmpty(sessionID)){
+                CMDCenter.getInstance().printLog("[handleApplyResult] error, sessionID is null");
+                return;
+            }
+
+            CMDCenter.getInstance().setSessionID(sessionID);
+            CMDCenter.getInstance().setCurrentBoardSate(BoardState.WaitingBoard);
+
+            int myPostion = ((Double) data.get(CMDKey.INDEX)).intValue();
+            if (!mContinueToPlay){
+                String text = getString(R.string.cancel_apply) + "\n" + getString(R.string.my_position, (myPostion + ""));
+                showApplyBtn(true, R.mipmap.cancel, text, getString(R.string.cancel_apply).length());
+            }
+        } else {
+            Toast.makeText(PlayActivity.this, getString(R.string.apply_faile), Toast.LENGTH_SHORT).show();
+            reinitGame();
+        }
+    }
+
+    private void handleReplyCancelApply(final int rspSeq, String sessionID, Map<String, Object> data){
+        CMDCenter.getInstance().printLog("[handleReplyCancelApply] enter");
+
+        if (!checkSeq(rspSeq)){
+            return;
+        }
+
+        if (!checkSessionID(sessionID)){
+            return;
+        }
+
+        CMDCenter.getInstance().printLog("[handleReplyCancelApply], currentSate: " + CMDCenter.getInstance().getCurrentBoardSate());
+
+        if (CMDCenter.getInstance().getCurrentBoardSate() != BoardState.WaitingBoard){
+            CMDCenter.getInstance().printLog("[handleReplyCancelApply] error, state mismatch");
+            return;
+        }
+
+        Toast.makeText(this, getString(R.string.cancel_apply_success), Toast.LENGTH_SHORT).show();
+
+        reinitGame();
+    }
+
+    /**
+     * 处理服务器返回的"准备游戏"的指令.
+     */
+    private void handleGameReady(final int rspSeq, String sessionID, Map<String, Object> data) {
+        CMDCenter.getInstance().printLog("[handleGameReady] enter");
+
+        if (!checkSessionID(sessionID)){
+            return;
+        }
+
+        if (!checkIsMyMsg((LinkedTreeMap<String, String>) data.get(CMDKey.PLAYER))){
+            return;
+        }
+
+        CMDCenter.getInstance().printLog("[handleGameReady], currentSate: " + CMDCenter.getInstance().getCurrentBoardSate());
+
+        if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Applying) {
+            CMDCenter.getInstance().printLog("[handleGameReady], fix state");
+            CMDCenter.getInstance().setCurrentBoardSate(BoardState.WaitingBoard);
+        }
+
+        if (CMDCenter.getInstance().getCurrentBoardSate() != BoardState.WaitingBoard) {
+            CMDCenter.getInstance().printLog("[handleGameReady] error, state mismatch");
+            return;
+        }
+
+//        if (mCountDownTimer != null){
+//            mCountDownTimer.cancel();
 //        }
-//
-//        int cmd = ((Double) map.get(CMDKey.CMD)).intValue();
-//        int rspSeq = ((Double) map.get(CMDKey.SEQ)).intValue();
-//        String sessionID = (String) map.get(CMDKey.SESSION_ID);
-//
-//        Map<String, Object> data = (Map<String, Object>) map.get("data");
-//        if (data == null){
-//            CMDCenter.getInstance().printLog("[handleRecvCustomCMD] error, data is null");
-//            return;
-//        }
-//
-//        switch (cmd) {
-//            case CMDCenter.CMD_APPLY_RESULT:
-//                handleApplyResult(rspSeq, data);
-//                break;
-//            case CMDCenter.CMD_REPLY_CANCEL_APPLY:
-//                handleReplyCancelApply(rspSeq, sessionID, data);
-//                break;
-//            case CMDCenter.CMD_GAME_READY:
-//                handleGameReady(rspSeq, sessionID, data);
-//                break;
-//            case CMDCenter.CMD_CONFIRM_BOARD_REPLY:
-//                handleConfirmBoardReply(rspSeq, sessionID, data);
-//                break;
-//            case CMDCenter.CMD_GAME_RESULT:
-//                handleGameResult(rspSeq, sessionID, data);
-//                break;
-//            case CMDCenter.CMD_RESPONSE_GAME_INFO:
-//                handleResponseGameInfo(rspSeq, data);
-//                break;
-//            case CMDCenter.CMD_GAME_INFO_UPDATE:
-//                handleGameInfoUpdate(data);
-//                break;
-//        }
-//    }
-//
-//    /**
-//     * 处理服务器返回的"预约结果".
-//     */
-//    private void handleApplyResult(int rspSeq, Map<String, Object> data) {
-//        CMDCenter.getInstance().printLog("[handleApplyResult] enter");
-//
-//        if (!checkSeq(rspSeq)){
-//            return;
-//        }
-//
-//        if (!checkIsMyMsg((LinkedTreeMap<String, String>) data.get(CMDKey.PLAYER))){
-//            return;
-//        }
-//
-//        CMDCenter.getInstance().printLog("[handleApplyResult], currentSate: " + CMDCenter.getInstance().getCurrentBoardSate());
-//        if (CMDCenter.getInstance().getCurrentBoardSate() != BoardState.Applying) {
-//            CMDCenter.getInstance().printLog("[handleApplyResult] error, state mismatch");
-//            return;
-//        }
-//
-//        int result = ((Double) data.get(CMDKey.RESULT)).intValue();
-//        if (result == 0) {
-//            String sessionID = (String) data.get(CMDKey.SESSION_ID);
-//            if(TextUtils.isEmpty(sessionID)){
-//                CMDCenter.getInstance().printLog("[handleApplyResult] error, sessionID is null");
-//                return;
+
+        // 通知服务器，客户端已经收到GameReady指令
+        CMDCenter.getInstance().replyRecvGameReady(rspSeq);
+
+        // 继续玩，直接确认上机
+        if (mContinueToPlay){
+            mContinueToPlay = false;
+            CMDCenter.getInstance().printLog("[handleGameReady], continue to play");
+            CMDCenter.getInstance().getEntrptedConfig();
+            return;
+        }
+
+        if (mDialogConfirmGameReady != null && mDialogConfirmGameReady.isShowing()) {
+            CMDCenter.getInstance().printLog("[handleGameReady], confirm dialog is showing");
+            return;
+        }
+
+        mDialogConfirmGameReady = new AlertDialog.Builder(this).setMessage(getString(R.string.confirm_board, "10")).setTitle("提示").setPositiveButton("上机", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                mCountDownTimer.cancel();
+
+                // 按钮不能再点击
+//                mIBtnApply.setEnabled(false);
+                CMDCenter.getInstance().getEntrptedConfig();
+            }
+        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                mCountDownTimer.cancel();
+
+                CMDCenter.getInstance().confirmBoard(false, null, System.currentTimeMillis(), new CMDCenter.OnCommandSendCallback() {
+                    @Override
+                    public void onSendFail() {
+                        sendCMDFail("ConfirmBoard(false)");
+                    }
+                });
+
+                reinitGame();
+            }
+        }).create();
+        mDialogConfirmGameReady.setCanceledOnTouchOutside(false);
+        mDialogConfirmGameReady.show();
+
+        mCountDownTimer = new CountDownTimer(10000, 500) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingBoard) {
+                    mDialogConfirmGameReady.setMessage(getString(R.string.confirm_board, ((millisUntilFinished / 1000) + 1) + ""));
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingBoard) {
+                    mDialogConfirmGameReady.dismiss();
+                    reinitGame();
+                }
+            }
+        }.start();
+    }
+
+    /**
+     * 处理服务器返回的"收到上机选择"指令.
+     */
+    private void handleConfirmBoardReply(int rspSeq, String sessionID, Map<String, Object> data) {
+        CMDCenter.getInstance().printLog("[handleConfirmBoardReply] enter");
+
+        if (!checkSeq(rspSeq)){
+            return;
+        }
+
+        if (!checkSessionID(sessionID)) {
+            return;
+        }
+
+        CMDCenter.getInstance().printLog("[handleConfirmBoardReply], currentSate: " + CMDCenter.getInstance().getCurrentBoardSate());
+
+        if (CMDCenter.getInstance().getCurrentBoardSate() != BoardState.ConfirmBoard) {
+            CMDCenter.getInstance().printLog("[handleConfirmBoardReply] error, state mismatch");
+            return;
+        }
+
+        int result = ((Double) data.get(CMDKey.RESULT)).intValue();
+        if (result != 0){
+            CMDCenter.getInstance().printLog("[handleConfirmBoardReply] error, confirm board fail");
+            Toast.makeText(this, "上机校验失败", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (mCountDownTimer != null){
+            mCountDownTimer.cancel();
+        }
+
+        if (CMDCenter.getInstance().isConfirmBoard()) {
+
+            CMDCenter.getInstance().setCurrentBoardSate(BoardState.Boarding);
+            startGame();
+
+            mCountDownTimer = new CountDownTimer(CMDCenter.getInstance().getUserBoardingTime(), 500) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Boarding) {
+                        mTvBoardingCountDown.setVisibility(View.VISIBLE);
+                        mTvBoardingCountDown.setText(((millisUntilFinished / 1000) + 1) + "s");
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Boarding) {
+//                        enbleControl(false);
+                        CMDCenter.getInstance().grub();
+                    }
+                }
+            }.start();
+        }
+    }
+
+    /**
+     * 处理服务器返回的"游戏结果".
+     */
+    private void handleGameResult(final int rspSeq, String sessionID, Map<String, Object> data) {
+        CMDCenter.getInstance().printLog("[handleGameResult] enter");
+
+        if (!checkSessionID(sessionID)){
+            return;
+        }
+
+        if (!checkIsMyMsg((LinkedTreeMap<String, String>) data.get(CMDKey.PLAYER))){
+            return;
+        }
+
+        CMDCenter.getInstance().printLog("[handleGameResult], currentSate: " + CMDCenter.getInstance().getCurrentBoardSate());
+
+        if (CMDCenter.getInstance().getCurrentBoardSate() != BoardState.WaitingGameResult) {
+            // 服务器可能没有收到客户端发送的"确认收到游戏结果"消息，会继续发送"游戏结果"到客户端
+            CMDCenter.getInstance().confirmGameResult(rspSeq, mContinueToPlay);
+
+            CMDCenter.getInstance().printLog("[handleGameResult], remain handleGameResult from Server");
+            return;
+        }
+
+        if (mDialogGameResult != null && mDialogGameResult.isVisible()) {
+            CMDCenter.getInstance().printLog("[handleGameResult], confirm dialog is visible");
+            return;
+        }
+
+        if (mCountDownTimer != null){
+            mCountDownTimer.cancel();
+        }
+
+        int result = ((Double) data.get(CMDKey.RESULT)).intValue();
+        String message;
+        if (result == 1) {
+            message = getString(R.string.grub_successfully);
+        } else {
+            message = getString(R.string.grub_failed);
+        }
+
+        mDialogGameResult = new GameResultDialog();
+        mDialogGameResult.setTitle(message);
+        mDialogGameResult.setGameResultCallback(new GameResultDialog.OnGameResultCallback() {
+            @Override
+            public void onGiveUpPlaying() {
+                mCountDownTimer.cancel();
+                mDialogGameResult.dismiss();
+
+                CMDCenter.getInstance().confirmGameResult(rspSeq, false);
+                reinitGame();
+            }
+
+            @Override
+            public void onContinueToPlay() {
+                mCountDownTimer.cancel();
+                mDialogGameResult.dismiss();
+
+
+                CMDCenter.getInstance().confirmGameResult(rspSeq, true);
+                continueToPlay();
+            }
+        });
+
+        mDialogGameResult.setCancelable(false);
+        mDialogGameResult.show(getFragmentManager(), "GameResultDialog");
+
+        mCountDownTimer = new CountDownTimer(10000, 500) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingGameResult) {
+                    mDialogGameResult.setContinueText(getString(R.string.continue_to_play, ((millisUntilFinished / 1000) + 1) + ""));
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingGameResult) {
+                    mDialogGameResult.dismiss();
+                    reinitGame();
+                }
+            }
+        }.start();
+    }
+
+    /**
+     * 处理服务器返回的"游戏信息".
+     */
+    private void handleResponseGameInfo(int rspSeq, Map<String, Object> data){
+        CMDCenter.getInstance().printLog("[handleResponseGameInfo] enter");
+
+        if (!checkSeq(rspSeq)){
+            return;
+        }
+
+        int gameTime = ((Double) data.get(CMDKey.GAME_TIME)).intValue();
+        CMDCenter.getInstance().setUserBoardingTime(gameTime);
+
+        showGameInfo(data);
+    }
+
+    private void startGame() {
+        btnApply.setVisibility(View.INVISIBLE);
+    }
+
+    private void continueToPlay(){
+        mContinueToPlay = true;
+        CMDCenter.getInstance().continueToPlay();
+        showControlPannel(false);
+
+        if (mUsersInQueue == 0){
+            String text = getString(R.string.start_game);
+            showApplyBtn(false, R.mipmap.ic_room1, text, getString(R.string.start_game).length());
+        }else {
+            String text = getString(R.string.apply_grub) + "\n" + getString(R.string.current_queue_count, mUsersInQueue + "");
+            showApplyBtn(false, R.mipmap.ic_room2, text, getString(R.string.apply_grub).length());
+        }
+
+        CMDCenter.getInstance().apply(true, new CMDCenter.OnCommandSendCallback() {
+            @Override
+            public void onSendFail() {
+                sendCMDFail("Apply");
+            }
+        });
+    }
+
+
+    private void showGameInfo(Map<String, Object> data){
+
+        int total = ((Double) data.get(CMDKey.TOTAL)).intValue();
+//        mTvRoomUserCount.setText(getString(R.string.room_user_count, total + ""));
+
+        ArrayList queueList = (ArrayList) data.get(CMDKey.QUEUE);
+        int myPosition = 0;
+        if (queueList != null){
+            mUsersInQueue = queueList.size();
+//            for (int index = 0, size = queueList.size(); index < size; index++) {
+//                if (PreferenceUtil.getInstance().getUserID().equals(((Map<String, Object>) queueList.get(index)).get(CMDKey.USER_ID))) {
+//                    myPosition = index;
+//                    break;
+//                }
 //            }
-//
-//            CMDCenter.getInstance().setSessionID(sessionID);
-//            CMDCenter.getInstance().setCurrentBoardSate(BoardState.WaitingBoard);
-//
-//            int myPostion = ((Double) data.get(CMDKey.INDEX)).intValue();
-//            if (!mContinueToPlay){
-//                String text = getString(R.string.cancel_apply) + "\n" + getString(R.string.my_position, (myPostion + ""));
-//                showApplyBtn(true, R.mipmap.cancel, text, getString(R.string.cancel_apply).length());
-//            }
-//        } else {
-//            Toast.makeText(PlayActivity.this, getString(R.string.apply_faile), Toast.LENGTH_SHORT).show();
-//            reinitGame();
+        }
+
+        if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Ended ||
+                CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Applying){
+
+            boolean enable = true;
+            if ( CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Applying){
+                enable = false;
+            }
+
+            if (mUsersInQueue == 0){
+                String text = getString(R.string.start_game);
+                showApplyBtn(enable, R.mipmap.ic_room1, text, text.length());
+            }else {
+                String text = getString(R.string.apply_grub) + "\n" + getString(R.string.current_queue_count, mUsersInQueue + "");
+                showApplyBtn(enable, R.mipmap.ic_room2, text, getString(R.string.apply_grub).length());
+            }
+
+        }else if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingBoard
+                || CMDCenter.getInstance().getCurrentBoardSate() == BoardState.ConfirmBoard) {
+
+            boolean enable = true;
+            if ( CMDCenter.getInstance().getCurrentBoardSate() == BoardState.ConfirmBoard){
+                enable = false;
+            }
+
+            String text = getString(R.string.cancel_apply) + "\n" + getString(R.string.my_position, myPosition + "");
+            showApplyBtn(enable, R.mipmap.cancel, text, getString(R.string.cancel_apply).length());
+        }
+    }
+
+
+    private void reinitGame() {
+        mContinueToPlay = false;
+        CMDCenter.getInstance().reinitGame();
+        showControlPannel(false);
+
+        if (mUsersInQueue == 0){
+            String text = getString(R.string.start_game);
+            showApplyBtn(true, R.mipmap.ic_room1, text, getString(R.string.start_game).length());
+        }else {
+            String text = getString(R.string.apply_grub) + "\n" + getString(R.string.current_queue_count, mUsersInQueue + "");
+            showApplyBtn(true, R.mipmap.ic_room2, text, getString(R.string.apply_grub).length());
+        }
+    }
+
+    private boolean checkSeq(int rspSeq){
+        if (CMDCenter.getInstance().getCurrentSeq() != rspSeq) {
+            CMDCenter.getInstance().printLog("Error, seq mismatch, rspSeq: " + rspSeq + ", currentSeq: " + CMDCenter.getInstance().getCurrentSeq());
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showApplyBtn(boolean enable, int background, String text, int mainTextLen){
+
+    }
+
+    //控制按钮控制台状态
+    private void showControlPannel(boolean enable){
+
+    }
+
+    private boolean checkSessionID(String sessionID){
+        if (TextUtils.isEmpty(sessionID) || !sessionID.equals(CMDCenter.getInstance().getSessionID())){
+            CMDCenter.getInstance().printLog("Error, sessionID not equal, my sessionID: " + CMDCenter.getInstance().getSessionID() + ", sessionID: "
+                    + sessionID);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkIsMyMsg(LinkedTreeMap<String, String> mapPlayer){
+        if (mapPlayer == null){
+            CMDCenter.getInstance().printLog("Error, player is null");
+            return false;
+        }
+
+//        if (!PreferenceUtil.getInstance().getUserID().equals(mapPlayer.get(CMDKey.USER_ID))){
+//            CMDCenter.getInstance().printLog("Error, msg is not mine, my UserID: "
+//                    + PreferenceUtil.getInstance().getUserID() + ", player UserID: " + mapPlayer.get(CMDKey.USER_ID));
+//            return false;
 //        }
-//    }
+
+        return true;
+    }
+
+    private Map<String, Object> getMapFromJson(String json) {
+        if (TextUtils.isEmpty(json)) {
+            return null;
+        }
+
+        try{
+            Gson gson = new Gson();
+            Map<String, Object> map = new HashMap<>();
+            map = gson.fromJson(json, map.getClass());
+            return map;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 }

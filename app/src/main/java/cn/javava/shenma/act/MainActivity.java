@@ -92,11 +92,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(!Session.login&&loginFragment==null){
-            loginFragment = ScanLoginFragment.getInstance("none");
-            loginFragment.setCancelable(false);
-            loginFragment.show(getFragmentManager(), "GameResultDialog");
-        }
+//        if(!Session.login&&loginFragment==null){
+//            loginFragment = ScanLoginFragment.getInstance("none");
+//            loginFragment.setCancelable(false);
+//            loginFragment.show(getFragmentManager(), "GameResultDialog");
+//        }
         return super.onKeyDown(keyCode, event);
     }
 

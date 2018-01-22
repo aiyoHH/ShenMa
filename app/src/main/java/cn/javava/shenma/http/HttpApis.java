@@ -31,7 +31,7 @@ public interface HttpApis {
     Observable<ResponseBody> obtainUserList();
 
     @GET("/users/{userid}")
-    Observable<ResponseBody> obtainUserInfo(@Field("userid") String userId);
+    Observable<ResponseBody> obtainUserInfo(@Path("userid") String userId);
 
     @GET("/users/me")
     Observable<ResponseBody> obtainUserMe();
@@ -46,7 +46,7 @@ public interface HttpApis {
     Observable<ResponseBody> obtainQRCodePay();
 
     @GET("/pay/trades/{tradeNo}")
-    Observable<ResponseBody> checkResultPay(@Field("tradeNo") String tradeNo);
+    Observable<ResponseBody> checkResultPay(@Path("tradeNo") String tradeNo);
 
     @GET("/authc/scanQRCodeComplete")
     Observable<ResponseBody> scanQRCodeLogin();

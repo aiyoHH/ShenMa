@@ -298,7 +298,7 @@ public class CMDCenter {
         mSessionID = sessionID;
     }
 
-    String getSessionID(){
+    public String getSessionID(){
        return mSessionID;
     }
 
