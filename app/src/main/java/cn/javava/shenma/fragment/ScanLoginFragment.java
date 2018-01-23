@@ -1,8 +1,6 @@
 package cn.javava.shenma.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,13 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import cn.javava.shenma.R;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.IJsApi;
 import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.interf.OnLoadingListener;
+import wendu.dsbridge.DWebView;
 
 /**
  * Description {des}
@@ -46,15 +48,22 @@ public class ScanLoginFragment extends DialogFragment implements OnLoadingListen
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.DialogFragmentStyle);
     }
 
-    @SuppressLint("NewApi")
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View view=inflater.inflate(R.layout.fragment_scan_login,container);
+
         webView=view.findViewById(R.id.webview_login);
-        webView.addJavascriptInterface(new IJsApi(getContext(),this),"android");
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setSupportMultipleWindows(true);
+        webView.addJavascriptInterface(new IJsApi(this),"android");
         webView.clearCache(true);
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient());
         webView.setBackgroundColor(0);
         webView.loadUrl(loginUrl);
 

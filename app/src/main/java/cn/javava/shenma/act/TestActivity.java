@@ -1,6 +1,7 @@
 package cn.javava.shenma.act;
 
 import android.text.method.ScrollingMovementMethod;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +13,8 @@ import butterknife.OnClick;
 import cn.javava.shenma.R;
 import cn.javava.shenma.base.BaseActivity;
 import cn.javava.shenma.fragment.ScanLoginFragment;
+import cn.javava.shenma.interf.IJsApi;
+import cn.javava.shenma.interf.OnLoadingListener;
 import cn.javava.shenma.motordrv.YtMainBoard;
 import cn.javava.shenma.motordrv.clsConst;
 import cn.javava.shenma.motordrv.clsErrorConst;
@@ -19,17 +22,22 @@ import cn.javava.shenma.motordrv.clsToolBox;
 import cn.javava.shenma.motordrv.para.clsTransforPara;
 import cn.javava.shenma.motordrv.para.clsTransforPoll;
 import cn.javava.shenma.utils.UIUtils;
+import wendu.dsbridge.DWebView;
 
 /**
  * Created by aiyoRui on 2018/1/10.
  */
 
-public class TestActivity extends BaseActivity {
+public class TestActivity extends BaseActivity implements OnLoadingListener {
 
     @BindView(R.id.txt_data)
     TextView txt_data;
+    @BindView(R.id.test_webview)
+    DWebView webView;
 
     int err_count=0;
+    private static final String loginUrl="https://open.weixin.qq.com/connect/qrconnect?appid=wx7b14057ca00d4350&redirect_uri=http%3A%2F%2Fauthc.javava.cn%2FscanQRCodeComplete&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect";
+
 
     @Override
     protected int initLayout() {
@@ -39,6 +47,11 @@ public class TestActivity extends BaseActivity {
     @Override
     protected void initEventAndData() {
         txt_data.setMovementMethod(ScrollingMovementMethod.getInstance());
+
+        webView.setJavascriptInterface(new IJsApi(this));
+        webView.clearCache(true);
+        //webView.setBackgroundColor(0);
+        webView.loadUrl(loginUrl);
 
     }
 
@@ -119,4 +132,8 @@ public class TestActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onFinish(String accessToken) {
+
+    }
 }

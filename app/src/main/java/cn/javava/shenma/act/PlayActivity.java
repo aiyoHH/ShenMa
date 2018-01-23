@@ -164,23 +164,23 @@ public class PlayActivity extends AppCompatActivity{
 
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        if (mIsAppInBackground){
-//            mIsAppInBackground = false;
-//
-//            int currentShowIndex = mSwitchCameraTimes % 2;
-//            if (currentShowIndex == 0){
-//                mListStream.get(0).playStream();
-//                mListStream.get(1).playStream();
-//            }else {
-//                mListStream.get(0).playStream();
-//                mListStream.get(1).playStream();
-//            }
-//        }
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mIsAppInBackground){
+            mIsAppInBackground = false;
+
+            int currentShowIndex = mSwitchCameraTimes % 2;
+            if (currentShowIndex == 0){
+                mListStream.get(0).playStream();
+                mListStream.get(1).playStream();
+            }else {
+                mListStream.get(0).playStream();
+                mListStream.get(1).playStream();
+            }
+        }
+    }
 
     @Override
     protected void onStop() {

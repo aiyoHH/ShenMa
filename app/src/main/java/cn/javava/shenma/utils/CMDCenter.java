@@ -13,6 +13,7 @@ import com.zego.zegoliveroom.ZegoLiveRoom;
 import com.zego.zegoliveroom.callback.IZegoCustomCommandCallback;
 import com.zego.zegoliveroom.entity.ZegoUser;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -339,12 +340,16 @@ public class CMDCenter {
 
             @Override
             public void onNext(ResponseBody responseBody) {
-                CMDCenter.getInstance().confirmBoard(true, responseBody.toString(), timeStamp, new CMDCenter.OnCommandSendCallback() {
-                    @Override
-                    public void onSendFail() {
-                        printLog("[CMDCenter_getEntrptedConfig] error, confirm board fail");
-                    }
-                });
+                try {
+                    CMDCenter.getInstance().confirmBoard(true, responseBody.string(), timeStamp, new OnCommandSendCallback() {
+                        @Override
+                        public void onSendFail() {
+                            printLog("[CMDCenter_getEntrptedConfig] error, confirm board fail");
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         },url);
 

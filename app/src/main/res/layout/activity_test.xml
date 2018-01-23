@@ -25,4 +25,11 @@
         android:textSize="24sp"
         android:textColor="@android:color/black"/>
 
+
+    <wendu.dsbridge.DWebView
+        android:id="@+id/test_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
 </LinearLayout>
