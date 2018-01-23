@@ -22,8 +22,12 @@ import java.util.Map;
 import cn.javava.shenma.R;
 import cn.javava.shenma.app.App;
 import cn.javava.shenma.app.ZegoApiManager;
+import cn.javava.shenma.http.HttpApis;
+import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.interf.BoardState;
 import cn.javava.shenma.interf.CMDKey;
+import okhttp3.ResponseBody;
+import rx.Subscriber;
 
 /**
  * Copyright © 2017 Zego. All rights reserved.
@@ -315,32 +319,35 @@ public class CMDCenter {
      */
     public void getEntrptedConfig(){
 
-//        RequestQueue mQueue = Volley.newRequestQueue(ZegoApplication.sApplicationContext);
-//
-//        final long timeStamp = System.currentTimeMillis();
-//        String appID = ZegoApiManager.getInstance().getAppID() + "";
-//        String url = String.format("http://wsliveroom%s-api.zego.im:8181/pay?" +
-//                        "app_id=%s&id_name=%s&session_id=%s&confirm=1&time_stamp=%s&item_type=123&item_price=200"
-//                , appID, appID, PreferenceUtil.getInstance().getUserID(), mSessionID, timeStamp);
-//
-//        StringRequest request = new StringRequest(url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        CMDCenter.getInstance().confirmBoard(true, response, timeStamp, new CMDCenter.OnCommandSendCallback() {
-//                            @Override
-//                            public void onSendFail() {
-//                                printLog("[CMDCenter_getEntrptedConfig] error, confirm board fail");
-//                            }
-//                        });
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                printLog("[CMDCenter_getEntrptedConfig] volley response error, " + error.getMessage());
-//            }
-//        });
-//        mQueue.add(request);
+
+        final long timeStamp = System.currentTimeMillis();
+        String appID = ZegoApiManager.getInstance().getAppID() + "";
+        String url = String.format("http://wsliveroom%s-api.zego.im:8181/pay?" +
+                        "app_id=%s&id_name=%s&session_id=%s&confirm=1&time_stamp=%s&item_type=123&item_price=200"
+                , appID, appID, PreferenceUtil.getInstance().getUserID(), mSessionID, timeStamp);
+
+        HttpHelper.getInstance().getEntrptedConfig(new Subscriber<ResponseBody>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                CMDCenter.getInstance().confirmBoard(true, responseBody.toString(), timeStamp, new CMDCenter.OnCommandSendCallback() {
+                    @Override
+                    public void onSendFail() {
+                        printLog("[CMDCenter_getEntrptedConfig] error, confirm board fail");
+                    }
+                });
+            }
+        },url);
+
     }
 
     Map<String, Object> getCMDHeader(int seq, int cmd, String sessionID){

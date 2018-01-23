@@ -164,23 +164,23 @@ public class PlayActivity extends AppCompatActivity{
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (mIsAppInBackground){
-            mIsAppInBackground = false;
-
-            int currentShowIndex = mSwitchCameraTimes % 2;
-            if (currentShowIndex == 0){
-                mListStream.get(0).playStream();
-                mListStream.get(1).playStream();
-            }else {
-                mListStream.get(0).playStream();
-                mListStream.get(1).playStream();
-            }
-        }
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        if (mIsAppInBackground){
+//            mIsAppInBackground = false;
+//
+//            int currentShowIndex = mSwitchCameraTimes % 2;
+//            if (currentShowIndex == 0){
+//                mListStream.get(0).playStream();
+//                mListStream.get(1).playStream();
+//            }else {
+//                mListStream.get(0).playStream();
+//                mListStream.get(1).playStream();
+//            }
+//        }
+//    }
 
     @Override
     protected void onStop() {
@@ -208,7 +208,7 @@ public class PlayActivity extends AppCompatActivity{
 
         Log.e("lzh2018","apply...........part1");
         if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Ended) {
-            Log.e("lzh2018","apply...........part2");
+
 
             CMDCenter.getInstance().apply(false, new CMDCenter.OnCommandSendCallback() {
                 @Override
@@ -218,7 +218,7 @@ public class PlayActivity extends AppCompatActivity{
                 }
             });
         } else {
-            Log.e("lzh2018","apply...........part3");
+
             if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingBoard){
                 Log.e("lzh2018","apply...........part3A");
                 CMDCenter.getInstance().cancelApply(new CMDCenter.OnCommandSendCallback() {
@@ -265,9 +265,9 @@ public class PlayActivity extends AppCompatActivity{
         CMDCenter.getInstance().reset();
         finish();
 
-//        if (mCountDownTimer != null) {
-//            mCountDownTimer.cancel();
-//        }
+        if (mCountDownTimer != null) {
+            mCountDownTimer.cancel();
+        }
     }
 
     @Override
@@ -276,37 +276,56 @@ public class PlayActivity extends AppCompatActivity{
 
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
+                setActivatedView(mBtnLeft);
+                if(event.getAction()==MotionEvent.ACTION_DOWN){
                     if (mSwitchCameraTimes % 2 == 0) {
                         CMDCenter.getInstance().moveLeft();
                     } else {
                         CMDCenter.getInstance().moveForward();
                     }
+                }else if(event.getAction()==MotionEvent.ACTION_UP){
+                    CMDCenter.getInstance().stopMove();
+                }
 
-                setActivatedView(mBtnLeft);
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                if (mSwitchCameraTimes % 2 == 0) {
-                    CMDCenter.getInstance().moveRight();
-                } else {
-                    CMDCenter.getInstance().moveBackward();
-                }
                 setActivatedView(mBtnRight);
+                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    if (mSwitchCameraTimes % 2 == 0) {
+                        CMDCenter.getInstance().moveRight();
+                    } else {
+                        CMDCenter.getInstance().moveBackward();
+                    }
+                }else if(event.getAction()==MotionEvent.ACTION_UP){
+                    CMDCenter.getInstance().stopMove();
+                }
+
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:
-                if (mSwitchCameraTimes % 2 == 0) {
-                    CMDCenter.getInstance().moveBackward();
-                } else {
-                    CMDCenter.getInstance().moveLeft();
-                }
                 setActivatedView(mBtnUp);
+                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    if (mSwitchCameraTimes % 2 == 0) {
+                        CMDCenter.getInstance().moveBackward();
+                    } else {
+                        CMDCenter.getInstance().moveLeft();
+                    }
+                }else if(event.getAction()==MotionEvent.ACTION_UP){
+                    CMDCenter.getInstance().stopMove();
+                }
+
                 break;
             case KeyEvent.KEYCODE_DPAD_DOWN:
-                if (mSwitchCameraTimes % 2 == 0) {
-                    CMDCenter.getInstance().moveForward();
-                } else {
-                    CMDCenter.getInstance().moveRight();
-                }
                 setActivatedView(mBtnDown);
+                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    if (mSwitchCameraTimes % 2 == 0) {
+                        CMDCenter.getInstance().moveForward();
+                    } else {
+                        CMDCenter.getInstance().moveRight();
+                    }
+                }else if(event.getAction()==MotionEvent.ACTION_UP){
+                    CMDCenter.getInstance().stopMove();
+                }
+
                 break;
             case KeyEvent.KEYCODE_BUTTON_C:
 
@@ -329,7 +348,7 @@ public class PlayActivity extends AppCompatActivity{
             @Override
             public void run() {
                 btn.setActivated(false);
-                CMDCenter.getInstance().stopMove();
+
             }
         },300);
     }

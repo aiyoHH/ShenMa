@@ -12,6 +12,8 @@ public interface ApiInterface {
 
     void apiTest(Subscriber<RoomO> s,String appId);
 
+    void getEntrptedConfig(Subscriber<ResponseBody> subscriber,String url);
+
     void obtainUserList(Subscriber<ResponseBody> subscriber);
 
     void obtainUserInfo(Subscriber<ResponseBody> subscriber,String userId);

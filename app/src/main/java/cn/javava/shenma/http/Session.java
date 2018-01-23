@@ -11,6 +11,7 @@ public class Session {
     public static String userId;
     public static String wechatId;
     public static String avatar;
+    public static String accessToken;
     public static String nickName;
     public static int point;
     public static int cash;

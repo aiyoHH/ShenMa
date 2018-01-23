@@ -50,4 +50,7 @@ public interface HttpApis {
 
     @GET("/authc/scanQRCodeComplete")
     Observable<ResponseBody> scanQRCodeLogin();
+
+    @GET
+    Observable<ResponseBody> getEntrptedConfig(@Url String url);
 }

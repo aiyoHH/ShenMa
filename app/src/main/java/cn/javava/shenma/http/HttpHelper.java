@@ -88,6 +88,11 @@ public class HttpHelper implements ApiInterface {
     }
 
     @Override
+    public void getEntrptedConfig(Subscriber<ResponseBody> subscriber,String url) {
+        toSubscribe(httpApis.getEntrptedConfig(url),subscriber);
+    }
+
+    @Override
     public void obtainUserList(Subscriber<ResponseBody> subscriber) {
         toSubscribe(httpApis.obtainUserList(),subscriber);
     }
