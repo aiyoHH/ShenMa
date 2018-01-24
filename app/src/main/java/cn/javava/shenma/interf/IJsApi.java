@@ -21,10 +21,10 @@ public class IJsApi {
     }
 
     @JavascriptInterface
-    public void loginSuccess(JSONObject jsonObject) throws JSONException {
-
+    public void loginSuccess(String jsonObject) throws JSONException {
         Log.e("lzh2017","accessToken="+jsonObject.toString());
-//        mLoadingListener.onFinish(accessToken);
+
+        mLoadingListener.onFinish(jsonObject);
     }
 
 

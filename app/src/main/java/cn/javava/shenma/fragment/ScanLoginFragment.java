@@ -1,8 +1,11 @@
 package cn.javava.shenma.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import cn.javava.shenma.R;
 import cn.javava.shenma.http.Session;
@@ -56,6 +65,25 @@ public class ScanLoginFragment extends DialogFragment implements OnLoadingListen
         View view=inflater.inflate(R.layout.fragment_scan_login,container);
 
         webView=view.findViewById(R.id.webview_login);
+//        WebSettings settings = webView.getSettings();
+//        settings.setJavaScriptEnabled(true);
+//        settings.setLoadWithOverviewMode(true);
+//        settings.setSupportMultipleWindows(true);
+//        webView.addJavascriptInterface(new IJsApi(this),"android");
+//        webView.clearCache(true);
+//        webView.setWebChromeClient(new WebChromeClient());
+//        webView.setWebViewClient(new WebViewClient());
+//        webView.setBackgroundColor(0);
+//        webView.loadUrl(loginUrl);
+
+        return view;
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        webView=view.findViewById(R.id.webview_login);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setLoadWithOverviewMode(true);
@@ -66,8 +94,14 @@ public class ScanLoginFragment extends DialogFragment implements OnLoadingListen
         webView.setWebViewClient(new WebViewClient());
         webView.setBackgroundColor(0);
         webView.loadUrl(loginUrl);
-
-        return view;
+        webView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.e("lzh2017","webView  keyCode="+keyCode);
+                if(keyCode==KeyEvent.KEYCODE_BACK)dismiss();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -80,9 +114,21 @@ public class ScanLoginFragment extends DialogFragment implements OnLoadingListen
         window.setAttributes(attributes);
     }
 
+
     @Override
     public void onFinish(String accessToken) {
-        Session.accessToken=accessToken;
-        //联网获取用户信息so on
+        try {
+
+            JSONObject jsonObject=new JSONObject(accessToken);
+            Session.openid=jsonObject.optString("openid");
+            Session.nickname=jsonObject.optString("nickname");
+            Session.headimgurl=jsonObject.optString("headimgurl");
+            Session.unionid=jsonObject.optString("unionid");
+            Session.login=true;
+            //联网获取用户信息so on
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        this.dismiss();
     }
 }
