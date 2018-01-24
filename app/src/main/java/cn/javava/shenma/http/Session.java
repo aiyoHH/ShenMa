@@ -8,11 +8,12 @@ package cn.javava.shenma.http;
 
 public class Session {
     public static boolean login;
+    public static String openid;
     public static String userId;
-    public static String wechatId;
-    public static String avatar;
+    public static String nickname;
+    public static String headimgurl;
     public static String accessToken;
-    public static String nickName;
+    public static String unionid;
     public static int point;
     public static int cash;
 

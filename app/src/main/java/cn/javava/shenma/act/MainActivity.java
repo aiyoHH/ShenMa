@@ -1,28 +1,15 @@
 package cn.javava.shenma.act;
 
-import android.content.Intent;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import cn.javava.shenma.R;
-import cn.javava.shenma.adapter.BannerAdapter;
 import cn.javava.shenma.adapter.MainAdapter;
-import cn.javava.shenma.app.App;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.base.BaseActivity;
 import cn.javava.shenma.bean.Room;
@@ -30,12 +17,9 @@ import cn.javava.shenma.bean.RoomO;
 import cn.javava.shenma.fragment.ScanLoginFragment;
 import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
-import cn.javava.shenma.utils.ScreenUtil;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.CustomMediaPlayerAssertFolder;
-import cn.javava.shenma.view.FocusLayout;
 import cn.javava.shenma.view.SpacesItemDecoration;
-import cn.jzvd.JZUserAction;
 import cn.jzvd.JZVideoPlayer;
 import rx.Subscriber;
 
@@ -49,12 +33,17 @@ import rx.Subscriber;
  */
 public class MainActivity extends BaseActivity {
 
+    private final  static int WHEEL_TIME=1000*60;
+
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
     List<String> mBannerList;
     List<Room> mRoomList;
     MainAdapter mAdapter;
+    ScanLoginFragment loginFragment;
+    SwitchTask timer;
+
 
     @Override
     protected int initLayout() {
@@ -75,8 +64,6 @@ public class MainActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         pullInfo();
-
-
     }
 
 
@@ -86,20 +73,45 @@ public class MainActivity extends BaseActivity {
         JZVideoPlayer.releaseAllVideos();
     }
 
-
-
-    ScanLoginFragment loginFragment;
-
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if(!Session.login&&loginFragment==null){
-//            loginFragment = ScanLoginFragment.getInstance("none");
-//            loginFragment.setCancelable(false);
-//            loginFragment.show(getFragmentManager(), "GameResultDialog");
-//        }
-        return super.onKeyDown(keyCode, event);
+    protected void onResume() {
+        super.onResume();
+        Log.e("lzh2017","再次遇见.......");
+         if(timer==null){
+             timer=new SwitchTask();
+         }
+        timer.start();
+
+         if(Session.login){
+             //设置头像 nickname
+             mAdapter.notifyDataSetChanged();
+         }
     }
 
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if(!Session.login&&loginFragment==null){
+            loginFragment = ScanLoginFragment.getInstance("none");
+            loginFragment.setCancelable(false);
+            loginFragment.show(getFragmentManager(), "GameResultDialog");
+
+        }
+
+        return super.dispatchKeyEvent(event);
+    }
+
+//    @Override
+//    public void onBackPressed() {
+//
+//        Log.e("lzh2017","onBackPressedAAAA");
+//        if(loginFragment!=null){
+//            Log.e("lzh2017","onBackPressedBBB");
+//            loginFragment.dismiss();
+//            loginFragment=null;
+//        }
+//
+//    }
 
     private void pullInfo(){
 
@@ -134,6 +146,33 @@ public class MainActivity extends BaseActivity {
         };
         addSubscrebe(subscriber);
         HttpHelper.getInstance().apiTest(subscriber, String.valueOf(ZegoApiManager.getInstance().getAppID()));
+    }
+
+    private class SwitchTask implements Runnable {
+
+        @Override
+        public void run() {
+
+            Log.e("lzh2017","计时重置点.......");
+            Session.openid=null;
+            Session.nickname=null;
+            Session.headimgurl=null;
+            Session.unionid=null;
+            Session.login=false;
+            if(loginFragment!=null){
+                loginFragment.dismiss();
+                loginFragment=null;
+            }
+        }
+
+        public void start() {
+            stop();
+            UIUtils.postDelayed(this, WHEEL_TIME);
+        }
+
+        public void stop() {
+            UIUtils.removeCallbacks(this);
+        }
     }
 
 

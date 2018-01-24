@@ -160,7 +160,6 @@ public class PlayActivity extends AppCompatActivity{
 
         //从加速服务器拉流
         ZegoLiveRoom.setConfig(ZegoConstants.Config.PREFER_PLAY_ULTRA_SOURCE + "=1");
-//        ZegoLiveRoom.setConfig(ZegoConstants.Config.PREFER_PLAY_ULTRA_SOURCE + "=2");
 
     }
 
@@ -263,66 +262,72 @@ public class PlayActivity extends AppCompatActivity{
 
         mZegoLiveRoom.logoutRoom();
         CMDCenter.getInstance().reset();
-        finish();
-
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
         }
+
+        finish();
+
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.e("lzh2017","KeyCode="+keyCode);
 
-        switch (keyCode) {
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        Log.e("lzh2017","KeyEvent action===="+event.getAction());
+        Log.e("lzh2017","KeyEvent keycode===="+event.getKeyCode());
+        switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                setActivatedView(mBtnLeft);
                 if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    mBtnLeft.setActivated(true);
                     if (mSwitchCameraTimes % 2 == 0) {
                         CMDCenter.getInstance().moveLeft();
                     } else {
                         CMDCenter.getInstance().moveForward();
                     }
                 }else if(event.getAction()==MotionEvent.ACTION_UP){
+                    mBtnLeft.setActivated(false);
                     CMDCenter.getInstance().stopMove();
                 }
 
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                setActivatedView(mBtnRight);
                 if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    mBtnRight.setActivated(true);
                     if (mSwitchCameraTimes % 2 == 0) {
                         CMDCenter.getInstance().moveRight();
                     } else {
                         CMDCenter.getInstance().moveBackward();
                     }
                 }else if(event.getAction()==MotionEvent.ACTION_UP){
+                    mBtnRight.setActivated(false);
                     CMDCenter.getInstance().stopMove();
                 }
 
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:
-                setActivatedView(mBtnUp);
                 if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    mBtnUp.setActivated(true);
                     if (mSwitchCameraTimes % 2 == 0) {
                         CMDCenter.getInstance().moveBackward();
                     } else {
                         CMDCenter.getInstance().moveLeft();
                     }
                 }else if(event.getAction()==MotionEvent.ACTION_UP){
+                    mBtnUp.setActivated(false);
                     CMDCenter.getInstance().stopMove();
                 }
 
                 break;
             case KeyEvent.KEYCODE_DPAD_DOWN:
-                setActivatedView(mBtnDown);
                 if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    mBtnDown.setActivated(true);
                     if (mSwitchCameraTimes % 2 == 0) {
                         CMDCenter.getInstance().moveForward();
                     } else {
                         CMDCenter.getInstance().moveRight();
                     }
                 }else if(event.getAction()==MotionEvent.ACTION_UP){
+                    mBtnDown.setActivated(false);
                     CMDCenter.getInstance().stopMove();
                 }
 
@@ -338,20 +343,11 @@ public class PlayActivity extends AppCompatActivity{
                 logout();
                 return true;
         }
-        return super.onKeyDown(keyCode, event);
+        return super.dispatchKeyEvent(event);
     }
 
 
-    private void setActivatedView(final ImageButton btn){
-        btn.setActivated(true);
-        UIUtils.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                btn.setActivated(false);
 
-            }
-        },300);
-    }
 
     /**
      * 初始化流信息.
