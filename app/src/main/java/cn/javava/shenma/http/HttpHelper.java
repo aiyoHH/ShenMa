@@ -8,7 +8,10 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 
+import cn.javava.shenma.bean.LiveRoomsBean;
+import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.RoomO;
+import cn.javava.shenma.bean.UserInfoBean;
 import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.utils.SystemUtil;
 import okhttp3.Cache;
@@ -98,7 +101,7 @@ public class HttpHelper implements ApiInterface {
     }
 
     @Override
-    public void obtainUserInfo(Subscriber<ResponseBody> subscriber, String userId) {
+    public void obtainUserInfo(Subscriber<UserInfoBean> subscriber, String userId) {
         toSubscribe(httpApis.obtainUserInfo(userId),subscriber);
     }
 
@@ -108,12 +111,12 @@ public class HttpHelper implements ApiInterface {
     }
 
     @Override
-    public void obtainLiveList(Subscriber<ResponseBody> subscriber) {
+    public void obtainLiveList(Subscriber<LivesBean> subscriber) {
         toSubscribe(httpApis.obtainLiveList(),subscriber);
     }
 
     @Override
-    public void obtainLiveRoomList(Subscriber<ResponseBody> subscriber) {
+    public void obtainLiveRoomList(Subscriber<LiveRoomsBean> subscriber) {
         toSubscribe(httpApis.obtainLiveRoomList(),subscriber);
     }
 

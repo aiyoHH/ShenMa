@@ -1,6 +1,9 @@
 package cn.javava.shenma.http;
 
+import cn.javava.shenma.bean.LiveRoomsBean;
+import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.RoomO;
+import cn.javava.shenma.bean.UserInfoBean;
 import okhttp3.ResponseBody;
 import rx.Subscriber;
 
@@ -16,13 +19,13 @@ public interface ApiInterface {
 
     void obtainUserList(Subscriber<ResponseBody> subscriber);
 
-    void obtainUserInfo(Subscriber<ResponseBody> subscriber,String userId);
+    void obtainUserInfo(Subscriber<UserInfoBean> subscriber, String userId);
 
     void obtainUserMe(Subscriber<ResponseBody> subscriber);
 
-    void obtainLiveList(Subscriber<ResponseBody> subscriber);
+    void obtainLiveList(Subscriber<LivesBean> subscriber);
 
-    void obtainLiveRoomList(Subscriber<ResponseBody> subscriber);
+    void obtainLiveRoomList(Subscriber<LiveRoomsBean> subscriber);
 
     void obtainQRCodePay(Subscriber<ResponseBody> subscriber);
 

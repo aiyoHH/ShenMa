@@ -1,6 +1,9 @@
 package cn.javava.shenma.http;
 
+import cn.javava.shenma.bean.LiveRoomsBean;
+import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.RoomO;
+import cn.javava.shenma.bean.UserInfoBean;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
@@ -31,16 +34,16 @@ public interface HttpApis {
     Observable<ResponseBody> obtainUserList();
 
     @GET("/users/{userid}")
-    Observable<ResponseBody> obtainUserInfo(@Path("userid") String userId);
+    Observable<UserInfoBean> obtainUserInfo(@Path("userid") String userId);
 
     @GET("/users/me")
     Observable<ResponseBody> obtainUserMe();
 
     @GET("/lives")
-    Observable<ResponseBody> obtainLiveList();
+    Observable<LivesBean> obtainLiveList();
 
     @GET("/lives/rooms")
-    Observable<ResponseBody> obtainLiveRoomList();
+    Observable<LiveRoomsBean> obtainLiveRoomList();
 
     @POST("/pay/trades/generateQRCode")
     Observable<ResponseBody> obtainQRCodePay();

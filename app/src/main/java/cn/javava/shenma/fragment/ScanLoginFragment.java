@@ -65,16 +65,6 @@ public class ScanLoginFragment extends DialogFragment implements OnLoadingListen
         View view=inflater.inflate(R.layout.fragment_scan_login,container);
 
         webView=view.findViewById(R.id.webview_login);
-//        WebSettings settings = webView.getSettings();
-//        settings.setJavaScriptEnabled(true);
-//        settings.setLoadWithOverviewMode(true);
-//        settings.setSupportMultipleWindows(true);
-//        webView.addJavascriptInterface(new IJsApi(this),"android");
-//        webView.clearCache(true);
-//        webView.setWebChromeClient(new WebChromeClient());
-//        webView.setWebViewClient(new WebViewClient());
-//        webView.setBackgroundColor(0);
-//        webView.loadUrl(loginUrl);
 
         return view;
     }
