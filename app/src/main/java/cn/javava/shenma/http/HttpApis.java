@@ -24,11 +24,11 @@ public interface HttpApis {
     /**
      * api实例
      *
-     * @param appId 测试服务器
+     * @param
      * @return
      */
-    @GET("roomlist")
-    Observable<RoomO> apiTest(@Query("appid")String appId);
+    @GET()
+    Observable<RoomO> apiTest(@Url String url);
 
     @GET("/users")
     Observable<ResponseBody> obtainUserList();
@@ -43,7 +43,7 @@ public interface HttpApis {
     Observable<LivesBean> obtainLiveList();
 
     @GET("/lives/rooms")
-    Observable<LiveRoomsBean> obtainLiveRoomList();
+    Observable<LiveRoomsBean> obtainLiveRoomList(@Query("pager")int pager);
 
     @POST("/pay/trades/generateQRCode")
     Observable<ResponseBody> obtainQRCodePay();

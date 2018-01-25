@@ -87,7 +87,8 @@ public class HttpHelper implements ApiInterface {
 
     @Override
     public void apiTest(Subscriber<RoomO> s, String appId) {
-        toSubscribe(httpApis.apiTest(appId), s);
+        String url="https://liveroom3671502238-api.zego.im/demo/roomlist?appid="+appId;
+        toSubscribe(httpApis.apiTest(url), s);
     }
 
     @Override
@@ -116,8 +117,8 @@ public class HttpHelper implements ApiInterface {
     }
 
     @Override
-    public void obtainLiveRoomList(Subscriber<LiveRoomsBean> subscriber) {
-        toSubscribe(httpApis.obtainLiveRoomList(),subscriber);
+    public void obtainLiveRoomList(Subscriber<LiveRoomsBean> subscriber,int pager) {
+        toSubscribe(httpApis.obtainLiveRoomList(pager),subscriber);
     }
 
     @Override

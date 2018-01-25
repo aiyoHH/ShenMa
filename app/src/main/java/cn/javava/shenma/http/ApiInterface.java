@@ -25,7 +25,7 @@ public interface ApiInterface {
 
     void obtainLiveList(Subscriber<LivesBean> subscriber);
 
-    void obtainLiveRoomList(Subscriber<LiveRoomsBean> subscriber);
+    void obtainLiveRoomList(Subscriber<LiveRoomsBean> subscriber,int pager);
 
     void obtainQRCodePay(Subscriber<ResponseBody> subscriber);
 

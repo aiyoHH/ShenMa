@@ -12,6 +12,7 @@ import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.MainAdapter;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.base.BaseActivity;
+import cn.javava.shenma.bean.LiveRoomsBean;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.bean.RoomO;
 import cn.javava.shenma.fragment.ScanLoginFragment;
@@ -43,6 +44,7 @@ public class MainActivity extends BaseActivity {
     MainAdapter mAdapter;
     ScanLoginFragment loginFragment;
     SwitchTask timer;
+    int pager;
 
 
     @Override
@@ -64,6 +66,8 @@ public class MainActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         pullInfo();
+
+        //mAdapter.notifyItemChanged(xx,xxx);
     }
 
 
@@ -146,6 +150,42 @@ public class MainActivity extends BaseActivity {
         };
         addSubscrebe(subscriber);
         HttpHelper.getInstance().apiTest(subscriber, String.valueOf(ZegoApiManager.getInstance().getAppID()));
+
+//        Subscriber subscriber=new Subscriber<LiveRoomsBean>() {
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(LiveRoomsBean liveRoomsBean) {
+//
+//                for (LiveRoomsBean.ContentBean contentBean : liveRoomsBean.getContent()) {
+//
+//                }
+//
+//                    for (RoomO.DataBean.RoomListBean roomListBean : roomO.getData().getRoom_list()) {
+//                        if (roomListBean.getStream_info() == null || roomListBean.getStream_info().size() == 0) continue;
+//                        Room room = new Room();
+//                        room.roomIcon = R.mipmap.ic_room1;
+//                        room.roomID = roomListBean.getRoom_id();
+//                        room.roomName = roomListBean.getRoom_name();
+//                        for (RoomO.DataBean.RoomListBean.StreamInfoBean streamInfoBean : roomListBean.getStream_info()) {
+//                            room.streamList.add(streamInfoBean.getStream_id());
+//                        }
+//                        mRoomList.add(room);
+//                    }
+//                    mAdapter.notifyDataSetChanged();
+//
+//            }
+//        };
+//        addSubscrebe(subscriber);
+//        HttpHelper.getInstance().obtainLiveRoomList(subscriber,pager);
     }
 
     private class SwitchTask implements Runnable {
