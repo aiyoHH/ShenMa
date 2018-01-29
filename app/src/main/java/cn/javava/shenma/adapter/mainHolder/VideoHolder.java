@@ -55,7 +55,6 @@ public class VideoHolder extends RecyclerView.ViewHolder {
             userInfo.setVisibility(View.VISIBLE);
             nick.setText(Session.nickname);
             ImageLoader.loadCircular(context,Session.headimgurl,avatar);
-
         }else{
             logoTitle.setVisibility(View.VISIBLE);
             userInfo.setVisibility(View.GONE);
@@ -72,7 +71,7 @@ public class VideoHolder extends RecyclerView.ViewHolder {
         dataSourceObjects[1] = this;
         videoPlayer.setUp(dataSourceObjects, 0, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, "");
 
-        ImageLoader.load(context, "https://app-cdn.siy8.com/6320/images-1514876319180.png",videoPlayer.thumbImageView);
+        //ImageLoader.load(context, "https://app-cdn.siy8.com/6320/images-1514876319180.png",videoPlayer.thumbImageView);
 
         videoPlayer.startButton.performClick();
         videoPlayer.setJzUserAction(new JZUserAction() {
