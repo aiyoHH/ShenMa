@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ import cn.javava.shenma.interf.Key;
 public class MainAdapter extends RecyclerView.Adapter {
 
     private final int additional=2;
+    private TextView mTvTimer;
 
     Context mContext;
     LayoutInflater mInflater;
@@ -62,6 +64,7 @@ public class MainAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof VideoHolder){
             ((VideoHolder) holder).setData(mContext);
+            mTvTimer=holder.itemView.findViewById(R.id.item_main_timer);
         }else if(holder instanceof  BannerHolder){
            ((BannerHolder) holder).setData(mContext,bannerList);
         }else if(holder instanceof ContentHolder){
@@ -79,6 +82,10 @@ public class MainAdapter extends RecyclerView.Adapter {
             });
         }
 
+    }
+
+    public void setTimer(long timer){
+        if(mTvTimer!=null)mTvTimer.setText("退出倒计时:"+timer);
     }
 
     @Override

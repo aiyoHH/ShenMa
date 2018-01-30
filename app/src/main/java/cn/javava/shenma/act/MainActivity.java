@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.CustomMediaPlayerAssertFolder;
 import cn.javava.shenma.view.SpacesItemDecoration;
+import cn.jzvd.JZMediaManager;
+import cn.jzvd.JZUtils;
 import cn.jzvd.JZVideoPlayer;
 import rx.Subscriber;
 
@@ -43,7 +46,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
-    TextView mTvTimer;
+//    TextView mTvTimer;
 
     List<String> mBannerList;
     List<Room> mRoomList;
@@ -71,8 +74,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         mAdapter = new MainAdapter(this, mRoomList,mBannerList,mRecyclerView);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(15));
         mRecyclerView.setAdapter(mAdapter);
-//        mTvTimer=mRecyclerView.findViewById(R.id.item_main_timer);
-
         pullInfo();
 
     }
@@ -97,6 +98,8 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     protected void onStop() {
         super.onStop();
 //        JZVideoPlayer.releaseAllVideos();
+        if(task!=null)task.stop();
+        if(timer!=null)timer.cancel();
     }
 
     @Override
@@ -160,7 +163,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                         mRoomList.add(room);
                     }
                     mAdapter.notifyDataSetChanged();
-                    mTvTimer= mRecyclerView.findViewHolderForAdapterPosition(1).itemView.findViewById(R.id.item_main_timer);
                 }
             }
         };
@@ -209,7 +211,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         if(Session.login){
             //设置头像 nickname
             mAdapter.notifyItemChanged(1,"notify");
-            if(Session.login){
+
                 if(timer==null){
                     timer=new TimeCounter(WHEEL_TIME,1000);
                 }else{
@@ -218,7 +220,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                 timer.start();
 
                 if(task==null)task=new SwitchTask();
-            }
+
         }
     }
 
@@ -233,7 +235,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         @Override
         public void onTick(long millisUntilFinished) {
             Log.e("lzh2017","退出倒计时:"+millisUntilFinished/1000);
-//               mTvTimer.setText("退出倒计时:"+millisUntilFinished/1000);
+               mAdapter.setTimer(millisUntilFinished/1000);
         }
 
         @Override
@@ -247,6 +249,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                 loginFragment.dismiss();
                 loginFragment=null;
             }
+            mAdapter.notifyItemChanged(1,"notify");
         }
     }
 
