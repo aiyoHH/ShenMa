@@ -18,6 +18,7 @@ import cn.javava.shenma.adapter.mainHolder.ContentHolder;
 import cn.javava.shenma.adapter.mainHolder.VideoHolder;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.interf.Key;
+import cn.javava.shenma.interf.OnPositionClickListener;
 
 /**
  * Created by aiyoRui on 2018/1/5.
@@ -32,12 +33,14 @@ public class MainAdapter extends RecyclerView.Adapter {
     LayoutInflater mInflater;
     List<Room> mList;
     List<String> bannerList;
+    OnPositionClickListener mListener;
 
-    public MainAdapter(Context context, List<Room> list,List<String> bannerList, RecyclerView recyclerView) {
+    public MainAdapter(Context context, List<Room> list, List<String> bannerList, RecyclerView recyclerView, OnPositionClickListener listener) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         this.mList = list;
         this.bannerList=bannerList;
+        this.mListener=listener;
 
         GridLayoutManager layoutManager=new GridLayoutManager(context,2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -78,6 +81,12 @@ public class MainAdapter extends RecyclerView.Adapter {
                     }else{
                         ViewCompat.animate(v).scaleX(1.0f).scaleY(1.0f).translationZ(0f).start();
                     }
+                }
+            });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onClick(position-additional);
                 }
             });
         }

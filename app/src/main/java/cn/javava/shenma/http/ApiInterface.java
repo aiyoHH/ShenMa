@@ -2,9 +2,11 @@ package cn.javava.shenma.http;
 
 import cn.javava.shenma.bean.LiveRoomsBean;
 import cn.javava.shenma.bean.LivesBean;
+import cn.javava.shenma.bean.PayResultBean;
 import cn.javava.shenma.bean.RoomO;
 import cn.javava.shenma.bean.UserInfoBean;
 import okhttp3.ResponseBody;
+import retrofit2.http.Field;
 import rx.Subscriber;
 
 /**
@@ -27,7 +29,7 @@ public interface ApiInterface {
 
     void obtainLiveRoomList(Subscriber<LiveRoomsBean> subscriber,int pager);
 
-    void obtainQRCodePay(Subscriber<ResponseBody> subscriber);
+    void obtainQRCodePay(Subscriber<PayResultBean> subscriber, String useId,int money);
 
     void checkResultPay(Subscriber<ResponseBody> subscriber,String tradeNo);
 

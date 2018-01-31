@@ -1,5 +1,7 @@
 package cn.javava.shenma.act;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,12 +18,15 @@ import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.MainAdapter;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.base.BaseActivity;
+import cn.javava.shenma.bean.LiveRoomsBean;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.bean.RoomO;
+import cn.javava.shenma.fragment.QRCodeFragment;
 import cn.javava.shenma.fragment.ScanLoginFragment;
 import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.Key;
+import cn.javava.shenma.interf.OnPositionClickListener;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.CustomMediaPlayerAssertFolder;
 import cn.javava.shenma.view.SpacesItemDecoration;
@@ -38,7 +43,7 @@ import rx.Subscriber;
  * @date 2018/1/5
  * Todo {TODO}.
  */
-public class MainActivity extends BaseActivity implements ScanLoginFragment.onDismissListener {
+public class MainActivity extends BaseActivity implements ScanLoginFragment.onDismissListener, OnPositionClickListener {
 
     private final  static int WHEEL_TIME=1000*60;
     private final  static int KEY_TIME=1000*10;
@@ -46,15 +51,15 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
-//    TextView mTvTimer;
-
     List<String> mBannerList;
     List<Room> mRoomList;
     MainAdapter mAdapter;
     ScanLoginFragment loginFragment;
+    QRCodeFragment qrCodeFragment;
     TimeCounter timer;
     SwitchTask task;
     int pager;
+    int currentClickPosition;
 
 
     @Override
@@ -71,10 +76,11 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         mBannerList.add("https://app-cdn.siy8.com/6320/images-1514037798443.jpg");
 
         JZVideoPlayer.setMediaInterface(new CustomMediaPlayerAssertFolder());//进入此页面修改MediaInterface，让此页面的jzvd正常工作
-        mAdapter = new MainAdapter(this, mRoomList,mBannerList,mRecyclerView);
+        mAdapter = new MainAdapter(this, mRoomList,mBannerList,mRecyclerView,this);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(15));
         mRecyclerView.setAdapter(mAdapter);
-        pullInfo();
+//        pullInfo();
+        pullInfoTest();
 
     }
 
@@ -137,7 +143,33 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
     private void pullInfo(){
 
-        Subscriber<RoomO> subscriber=new Subscriber<RoomO>() {
+        Subscriber subscriber=new Subscriber<LiveRoomsBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(LiveRoomsBean liveRoomsBean) {
+
+                for (LiveRoomsBean.ContentBean contentBean : liveRoomsBean.getContent()) {
+
+                }
+
+
+            }
+        };
+        addSubscrebe(subscriber);
+        HttpHelper.getInstance().obtainLiveRoomList(subscriber,pager);
+    }
+
+    private void pullInfoTest(){
+      Subscriber<RoomO> subscriber=new Subscriber<RoomO>() {
             @Override
             public void onCompleted() {
 
@@ -168,42 +200,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         };
         addSubscrebe(subscriber);
         HttpHelper.getInstance().apiTest(subscriber, String.valueOf(ZegoApiManager.getInstance().getAppID()));
-
-//        Subscriber subscriber=new Subscriber<LiveRoomsBean>() {
-//            @Override
-//            public void onCompleted() {
-//
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//
-//            }
-//
-//            @Override
-//            public void onNext(LiveRoomsBean liveRoomsBean) {
-//
-//                for (LiveRoomsBean.ContentBean contentBean : liveRoomsBean.getContent()) {
-//
-//                }
-//
-//                    for (RoomO.DataBean.RoomListBean roomListBean : roomO.getData().getRoom_list()) {
-//                        if (roomListBean.getStream_info() == null || roomListBean.getStream_info().size() == 0) continue;
-//                        Room room = new Room();
-//                        room.roomIcon = R.mipmap.ic_room1;
-//                        room.roomID = roomListBean.getRoom_id();
-//                        room.roomName = roomListBean.getRoom_name();
-//                        for (RoomO.DataBean.RoomListBean.StreamInfoBean streamInfoBean : roomListBean.getStream_info()) {
-//                            room.streamList.add(streamInfoBean.getStream_id());
-//                        }
-//                        mRoomList.add(room);
-//                    }
-//                    mAdapter.notifyDataSetChanged();
-//
-//            }
-//        };
-//        addSubscrebe(subscriber);
-//        HttpHelper.getInstance().obtainLiveRoomList(subscriber,pager);
     }
 
     @Override
@@ -220,12 +216,33 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                 timer.start();
 
                 if(task==null)task=new SwitchTask();
-
         }
+        loginFragment=null;
     }
 
 
-    public class TimeCounter extends CountDownTimer{
+    @Override
+    public void onClick(int position) {
+        if(!Session.login)return;
+        currentClickPosition=position;
+        //查询下余额够不够单钱房间进入条件
+         if(Session.point<10){
+             startActivityForResult(new Intent(MainActivity.this,ShopActivity.class),Key.ACTION_PLAY);
+         }else{
+             PlayActivity.actionStart(this,mRoomList.get(position));
+         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("lzh2017","onActivityResult============");
+        if(requestCode==Key.ACTION_PLAY){
+            PlayActivity.actionStart(this,mRoomList.get(currentClickPosition));
+        }
+    }
+
+    public class TimeCounter extends CountDownTimer {
 
         public TimeCounter(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
@@ -234,22 +251,22 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
         @Override
         public void onTick(long millisUntilFinished) {
-            Log.e("lzh2017","退出倒计时:"+millisUntilFinished/1000);
-               mAdapter.setTimer(millisUntilFinished/1000);
+            Log.e("lzh2017", "退出倒计时:" + millisUntilFinished / 1000);
+            mAdapter.setTimer(millisUntilFinished / 1000);
         }
 
         @Override
         public void onFinish() {
-            Session.openid=null;
-            Session.nickname=null;
-            Session.headimgurl=null;
-            Session.unionid=null;
-            Session.login=false;
-            if(loginFragment!=null){
+            Session.openid = null;
+            Session.nickname = null;
+            Session.headimgurl = null;
+            Session.unionid = null;
+            Session.login = false;
+            if (loginFragment != null) {
                 loginFragment.dismiss();
-                loginFragment=null;
+                loginFragment = null;
             }
-            mAdapter.notifyItemChanged(1,"notify");
+            mAdapter.notifyItemChanged(1, "notify");
         }
     }
 
@@ -259,8 +276,8 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         @Override
         public void run() {
 
-            Log.e("lzh2017","计时重置点.......");
-            if(timer!=null)timer.start();
+            Log.e("lzh2017", "计时重置点.......");
+            if (timer != null) timer.start();
         }
 
         public void start() {
@@ -273,6 +290,5 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             UIUtils.removeCallbacks(this);
         }
     }
-
 
 }
