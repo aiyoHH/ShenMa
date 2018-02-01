@@ -27,6 +27,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -41,6 +42,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 import cn.javava.shenma.app.App;
 
 /**
@@ -51,6 +56,20 @@ import cn.javava.shenma.app.App;
 public class SystemUtil {
 
     private static final String TAG = SystemUtil.class.getSimpleName();
+
+
+//    public static String Encrypt(String sSrc) throws Exception {
+//        SecretKeySpec skeySpec = new SecretKeySpec(sKey.getBytes(), "AES");
+//        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");//"算法/模式/补码方式"
+//        byte[] ivbytes =ivStr.getBytes();
+//        IvParameterSpec iv = new IvParameterSpec(ivbytes);//使用CBC模式，需要一个向量iv，可增加加密算法的强度
+//        cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
+//        byte[] encrypted = cipher.doFinal(sSrc.getBytes());
+//        byte[] data3 = new byte[ivbytes.length+encrypted.length];
+//        System.arraycopy(ivbytes,0,data3,0,ivbytes.length);
+//        System.arraycopy(encrypted,0,data3,ivbytes.length,encrypted.length);
+//        return new String(Base64.encode(data3, Base64.DEFAULT),"utf-8");//此处使用BASE64做转码功能，同时能起到2次加密的作用。
+//    }
 
     /**
      * 跳转到WIFI设置

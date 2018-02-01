@@ -4,8 +4,9 @@
     <dimen name="dp43">57dp</dimen>
     <dimen name="dp74">100dp</dimen>
     <dimen name="dp111">148dp</dimen>
-
+    <dimen name="dp120">160dp</dimen>
     <dimen name="dp130">170dp</dimen>
+    <dimen name="dp150">200dp</dimen>
     <dimen name="dp280">373dp</dimen>
     <dimen name="dp330">440dp</dimen>
     <dimen name="dp400">533dp</dimen>

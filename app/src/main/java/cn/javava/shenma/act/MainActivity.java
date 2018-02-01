@@ -79,8 +79,8 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         mAdapter = new MainAdapter(this, mRoomList,mBannerList,mRecyclerView,this);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(15));
         mRecyclerView.setAdapter(mAdapter);
-//        pullInfo();
-        pullInfoTest();
+        pullInfo();
+//        pullInfoTest();
 
     }
 
@@ -114,25 +114,22 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         JZVideoPlayer.releaseAllVideos();
     }
 
-
-
-
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         Log.e("lzh2017","..Main...dispatchKeyEvent..login="+Session.login);
-        if(!Session.login&&loginFragment==null){
-            loginFragment = ScanLoginFragment.getInstance("none");
-            loginFragment.setCancelable(false);
-            loginFragment.show(getFragmentManager(), "GameResultDialog");
-            loginFragment.addOnDdismissListener(this);
-        }else if(Session.login){
-            if(MotionEvent.ACTION_UP==event.getAction()){
-                Log.e("lzh2017","..Main...dispatchKeyEvent..=按钮计时触发=");
-                if(task!=null)task.start();
-            }else{
-                if(timer!=null)timer.cancel();
-            }
-        }
+//        if(!Session.login&&loginFragment==null){
+//            loginFragment = ScanLoginFragment.getInstance("none");
+//            loginFragment.setCancelable(false);
+//            loginFragment.show(getFragmentManager(), "GameResultDialog");
+//            loginFragment.addOnDdismissListener(this);
+//        }else if(Session.login){
+//            if(MotionEvent.ACTION_UP==event.getAction()){
+//                Log.e("lzh2017","..Main...dispatchKeyEvent..=按钮计时触发=");
+//                if(task!=null)task.start();
+//            }else{
+//                if(timer!=null)timer.cancel();
+//            }
+//        }
         return super.dispatchKeyEvent(event);
     }
 
@@ -156,11 +153,16 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
             @Override
             public void onNext(LiveRoomsBean liveRoomsBean) {
-
                 for (LiveRoomsBean.ContentBean contentBean : liveRoomsBean.getContent()) {
-
+                    Room room = new Room();
+                    room.roomIcon = R.mipmap.ic_room1;
+                    room.roomID = contentBean.getChannelId();
+                    room.roomName = contentBean.getChannelId();
+                    room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
+                    room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
+                    mRoomList.add(room);
                 }
-
+                mAdapter.notifyDataSetChanged();
 
             }
         };
@@ -223,14 +225,16 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
     @Override
     public void onClick(int position) {
+        PlayActivity.actionStart(this,mRoomList.get(position));
         if(!Session.login)return;
         currentClickPosition=position;
         //查询下余额够不够单钱房间进入条件
-         if(Session.point<10){
-             startActivityForResult(new Intent(MainActivity.this,ShopActivity.class),Key.ACTION_PLAY);
-         }else{
-             PlayActivity.actionStart(this,mRoomList.get(position));
-         }
+//         if(Session.point<10){
+//             startActivityForResult(new Intent(MainActivity.this,ShopActivity.class),Key.ACTION_PLAY);
+//         }else{
+//             PlayActivity.actionStart(this,mRoomList.get(position));
+//         }
+
     }
 
     @Override

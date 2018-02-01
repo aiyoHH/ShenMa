@@ -25,6 +25,7 @@ import cn.javava.shenma.app.App;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.http.HttpApis;
 import cn.javava.shenma.http.HttpHelper;
+import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.BoardState;
 import cn.javava.shenma.interf.CMDKey;
 import okhttp3.ResponseBody;
@@ -319,39 +320,51 @@ public class CMDCenter {
      * 从业务后台获取加密的游戏配置信息.
      */
     public void getEntrptedConfig(){
-
-
         final long timeStamp = System.currentTimeMillis();
-        String appID = ZegoApiManager.getInstance().getAppID() + "";
-        String url = String.format("http://wsliveroom%s-api.zego.im:8181/pay?" +
-                        "app_id=%s&id_name=%s&session_id=%s&confirm=1&time_stamp=%s&item_type=123&item_price=200"
-                , appID, appID, PreferenceUtil.getInstance().getUserID(), mSessionID, timeStamp);
+        //test测试用config
+        String config="bHdqbGFkM3MzaHBnZHFyYq1J5UgvyG10ELh7K1Q88JGxWsISBbM70r60lJPc+ABsG8D/hoTHf76UPwRFpt9Y8NjA/jS6CCeSWVi+E82ZjUX70hbFnKV3gkSikBsYTwu1Uy4e7tSU7a2NRQumXlxKRynQhspAq/N0EuBKBlRNyU6GzA/djKQxQPSk6+62GB9sokrlpm5YMj+LpHdqQToTcyCpeQUBIothu+iPBHBIPOI5whrn4Tm+Waf0IU6zFAzEpmXcXUjOUOlORF28j4/1EeqMi8HRLEz+Q5ht45NkTFnuONiZ2N8y47azoN6fqxI+4AIIlhuA95b38XHRkLiv/Msq8aPqPfeXy2voCoxhlNa0A3VeB0qsMzjjl67dGqCmAOq/TzHPoL52wX1M8CIZ/Q==";
 
-        HttpHelper.getInstance().getEntrptedConfig(new Subscriber<ResponseBody>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(ResponseBody responseBody) {
-                try {
-                    CMDCenter.getInstance().confirmBoard(true, responseBody.string(), timeStamp, new OnCommandSendCallback() {
-                        @Override
-                        public void onSendFail() {
-                            printLog("[CMDCenter_getEntrptedConfig] error, confirm board fail");
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
+        try {
+            CMDCenter.getInstance().confirmBoard(true, config, timeStamp, new OnCommandSendCallback() {
+                @Override
+                public void onSendFail() {
+                    printLog("[CMDCenter_getEntrptedConfig] error, confirm board fail");
                 }
-            }
-        },url);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        String appID = ZegoApiManager.getInstance().getAppID() + "";
+//        String url = String.format("http://wsliveroom%s-api.zego.im:8181/pay?" +
+//                        "app_id=%s&id_name=%s&session_id=%s&confirm=1&time_stamp=%s&item_type=123&item_price=200"
+//                , appID, appID, Session.userId, mSessionID, timeStamp);
+//
+//        HttpHelper.getInstance().getEntrptedConfig(new Subscriber<ResponseBody>() {
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(ResponseBody responseBody) {
+//                try {
+//                    CMDCenter.getInstance().confirmBoard(true, responseBody.string(), timeStamp, new OnCommandSendCallback() {
+//                        @Override
+//                        public void onSendFail() {
+//                            printLog("[CMDCenter_getEntrptedConfig] error, confirm board fail");
+//                        }
+//                    });
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        },url);
 
     }
 

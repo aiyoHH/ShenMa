@@ -204,11 +204,8 @@ public class PlayActivity extends AppCompatActivity{
     //预约上机
     @OnClick(R.id.play_apply)
     public void apply(){
-
         Log.e("lzh2018","apply...........part1");
         if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Ended) {
-
-
             CMDCenter.getInstance().apply(false, new CMDCenter.OnCommandSendCallback() {
                 @Override
                 public void onSendFail() {
@@ -217,7 +214,6 @@ public class PlayActivity extends AppCompatActivity{
                 }
             });
         } else {
-
             if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingBoard){
                 Log.e("lzh2018","apply...........part3A");
                 CMDCenter.getInstance().cancelApply(new CMDCenter.OnCommandSendCallback() {
@@ -273,8 +269,6 @@ public class PlayActivity extends AppCompatActivity{
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        Log.e("lzh2017","KeyEvent action===="+event.getAction());
-        Log.e("lzh2017","KeyEvent keycode===="+event.getKeyCode());
         switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
                 if(event.getAction()==MotionEvent.ACTION_DOWN){
@@ -345,8 +339,6 @@ public class PlayActivity extends AppCompatActivity{
         }
         return super.dispatchKeyEvent(event);
     }
-
-
 
 
     /**
