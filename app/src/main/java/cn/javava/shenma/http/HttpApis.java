@@ -2,10 +2,12 @@ package cn.javava.shenma.http;
 
 import cn.javava.shenma.bean.LiveRoomsBean;
 import cn.javava.shenma.bean.LivesBean;
+import cn.javava.shenma.bean.PayResultBean;
 import cn.javava.shenma.bean.RoomO;
 import cn.javava.shenma.bean.UserInfoBean;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -45,8 +47,9 @@ public interface HttpApis {
     @GET("/lives/rooms")
     Observable<LiveRoomsBean> obtainLiveRoomList(@Query("pager")int pager);
 
+    @FormUrlEncoded
     @POST("/pay/trades/generateQRCode")
-    Observable<ResponseBody> obtainQRCodePay();
+    Observable<PayResultBean> obtainQRCodePay(@Field("userId")String useId,@Field("money")int money);
 
     @GET("/pay/trades/{tradeNo}")
     Observable<ResponseBody> checkResultPay(@Path("tradeNo") String tradeNo);

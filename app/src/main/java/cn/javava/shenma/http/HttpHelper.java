@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import cn.javava.shenma.bean.LiveRoomsBean;
 import cn.javava.shenma.bean.LivesBean;
+import cn.javava.shenma.bean.PayResultBean;
 import cn.javava.shenma.bean.RoomO;
 import cn.javava.shenma.bean.UserInfoBean;
 import cn.javava.shenma.interf.Key;
@@ -122,8 +123,8 @@ public class HttpHelper implements ApiInterface {
     }
 
     @Override
-    public void obtainQRCodePay(Subscriber<ResponseBody> subscriber) {
-        toSubscribe(httpApis.obtainQRCodePay(),subscriber);
+    public void obtainQRCodePay(Subscriber<PayResultBean> subscriber,String userId,int money) {
+        toSubscribe(httpApis.obtainQRCodePay(userId,money),subscriber);
     }
 
 

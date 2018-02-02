@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:focusable="true"
-              android:paddingTop="10dp"
-              android:paddingStart="10dp"
-              android:paddingEnd="10dp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/selector_item"
+              android:focusable="true"
+              android:orientation="vertical"
               android:paddingBottom="20dp"
-    android:background="@drawable/selector_item"
+              android:paddingEnd="10dp"
+              android:paddingStart="10dp"
+              android:paddingTop="10dp"
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:background="@mipmap/good_bg"
-       android:padding="10dp"
+        android:padding="10dp"
         >
 
 
@@ -30,9 +30,9 @@
             android:id="@+id/item_main_content_des"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:singleLine="true"
-            android:layout_alignParentBottom="true"
             android:text="地方就是六块腹肌阿斯利康发动机"
             android:textColor="@color/colorF75"
             android:textSize="@dimen/sp30"/>

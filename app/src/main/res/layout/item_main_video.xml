@@ -57,7 +57,6 @@
                 android:id="@+id/item_main_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="退出倒计时:55"
                 android:textColor="@color/colorF75"
                 android:textSize="18sp"/>
 

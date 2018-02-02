@@ -2,6 +2,7 @@ package cn.javava.shenma.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -120,5 +121,22 @@ public class ScanLoginFragment extends DialogFragment implements OnLoadingListen
             e.printStackTrace();
         }
         this.dismiss();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        Log.e("lzh2017",".....onDismiss..");
+        if(mDismissListener!=null)mDismissListener.onDisMiss();
+    }
+
+    public interface onDismissListener{
+        void onDisMiss();
+    }
+
+    private onDismissListener mDismissListener;
+
+    public void addOnDdismissListener(onDismissListener listener){
+        this.mDismissListener=listener;
     }
 }

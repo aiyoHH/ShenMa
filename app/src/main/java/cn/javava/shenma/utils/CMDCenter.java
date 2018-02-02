@@ -25,6 +25,7 @@ import cn.javava.shenma.app.App;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.http.HttpApis;
 import cn.javava.shenma.http.HttpHelper;
+import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.BoardState;
 import cn.javava.shenma.interf.CMDKey;
 import okhttp3.ResponseBody;
@@ -319,13 +320,12 @@ public class CMDCenter {
      * 从业务后台获取加密的游戏配置信息.
      */
     public void getEntrptedConfig(){
-
-
         final long timeStamp = System.currentTimeMillis();
+
         String appID = ZegoApiManager.getInstance().getAppID() + "";
         String url = String.format("http://wsliveroom%s-api.zego.im:8181/pay?" +
                         "app_id=%s&id_name=%s&session_id=%s&confirm=1&time_stamp=%s&item_type=123&item_price=200"
-                , appID, appID, PreferenceUtil.getInstance().getUserID(), mSessionID, timeStamp);
+                , appID, appID, Session.userId, mSessionID, timeStamp);
 
         HttpHelper.getInstance().getEntrptedConfig(new Subscriber<ResponseBody>() {
             @Override

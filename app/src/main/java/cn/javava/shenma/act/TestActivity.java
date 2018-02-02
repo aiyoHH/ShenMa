@@ -62,6 +62,7 @@ public class TestActivity extends BaseActivity implements OnLoadingListener {
        // scanLoginFragment.setCancelable(false);
        // scanLoginFragment.show(getFragmentManager(), "GameResultDialog");
 
+
         openEdv();
 
     }

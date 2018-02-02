@@ -15,7 +15,7 @@ public interface Key {
     String PATH_DATA = App.getInstance().getCacheDir().getAbsolutePath() + File.separator + "data";
     String PATH_CACHE = PATH_DATA + File.separator + "NetCache";
     String DATA="data";
-
+    int ACTION_PLAY=1001;
     interface Type{
         int banner=0;
         int video=1;

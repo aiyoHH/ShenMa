@@ -24,22 +24,16 @@ public class ContentHolder extends RecyclerView.ViewHolder {
     ImageView mIvIcon;
     @BindView(R.id.item_main_content_des)
     TextView mTvDes;
-    View itemView;
 
     public ContentHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);
-        this.itemView=itemView;
+
     }
 
     public void setData(final Context context, final Room room){
         mTvDes.setText(room.roomName);
         ImageLoader.load(context,room.roomIcon,mIvIcon);
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlayActivity.actionStart((Activity) context,room);
-            }
-        });
+
     }
 }

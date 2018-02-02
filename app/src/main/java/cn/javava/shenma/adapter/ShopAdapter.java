@@ -11,9 +11,11 @@ import android.widget.ImageView;
 
 import java.util.List;
 
+import butterknife.OnClick;
 import cn.javava.shenma.R;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.bean.ShopBean;
+import cn.javava.shenma.interf.OnPositionClickListener;
 import cn.javava.shenma.utils.ImageLoader;
 
 /**
@@ -29,11 +31,13 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopItemHolder
     Context mContext;
     LayoutInflater mInflater;
     List<ShopBean> mList;
+    OnPositionClickListener mListener;
 
-    public ShopAdapter(Context context, List<ShopBean> list) {
+    public ShopAdapter(Context context, List<ShopBean> list, OnPositionClickListener listener) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         this.mList = list;
+        this.mListener=listener;
     }
 
     @Override
@@ -42,18 +46,24 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopItemHolder
     }
 
     @Override
-    public void onBindViewHolder(ShopItemHolder holder, int position) {
+    public void onBindViewHolder(ShopItemHolder holder, final int position) {
         holder.setData(mList.get(position));
-
-        holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                //获取焦点时变化
-                if (hasFocus) {
-                    ViewCompat.animate(v).scaleX(1.17f).scaleY(1.17f).translationZ(1).start();
-                }
+            public void onClick(View v) {
+                mListener.onClick(position);
             }
         });
+
+//        holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                //获取焦点时变化
+//                if (hasFocus) {
+//                    ViewCompat.animate(v).scaleX(1.17f).scaleY(1.17f).translationZ(1).start();
+//                }
+//            }
+//        });
     }
 
     @Override
