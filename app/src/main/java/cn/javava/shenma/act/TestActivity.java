@@ -58,11 +58,11 @@ public class TestActivity extends BaseActivity implements OnLoadingListener {
     @OnClick(R.id.push_good)
     void pushTest() {
 
-        ScanLoginFragment scanLoginFragment = ScanLoginFragment.getInstance("meiyou");
-        scanLoginFragment.setCancelable(false);
-        scanLoginFragment.show(getFragmentManager(), "GameResultDialog");
+//        ScanLoginFragment scanLoginFragment = ScanLoginFragment.getInstance("meiyou");
+//        scanLoginFragment.setCancelable(false);
+//        scanLoginFragment.show(getFragmentManager(), "GameResultDialog");
 
-        //openEdv();
+        openEdv();
 
     }
 
