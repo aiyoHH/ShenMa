@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,17 +154,24 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
             @Override
             public void onNext(LiveRoomsBean liveRoomsBean) {
-                for (LiveRoomsBean.ContentBean contentBean : liveRoomsBean.getContent()) {
-                    Room room = new Room();
-                    room.roomIcon = R.mipmap.ic_room1;
-                    room.roomID = contentBean.getChannelId();
-                    room.roomName = contentBean.getChannelId();
-                    room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
-                    room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
-                    mRoomList.add(room);
-                }
-                mAdapter.notifyDataSetChanged();
+                if(liveRoomsBean.getCode()==0){
+                    List<LiveRoomsBean.DataBean.ContentBean> contentList = liveRoomsBean.getData().getContent();
 
+                    if(contentList!=null&&contentList.size()>0){
+                        for (LiveRoomsBean.DataBean.ContentBean content:contentList) {
+                            Room room = new Room();
+                            room.roomIcon = R.mipmap.ic_room1;
+                            room.roomID = content.getChannelId();
+                            room.roomName = content.getChannelId();
+                            room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
+                            room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
+                            mRoomList.add(room);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }else{
+                        Toast.makeText(MainActivity.this,"房间列表为空.....",Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         };
         addSubscrebe(subscriber);

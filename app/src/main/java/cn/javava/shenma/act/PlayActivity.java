@@ -60,7 +60,6 @@ import cn.javava.shenma.utils.ZegoStream;
 
 public class PlayActivity extends AppCompatActivity{
 
-
     @BindView(R.id.play_viewPager)
     ViewPager mViewPager;
     @BindView(R.id.play_cancel)

@@ -8,133 +8,164 @@ import java.util.List;
 
 public class LiveRoomsBean {
 
+
     /**
-     * content : [{"channelId":"WWJ_ZEGO_3275f295eab4","name":"dfdf","state":"DeviceOnline"}]
-     * last : true
-     * totalElements : 1
-     * totalPages : 1
-     * sort : dfdf
-     * first : true
-     * numberOfElements : 1
-     * size : 20
-     * number : 0
+     * code : 0
+     * message : 成功
+     * data : {"content":[],"last":true,"totalElements":0,"totalPages":0,"sort":null,"first":true,"numberOfElements":0,"size":20,"number":0}
      */
 
-    private boolean last;
-    private int totalElements;
-    private int totalPages;
-    private String sort;
-    private boolean first;
-    private int numberOfElements;
-    private int size;
-    private int number;
-    private List<ContentBean> content;
+    private int code;
+    private String message;
+    private DataBean data;
 
-    public boolean isLast() {
-        return last;
+    public int getCode() {
+        return code;
     }
 
-    public void setLast(boolean last) {
-        this.last = last;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public int getTotalElements() {
-        return totalElements;
+    public String getMessage() {
+        return message;
     }
 
-    public void setTotalElements(int totalElements) {
-        this.totalElements = totalElements;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public int getTotalPages() {
-        return totalPages;
+    public DataBean getData() {
+        return data;
     }
 
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
+    public void setData(DataBean data) {
+        this.data = data;
     }
 
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
-
-    public boolean isFirst() {
-        return first;
-    }
-
-    public void setFirst(boolean first) {
-        this.first = first;
-    }
-
-    public int getNumberOfElements() {
-        return numberOfElements;
-    }
-
-    public void setNumberOfElements(int numberOfElements) {
-        this.numberOfElements = numberOfElements;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public List<ContentBean> getContent() {
-        return content;
-    }
-
-    public void setContent(List<ContentBean> content) {
-        this.content = content;
-    }
-
-    public static class ContentBean {
+    public static class DataBean {
         /**
-         * channelId : WWJ_ZEGO_3275f295eab4
-         * name : dfdf
-         * state : DeviceOnline
+         * content : []
+         * last : true
+         * totalElements : 0
+         * totalPages : 0
+         * sort : null
+         * first : true
+         * numberOfElements : 0
+         * size : 20
+         * number : 0
          */
 
-        private String channelId;
-        private String name;
-        private String state;
+        private boolean last;
+        private String totalElements;
+        private String totalPages;
+        private Object sort;
+        private boolean first;
+        private String numberOfElements;
+        private String size;
+        private String number;
+        private List<ContentBean> content;
 
-        public String getChannelId() {
-            return channelId;
+        public boolean isLast() {
+            return last;
         }
 
-        public void setChannelId(String channelId) {
-            this.channelId = channelId;
+        public void setLast(boolean last) {
+            this.last = last;
         }
 
-        public String getName() {
-            return name;
+        public String getTotalElements() {
+            return totalElements;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setTotalElements(String totalElements) {
+            this.totalElements = totalElements;
         }
 
-        public String getState() {
-            return state;
+        public String getTotalPages() {
+            return totalPages;
         }
 
-        public void setState(String state) {
-            this.state = state;
+        public void setTotalPages(String totalPages) {
+            this.totalPages = totalPages;
+        }
+
+        public Object getSort() {
+            return sort;
+        }
+
+        public void setSort(Object sort) {
+            this.sort = sort;
+        }
+
+        public boolean isFirst() {
+            return first;
+        }
+
+        public void setFirst(boolean first) {
+            this.first = first;
+        }
+
+        public String getNumberOfElements() {
+            return numberOfElements;
+        }
+
+        public void setNumberOfElements(String numberOfElements) {
+            this.numberOfElements = numberOfElements;
+        }
+
+        public String getSize() {
+            return size;
+        }
+
+        public void setSize(String size) {
+            this.size = size;
+        }
+
+        public String getNumber() {
+            return number;
+        }
+
+        public void setNumber(String number) {
+            this.number = number;
+        }
+
+        public List<ContentBean> getContent() {
+            return content;
+        }
+
+        public void setContent(List<ContentBean> content) {
+            this.content = content;
+        }
+
+        public static class ContentBean{
+            public String getChannelId() {
+                return channelId;
+            }
+
+            public void setChannelId(String channelId) {
+                this.channelId = channelId;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getState() {
+                return state;
+            }
+
+            public void setState(String state) {
+                this.state = state;
+            }
+
+            private String channelId;
+            private String name;
+            private String   state;
         }
     }
 }
