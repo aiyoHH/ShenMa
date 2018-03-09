@@ -10,27 +10,48 @@ package cn.javava.shenma.bean;
 
 public class PayResultBean {
 
+
     /**
-     * codeUrl : weixin://wxpay/bizpayurl?pr=Qr7OY7y
-     * tradeNo : 20180131103390236
+     * code : 0
+     * code_url : weixin://wxpay/bizpayurl?pr=5RafV6F
+     * trade_no : 20180365060455256
+     * message : 成功
      */
 
-    private String codeUrl;
-    private String tradeNo;
+    private int code;
+    private String code_url;
+    private String trade_no;
+    private String message;
 
-    public String getCodeUrl() {
-        return codeUrl;
+    public int getCode() {
+        return code;
     }
 
-    public void setCodeUrl(String codeUrl) {
-        this.codeUrl = codeUrl;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public String getTradeNo() {
-        return tradeNo;
+    public String getCode_url() {
+        return code_url;
     }
 
-    public void setTradeNo(String tradeNo) {
-        this.tradeNo = tradeNo;
+    public void setCode_url(String code_url) {
+        this.code_url = code_url;
+    }
+
+    public String getTrade_no() {
+        return trade_no;
+    }
+
+    public void setTrade_no(String trade_no) {
+        this.trade_no = trade_no;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

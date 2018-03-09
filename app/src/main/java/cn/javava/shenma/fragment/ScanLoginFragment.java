@@ -24,10 +24,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.javava.shenma.R;
+import cn.javava.shenma.bean.TokenBean;
+import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.IJsApi;
 import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.interf.OnLoadingListener;
+import okhttp3.ResponseBody;
+import rx.Subscriber;
 import wendu.dsbridge.DWebView;
 
 /**
@@ -107,20 +111,39 @@ public class ScanLoginFragment extends DialogFragment implements OnLoadingListen
 
 
     @Override
-    public void onFinish(String accessToken) {
-        try {
+    public void onFinish(final String accessToken) {
 
-            JSONObject jsonObject=new JSONObject(accessToken);
-            Session.openid=jsonObject.optString("openid");
-            Session.nickname=jsonObject.optString("nickname");
-            Session.headimgurl=jsonObject.optString("headimgurl");
-            Session.unionid=jsonObject.optString("unionid");
-            Session.login=true;
-            //联网获取用户信息so on
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        this.dismiss();
+
+
+            //联网获取access_token
+            HttpHelper.getInstance().gainAccessToken(new Subscriber<TokenBean>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(TokenBean bean) {
+                    try {
+                    JSONObject jsonObject=new JSONObject(accessToken);
+                    Session.openid=jsonObject.optString("openid");
+                    Session.nickname=jsonObject.optString("nickname");
+                    Session.headimgurl=jsonObject.optString("headimgurl");
+                    Session.unionid=jsonObject.optString("unionid");
+                    Session.login=true;
+                    Session.accessToken=bean.getAccess_token();
+                    ScanLoginFragment.this.dismiss();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            },Key.GTANT_TYPE,Key.CLIENT_ID,Key.CLIENT_SECRET);
+
     }
 
     @Override

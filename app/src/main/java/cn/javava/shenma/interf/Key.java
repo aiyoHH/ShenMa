@@ -16,6 +16,12 @@ public interface Key {
     String PATH_CACHE = PATH_DATA + File.separator + "NetCache";
     String DATA="data";
     int ACTION_PLAY=1001;
+    String GTANT_TYPE="client_credentials";
+    String CLIENT_ID="a";
+    String CLIENT_SECRET="b";
+    String CLIENT_STATE="DeviceOnline";
+
+
     interface Type{
         int banner=0;
         int video=1;

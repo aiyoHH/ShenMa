@@ -3,15 +3,14 @@ package cn.javava.shenma.http;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.Gson;
-
 import java.io.File;
 import java.io.IOException;
 
-import cn.javava.shenma.bean.LiveRoomsBean;
+import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.PayResultBean;
 import cn.javava.shenma.bean.RoomO;
+import cn.javava.shenma.bean.TokenBean;
 import cn.javava.shenma.bean.UserInfoBean;
 import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.utils.SystemUtil;
@@ -113,18 +112,23 @@ public class HttpHelper implements ApiInterface {
     }
 
     @Override
-    public void obtainLiveList(Subscriber<LivesBean> subscriber) {
-        toSubscribe(httpApis.obtainLiveList(),subscriber);
+    public void obtainRoomList(Subscriber<LivesBean> subscriber,String accessToken,String state) {
+        toSubscribe(httpApis.obtainRoomList(accessToken,state),subscriber);
     }
 
     @Override
-    public void obtainLiveRoomList(Subscriber<LiveRoomsBean> subscriber,int pager) {
+    public void obtainLiveRoomList(Subscriber<RoomsBean> subscriber, int pager) {
         toSubscribe(httpApis.obtainLiveRoomList(pager),subscriber);
     }
 
     @Override
     public void obtainQRCodePay(Subscriber<PayResultBean> subscriber,String userId,int money) {
-        toSubscribe(httpApis.obtainQRCodePay(userId,money),subscriber);
+        toSubscribe(httpApis.obtainQRCodePay("c",userId,money),subscriber);
+    }
+
+    @Override
+    public void gainAccessToken(Subscriber<TokenBean> subscriber, String type, String id, String secret) {
+        toSubscribe(httpApis.gainToken(type,id,secret),subscriber);
     }
 
 

@@ -89,8 +89,8 @@ public class ShopActivity extends BaseActivity implements OnPositionClickListene
             @Override
             public void onNext(PayResultBean bean) {
                 if(mQRCodeFragment!=null)mQRCodeFragment.dismiss();
-                Log.e("lzh2017","onNext text=");
-                 mQRCodeFragment = QRCodeFragment.getInstance(bean.getCodeUrl());
+                Log.e("lzh2017","onNext text="+bean.getCode_url());
+                 mQRCodeFragment = QRCodeFragment.getInstance(bean.getCode_url());
                  mQRCodeFragment.setCancelable(true);
                  mQRCodeFragment.show(getFragmentManager(), "pay");
 

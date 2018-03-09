@@ -1,12 +1,12 @@
 package cn.javava.shenma.http;
 
-import cn.javava.shenma.bean.LiveRoomsBean;
+import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.PayResultBean;
 import cn.javava.shenma.bean.RoomO;
+import cn.javava.shenma.bean.TokenBean;
 import cn.javava.shenma.bean.UserInfoBean;
 import okhttp3.ResponseBody;
-import retrofit2.http.Field;
 import rx.Subscriber;
 
 /**
@@ -25,14 +25,16 @@ public interface ApiInterface {
 
     void obtainUserMe(Subscriber<ResponseBody> subscriber);
 
-    void obtainLiveList(Subscriber<LivesBean> subscriber);
+    void obtainRoomList(Subscriber<LivesBean> subscriber,String accessToken,String state);
 
-    void obtainLiveRoomList(Subscriber<LiveRoomsBean> subscriber,int pager);
+    void obtainLiveRoomList(Subscriber<RoomsBean> subscriber, int pager);
 
     void obtainQRCodePay(Subscriber<PayResultBean> subscriber, String useId,int money);
 
     void checkResultPay(Subscriber<ResponseBody> subscriber,String tradeNo);
 
     void scanQRCodeLogin(Subscriber<ResponseBody> subscriber);
+
+    void gainAccessToken(Subscriber<TokenBean> subscriber, String type, String id, String secret);
 
 }

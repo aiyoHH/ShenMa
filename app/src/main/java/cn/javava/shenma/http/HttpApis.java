@@ -1,9 +1,10 @@
 package cn.javava.shenma.http;
 
-import cn.javava.shenma.bean.LiveRoomsBean;
+import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.PayResultBean;
 import cn.javava.shenma.bean.RoomO;
+import cn.javava.shenma.bean.TokenBean;
 import cn.javava.shenma.bean.UserInfoBean;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
@@ -14,7 +15,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Created by aiyoRui on 2016/12/27.
@@ -35,21 +35,34 @@ public interface HttpApis {
     @GET("/users")
     Observable<ResponseBody> obtainUserList();
 
+    @FormUrlEncoded
+    @POST("/token")
+    Observable<TokenBean> gainToken(@Field("grant_type")String type,
+                                    @Field("client_id")String id,
+                                    @Field("client_secret")String secret );
+
     @GET("/users/{userid}")
     Observable<UserInfoBean> obtainUserInfo(@Path("userid") String userId);
 
     @GET("/users/me")
     Observable<ResponseBody> obtainUserMe();
 
-    @GET("/lives")
-    Observable<LivesBean> obtainLiveList();
+    /**
+     * 获取房间列表
+     * @param accessToken
+     * @param state
+     * @return
+     */
+    @GET("/room")
+    Observable<LivesBean> obtainRoomList(@Query("access_token")String accessToken,@Query("state")String state);
+
 
     @GET("/lives/rooms")
-    Observable<LiveRoomsBean> obtainLiveRoomList(@Query("pager")int pager);
+    Observable<RoomsBean> obtainLiveRoomList(@Query("pager")int pager);
 
     @FormUrlEncoded
-    @POST("/pay/trades/generateQRCode")
-    Observable<PayResultBean> obtainQRCodePay(@Field("userId")String useId,@Field("money")int money);
+    @POST("/trades/generateQRCode")
+    Observable<PayResultBean> obtainQRCodePay(@Query("access_token") String accessToken,@Field("userId")String useId,@Field("money")int money);
 
     @GET("/pay/trades/{tradeNo}")
     Observable<ResponseBody> checkResultPay(@Path("tradeNo") String tradeNo);

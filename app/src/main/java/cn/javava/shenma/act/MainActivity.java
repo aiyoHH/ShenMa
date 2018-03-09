@@ -1,14 +1,11 @@
 package cn.javava.shenma.act;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,7 +16,7 @@ import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.MainAdapter;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.base.BaseActivity;
-import cn.javava.shenma.bean.LiveRoomsBean;
+import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.bean.RoomO;
 import cn.javava.shenma.fragment.QRCodeFragment;
@@ -31,8 +28,6 @@ import cn.javava.shenma.interf.OnPositionClickListener;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.CustomMediaPlayerAssertFolder;
 import cn.javava.shenma.view.SpacesItemDecoration;
-import cn.jzvd.JZMediaManager;
-import cn.jzvd.JZUtils;
 import cn.jzvd.JZVideoPlayer;
 import rx.Subscriber;
 
@@ -118,19 +113,19 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         Log.e("lzh2017","..Main...dispatchKeyEvent..login="+Session.login);
-//        if(!Session.login&&loginFragment==null){
-//            loginFragment = ScanLoginFragment.getInstance("none");
-//            loginFragment.setCancelable(false);
-//            loginFragment.show(getFragmentManager(), "GameResultDialog");
-//            loginFragment.addOnDdismissListener(this);
-//        }else if(Session.login){
-//            if(MotionEvent.ACTION_UP==event.getAction()){
-//                Log.e("lzh2017","..Main...dispatchKeyEvent..=按钮计时触发=");
-//                if(task!=null)task.start();
-//            }else{
-//                if(timer!=null)timer.cancel();
-//            }
-//        }
+        if(!Session.login&&loginFragment==null){
+            loginFragment = ScanLoginFragment.getInstance("none");
+            loginFragment.setCancelable(false);
+            loginFragment.show(getFragmentManager(), "GameResultDialog");
+            loginFragment.addOnDdismissListener(this);
+        }else if(Session.login){
+            if(MotionEvent.ACTION_UP==event.getAction()){
+                Log.e("lzh2017","..Main...dispatchKeyEvent..=按钮计时触发=");
+                if(task!=null)task.start();
+            }else{
+                if(timer!=null)timer.cancel();
+            }
+        }
         return super.dispatchKeyEvent(event);
     }
 
@@ -141,7 +136,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
     private void pullInfo(){
 
-        Subscriber subscriber=new Subscriber<LiveRoomsBean>() {
+        Subscriber subscriber=new Subscriber<RoomsBean>() {
             @Override
             public void onCompleted() {
 
@@ -153,16 +148,16 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             }
 
             @Override
-            public void onNext(LiveRoomsBean liveRoomsBean) {
-                if(liveRoomsBean.getCode()==0){
-                    List<LiveRoomsBean.DataBean.ContentBean> contentList = liveRoomsBean.getData().getContent();
+            public void onNext(RoomsBean roomsBean) {
+                if(roomsBean.getCode()==0){
+                    List<RoomsBean.ContentBean> contentList = roomsBean.getContent();
 
                     if(contentList!=null&&contentList.size()>0){
-                        for (LiveRoomsBean.DataBean.ContentBean content:contentList) {
+                        for (RoomsBean.ContentBean content:contentList) {
                             Room room = new Room();
                             room.roomIcon = R.mipmap.ic_room1;
-                            room.roomID = content.getChannelId();
-                            room.roomName = content.getChannelId();
+//                            room.roomID = content.getChannelId();
+//                            room.roomName = content.getChannelId();
                             room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
                             room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
                             mRoomList.add(room);
@@ -175,7 +170,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             }
         };
         addSubscrebe(subscriber);
-        HttpHelper.getInstance().obtainLiveRoomList(subscriber,pager);
+        HttpHelper.getInstance().obtainRoomList(subscriber,Session.accessToken,Key.CLIENT_STATE);
     }
 
     private void pullInfoTest(){
