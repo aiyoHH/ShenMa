@@ -75,8 +75,8 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         mAdapter = new MainAdapter(this, mRoomList,mBannerList,mRecyclerView,this);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(15));
         mRecyclerView.setAdapter(mAdapter);
-        pullInfo();
-//        pullInfoTest();
+//        pullInfo();
+        pullInfoTest();
 
     }
 
@@ -113,19 +113,19 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         Log.e("lzh2017","..Main...dispatchKeyEvent..login="+Session.login);
-        if(!Session.login&&loginFragment==null){
-            loginFragment = ScanLoginFragment.getInstance("none");
-            loginFragment.setCancelable(false);
-            loginFragment.show(getFragmentManager(), "GameResultDialog");
-            loginFragment.addOnDdismissListener(this);
-        }else if(Session.login){
-            if(MotionEvent.ACTION_UP==event.getAction()){
-                Log.e("lzh2017","..Main...dispatchKeyEvent..=按钮计时触发=");
-                if(task!=null)task.start();
-            }else{
-                if(timer!=null)timer.cancel();
-            }
-        }
+//        if(!Session.login&&loginFragment==null){
+//            loginFragment = ScanLoginFragment.getInstance("none");
+//            loginFragment.setCancelable(false);
+//            loginFragment.show(getFragmentManager(), "GameResultDialog");
+//            loginFragment.addOnDdismissListener(this);
+//        }else if(Session.login){
+//            if(MotionEvent.ACTION_UP==event.getAction()){
+//                Log.e("lzh2017","..Main...dispatchKeyEvent..=按钮计时触发=");
+//                if(task!=null)task.start();
+//            }else{
+//                if(timer!=null)timer.cancel();
+//            }
+//        }
         return super.dispatchKeyEvent(event);
     }
 

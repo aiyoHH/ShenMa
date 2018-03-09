@@ -53,7 +53,7 @@ public interface HttpApis {
      * @param state
      * @return
      */
-    @GET("/room")
+    @GET("/rooms")
     Observable<LivesBean> obtainRoomList(@Query("access_token")String accessToken,@Query("state")String state);
 
 

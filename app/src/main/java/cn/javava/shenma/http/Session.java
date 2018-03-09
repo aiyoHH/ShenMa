@@ -12,7 +12,7 @@ public class Session {
     public static String userId;
     public static String nickname;
     public static String headimgurl;
-    public static String accessToken;
+    public static String accessToken="c";
     public static String unionid;
     public static int point;
     public static int cash;
