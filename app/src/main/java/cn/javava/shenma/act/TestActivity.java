@@ -1,6 +1,7 @@
 package cn.javava.shenma.act;
 
 import android.text.method.ScrollingMovementMethod;
+import android.view.MotionEvent;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import cn.javava.shenma.motordrv.clsErrorConst;
 import cn.javava.shenma.motordrv.clsToolBox;
 import cn.javava.shenma.motordrv.para.clsTransforPara;
 import cn.javava.shenma.motordrv.para.clsTransforPoll;
+import cn.javava.shenma.utils.MotorDrvUtil;
 import cn.javava.shenma.utils.UIUtils;
 import wendu.dsbridge.DWebView;
 
@@ -48,10 +50,10 @@ public class TestActivity extends BaseActivity implements OnLoadingListener {
     protected void initEventAndData() {
         txt_data.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-        webView.setJavascriptInterface(new IJsApi(this));
-        webView.clearCache(true);
-        //webView.setBackgroundColor(0);
-        webView.loadUrl(loginUrl);
+//        webView.setJavascriptInterface(new IJsApi(this));
+//        webView.clearCache(true);
+//        //webView.setBackgroundColor(0);
+//        webView.loadUrl(loginUrl);
 
     }
 
@@ -63,13 +65,15 @@ public class TestActivity extends BaseActivity implements OnLoadingListener {
        // scanLoginFragment.show(getFragmentManager(), "GameResultDialog");
 
 
-        openEdv();
+//        openEdv();
+
+        MotorDrvUtil.openMotor(this,4);
 
     }
 
 
     private void openEdv(){
-        String comid="/dev/ttyS1";
+        String comid="/dev/ttyS3";
 
         int ret=YtMainBoard.getInstance().EF_OpenDev(comid, 9600);
 
@@ -92,8 +96,8 @@ public class TestActivity extends BaseActivity implements OnLoadingListener {
 
     private void pushRight(){
         final clsTransforPara para = new clsTransforPara();
-        int addr = clsToolBox.ParseInt("0");
-        int slotid = clsToolBox.ParseInt("0");
+        int addr = clsToolBox.ParseInt("00");
+        int slotid = clsToolBox.ParseInt("4");
         para.setAddr(addr);
         para.setSlotId(slotid % clsConst.MAX_SLOT_COUNT_PER_BRD);
         para.setSlotType(clsConst.SLOT_TYPE_LOCK);

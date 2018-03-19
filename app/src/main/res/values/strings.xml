@@ -3,13 +3,15 @@
 
 
     <string name="apply_faile">预约失败，请重新预约</string>
-    <string name="confirm_board">请准备上机，上机后开始计费，确认上机吗？(<xliff:g id="value">%1$s</xliff:g>s)</string>
+    <string name="confirm_board">(<xliff:g id="value">%1$s</xliff:g>s)秒后\n进入游戏</string>
     <string name="time_over">时间到了，等待服务器通知结果!</string>
     <string name="waiting_server_rsp">等待服务器返回结果...</string>
     <string name="grub_successfully">恭喜，抓到娃娃了!</string>
     <string name="grub_failed">很遗憾，失败了, 再接再励！</string>
     <string name="give_up_playing">返回娃娃机</string>
     <string name="continue_to_play">再来一局(<xliff:g id="value">%1$s</xliff:g>s)</string>
+
+    <string name="count_timer">倒计时: (<xliff:g id="value">%1$s</xliff:g>s)</string>
 
     <string name="send_reply">sendCustomCommand-Apply(<xliff:g id="value">%1$s</xliff:g>):&#160;</string>
     <string name="rsp_reply">onSendCustomCommand-Apply(<xliff:g id="value">%1$s</xliff:g>), errorCode:</string>

@@ -23,6 +23,7 @@ import java.util.Map;
 import cn.javava.shenma.R;
 import cn.javava.shenma.app.App;
 import cn.javava.shenma.app.ZegoApiManager;
+import cn.javava.shenma.bean.ConfigBean;
 import cn.javava.shenma.http.HttpApis;
 import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
@@ -320,14 +321,14 @@ public class CMDCenter {
      * 从业务后台获取加密的游戏配置信息.
      */
     public void getEntrptedConfig(){
-        final long timeStamp = System.currentTimeMillis();
+//        final long timeStamp = System.currentTimeMillis();
+//
+//        String appID = ZegoApiManager.getInstance().getAppID() + "";
+//        String url = String.format("http://wsliveroom%s-api.zego.im:8181/pay?" +
+//                        "app_id=%s&id_name=%s&session_id=%s&confirm=1&time_stamp=%s&item_type=123&item_price=200"
+//                , appID, appID, Session.userId, mSessionID, timeStamp);
 
-        String appID = ZegoApiManager.getInstance().getAppID() + "";
-        String url = String.format("http://wsliveroom%s-api.zego.im:8181/pay?" +
-                        "app_id=%s&id_name=%s&session_id=%s&confirm=1&time_stamp=%s&item_type=123&item_price=200"
-                , appID, appID, Session.userId, mSessionID, timeStamp);
-
-        HttpHelper.getInstance().getEntrptedConfig(new Subscriber<ResponseBody>() {
+        HttpHelper.getInstance().gainConfig(new Subscriber<ConfigBean>() {
             @Override
             public void onCompleted() {
 
@@ -339,19 +340,16 @@ public class CMDCenter {
             }
 
             @Override
-            public void onNext(ResponseBody responseBody) {
-                try {
-                    CMDCenter.getInstance().confirmBoard(true, responseBody.string(), timeStamp, new OnCommandSendCallback() {
+            public void onNext(ConfigBean bean) {
+
+                    CMDCenter.getInstance().confirmBoard(true, bean.getConfig(), Long.valueOf(bean.getTime_stamp()), new OnCommandSendCallback() {
                         @Override
                         public void onSendFail() {
                             printLog("[CMDCenter_getEntrptedConfig] error, confirm board fail");
                         }
                     });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
-        },url);
+        },Session.accessToken,mSessionID,1);
 
     }
 

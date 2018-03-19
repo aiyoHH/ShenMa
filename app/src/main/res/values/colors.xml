@@ -7,4 +7,6 @@
     <color name="colorFdd">#fffdd000</color>
     <color name="colorFb3">#ffb332</color>
     <color name="colorF75">#751104</color>
+    <color name="colorYellow">#fcaf09</color>
+    <color name="colorRed">#ff0000</color>
 </resources>

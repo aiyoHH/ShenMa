@@ -1,5 +1,6 @@
 package cn.javava.shenma.http;
 
+import cn.javava.shenma.bean.ConfigBean;
 import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.PayResultBean;
@@ -25,7 +26,7 @@ public interface ApiInterface {
 
     void obtainUserMe(Subscriber<ResponseBody> subscriber);
 
-    void obtainRoomList(Subscriber<LivesBean> subscriber,String accessToken,String state);
+    void obtainRoomList(Subscriber<RoomsBean> subscriber,String accessToken,String state);
 
     void obtainLiveRoomList(Subscriber<RoomsBean> subscriber, int pager);
 
@@ -36,5 +37,7 @@ public interface ApiInterface {
     void scanQRCodeLogin(Subscriber<ResponseBody> subscriber);
 
     void gainAccessToken(Subscriber<TokenBean> subscriber, String type, String id, String secret);
+
+    void gainConfig(Subscriber<ConfigBean> subscriber, String accessToken, String sessionId,int confirm);
 
 }

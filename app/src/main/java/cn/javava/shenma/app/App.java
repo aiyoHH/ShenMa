@@ -34,7 +34,7 @@ public class App extends Application  {
 
         handler = new Handler();
 
-//        ZegoLiveRoom.setTestEnv(true);
+        ZegoLiveRoom.setTestEnv(true);
 
         // 初始化sdk
         ZegoApiManager.getInstance().initSDK();

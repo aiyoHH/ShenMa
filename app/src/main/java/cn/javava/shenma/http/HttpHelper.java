@@ -6,6 +6,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
+import cn.javava.shenma.bean.ConfigBean;
 import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.PayResultBean;
@@ -112,7 +113,7 @@ public class HttpHelper implements ApiInterface {
     }
 
     @Override
-    public void obtainRoomList(Subscriber<LivesBean> subscriber,String accessToken,String state) {
+    public void obtainRoomList(Subscriber<RoomsBean> subscriber,String accessToken,String state) {
         toSubscribe(httpApis.obtainRoomList(accessToken,state),subscriber);
     }
 
@@ -129,6 +130,11 @@ public class HttpHelper implements ApiInterface {
     @Override
     public void gainAccessToken(Subscriber<TokenBean> subscriber, String type, String id, String secret) {
         toSubscribe(httpApis.gainToken(type,id,secret),subscriber);
+    }
+
+    @Override
+    public void gainConfig(Subscriber<ConfigBean> subscriber, String accessToken, String sessionId,int confirm) {
+        toSubscribe(httpApis.gainConfig(accessToken,sessionId,confirm),subscriber);
     }
 
 

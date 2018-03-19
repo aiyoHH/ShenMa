@@ -12,17 +12,17 @@ public class RoomsBean {
     /**
      * code : 0
      * message : 成功
-     * content : [{"id":"488b72b91ef111e88dbe00163e0887cf","channel_id":"0xb-0x1","state":"DeviceOnline","create_date":"2018-03-03 22:43:48"},{"id":"8645c15c1ef111e88dbe00163e0887cf","channel_id":"0xa-0x1","state":"DeviceOnline","create_date":"2018-03-03 22:45:32"}]
+     * content : [{"id":"488b72b91ef111e88dbe00163e0887cf","channel_id":"0xb-0x1","state":"DeviceOnline","create_date":"2018-03-03 22:43:48"},{"id":"8645c15c1ef111e88dbe00163e0887cf","channel_id":"0xa-0x1","state":"DeviceOnline","create_date":"2018-03-03 22:45:32"},{"id":"94acffa4233e11e8b35100163e0887cf","channel_id":"WWJ_ZEGO_3275f295eab4","state":"DeviceOnline","create_date":"2018-03-09 16:20:17"}]
+     * total_elements : 3
      * total_pages : 1
-     * total_elements : 2
      * size : 10
      * page : 0
      */
 
     private int code;
     private String message;
-    private int total_pages;
     private int total_elements;
+    private int total_pages;
     private int size;
     private int page;
     private List<ContentBean> content;
@@ -43,20 +43,20 @@ public class RoomsBean {
         this.message = message;
     }
 
-    public int getTotal_pages() {
-        return total_pages;
-    }
-
-    public void setTotal_pages(int total_pages) {
-        this.total_pages = total_pages;
-    }
-
     public int getTotal_elements() {
         return total_elements;
     }
 
     public void setTotal_elements(int total_elements) {
         this.total_elements = total_elements;
+    }
+
+    public int getTotal_pages() {
+        return total_pages;
+    }
+
+    public void setTotal_pages(int total_pages) {
+        this.total_pages = total_pages;
     }
 
     public int getSize() {

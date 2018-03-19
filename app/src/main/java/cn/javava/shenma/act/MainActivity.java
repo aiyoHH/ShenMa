@@ -8,6 +8,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +22,7 @@ import cn.javava.shenma.base.BaseActivity;
 import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.bean.RoomO;
+import cn.javava.shenma.bean.TokenBean;
 import cn.javava.shenma.fragment.QRCodeFragment;
 import cn.javava.shenma.fragment.ScanLoginFragment;
 import cn.javava.shenma.http.HttpHelper;
@@ -75,9 +79,36 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         mAdapter = new MainAdapter(this, mRoomList,mBannerList,mRecyclerView,this);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(15));
         mRecyclerView.setAdapter(mAdapter);
-//        pullInfo();
-        pullInfoTest();
 
+        gainToken();
+
+       //pullInfo();
+//        pullInfoTest();
+
+    }
+
+    private void gainToken(){
+        //联网获取access_token
+        HttpHelper.getInstance().gainAccessToken(new Subscriber<TokenBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(TokenBean bean) {
+                if(bean.getCode()==0){
+                    Session.accessToken=bean.getAccess_token();
+                    pullInfo();
+                }
+
+            }
+        },Key.GTANT_TYPE,Key.CLIENT_ID,Key.CLIENT_SECRET);
     }
 
     @Override
@@ -135,7 +166,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     }
 
     private void pullInfo(){
-
+        Log.e("lzh2018","设置房间列表S");
         Subscriber subscriber=new Subscriber<RoomsBean>() {
             @Override
             public void onCompleted() {
@@ -144,30 +175,38 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
             @Override
             public void onError(Throwable e) {
-
+                Log.e("lzh2018","设置房间列表E="+e.getMessage());
             }
 
             @Override
             public void onNext(RoomsBean roomsBean) {
+                Log.e("lzh2018","设置房间列表A");
                 if(roomsBean.getCode()==0){
-                    List<RoomsBean.ContentBean> contentList = roomsBean.getContent();
-
-                    if(contentList!=null&&contentList.size()>0){
-                        for (RoomsBean.ContentBean content:contentList) {
-                            Room room = new Room();
-                            room.roomIcon = R.mipmap.ic_room1;
-//                            room.roomID = content.getChannelId();
-//                            room.roomName = content.getChannelId();
-                            room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
-                            room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
-                            mRoomList.add(room);
-                        }
-                        mAdapter.notifyDataSetChanged();
+//                    RoomsBean.DataBean dataBean = roomsBean.getData();
+//                    for (RoomsBean.DataBean.RoomListBean roomListBean : dataBean.getRoom_list()) {
+//                        Room room = new Room();
+//                        room.roomIcon = R.mipmap.ic_room1;
+//                        room.roomID=roomListBean.getRoom_id();
+//                        room.roomName="房间名"+roomListBean.getRoom_name();
+//
+//                        for (RoomsBean.DataBean.RoomListBean.StreamInfoBean streamInfoBean : roomListBean.getStream_info()) {
+//                            room.streamList.add(streamInfoBean.getStream_id());
+//                        }
+//                        mRoomList.add(room);
+//                    }
+                    Log.e("lzh2018","设置房间列表B");
+                    Room room = new Room();
+                    room.roomIcon = R.mipmap.ic_room1;
+                    room.roomID="WWJ_ZEGO_3275f295eab4";
+                    room.roomName="房间名WWJ_ZEGO_3275f295eab4";
+                    room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
+                    room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
+                    mRoomList.add(room);
+                    mAdapter.notifyDataSetChanged();
                     }else{
                         Toast.makeText(MainActivity.this,"房间列表为空.....",Toast.LENGTH_LONG).show();
                     }
                 }
-            }
         };
         addSubscrebe(subscriber);
         HttpHelper.getInstance().obtainRoomList(subscriber,Session.accessToken,Key.CLIENT_STATE);
@@ -193,7 +232,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                         Room room = new Room();
                         room.roomIcon = R.mipmap.ic_room1;
                         room.roomID = roomListBean.getRoom_id();
-                        room.roomName = roomListBean.getRoom_name();
+                        room.roomName ="房间名"+ roomListBean.getRoom_name();
                         for (RoomO.DataBean.RoomListBean.StreamInfoBean streamInfoBean : roomListBean.getStream_info()) {
                             room.streamList.add(streamInfoBean.getStream_id());
                         }

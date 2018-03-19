@@ -1,5 +1,6 @@
 package cn.javava.shenma.http;
 
+import cn.javava.shenma.bean.ConfigBean;
 import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.PayResultBean;
@@ -36,7 +37,7 @@ public interface HttpApis {
     Observable<ResponseBody> obtainUserList();
 
     @FormUrlEncoded
-    @POST("/token")
+    @POST("/oauth/token")
     Observable<TokenBean> gainToken(@Field("grant_type")String type,
                                     @Field("client_id")String id,
                                     @Field("client_secret")String secret );
@@ -54,7 +55,7 @@ public interface HttpApis {
      * @return
      */
     @GET("/rooms")
-    Observable<LivesBean> obtainRoomList(@Query("access_token")String accessToken,@Query("state")String state);
+    Observable<RoomsBean> obtainRoomList(@Query("access_token")String accessToken,@Query("state")String state);
 
 
     @GET("/lives/rooms")
@@ -72,4 +73,11 @@ public interface HttpApis {
 
     @GET
     Observable<ResponseBody> getEntrptedConfig(@Url String url);
+
+
+    @FormUrlEncoded
+    @POST("/games")
+    Observable<ConfigBean> gainConfig(@Field("access_token")String accessToken,
+                                      @Field("session_id")String sessionId,
+                                      @Field("confirm")int id);
 }
