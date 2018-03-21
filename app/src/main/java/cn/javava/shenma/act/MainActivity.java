@@ -47,6 +47,9 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
     private final  static int WHEEL_TIME=1000*60;
     private final  static int KEY_TIME=1000*10;
+    private int[] images={R.mipmap.demo,R.mipmap.demo7,R.mipmap.ic_room1,
+            R.mipmap.ic_room2,R.mipmap.ic_room3,R.mipmap.ic_room4,R.mipmap.ic_room5,
+            R.mipmap.ic_room6};
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -195,13 +198,17 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 //                        mRoomList.add(room);
 //                    }
                     Log.e("lzh2018","设置房间列表B");
-                    Room room = new Room();
-                    room.roomIcon = R.mipmap.ic_room1;
-                    room.roomID="WWJ_ZEGO_3275f295eab4";
-                    room.roomName="房间名WWJ_ZEGO_3275f295eab4";
-                    room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
-                    room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
-                    mRoomList.add(room);
+                    for (int  i= 0; i < images.length; i++) {
+                        Room room = new Room();
+                        room.number=i+1;
+                        room.roomIcon =images[i];
+                        room.roomID="WWJ_ZEGO_3275f295eab4";
+                        room.roomName= room.number+"号房间";
+                        room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
+                        room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
+                        mRoomList.add(room);
+                    }
+
                     mAdapter.notifyDataSetChanged();
                     }else{
                         Toast.makeText(MainActivity.this,"房间列表为空.....",Toast.LENGTH_LONG).show();

@@ -13,7 +13,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="370dp"
         android:background="@mipmap/good_bg"
         android:padding="10dp"
         >
@@ -23,7 +23,6 @@
             android:id="@+id/item_main_content_icon"
             android:layout_width="match_parent"
             android:layout_height="280dp"
-            android:background="#ff0000"
             />
 
         <TextView
@@ -33,7 +32,6 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:singleLine="true"
-            android:text="地方就是六块腹肌阿斯利康发动机"
             android:textColor="@color/colorF75"
             android:textSize="@dimen/sp30"/>
     </RelativeLayout>

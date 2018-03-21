@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class Room implements Serializable {
 
+    public int number;
+
     public String roomName;
 
     public String roomID;
@@ -17,13 +19,4 @@ public class Room implements Serializable {
 
     public int roomIcon;
 
-    @Override
-    public String toString() {
-        return "Room{" +
-                "roomName='" + roomName + '\'' +
-                ", roomID='" + roomID + '\'' +
-                ", streamList=" + streamList +
-                ", roomIcon=" + roomIcon +
-                '}';
-    }
 }

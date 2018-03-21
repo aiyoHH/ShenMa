@@ -3,6 +3,10 @@ package cn.javava.shenma.act;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.AudioDeviceCallback;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -128,6 +132,9 @@ public class PlayActivity extends AppCompatActivity {
      */
     private CountDownTimer mCountDownTimer;
     private GameResultDialog mDialogGameResult;
+    private SoundPool soundPool;
+    int soundID_1;
+    int  soundID_2;
 
 
     public static void actionStart(Activity activity, Room room) {
@@ -157,6 +164,35 @@ public class PlayActivity extends AppCompatActivity {
             mListBanner.add("https://app-cdn.siy8.com/6320/images-1514632576278.png");
 
             mViewPager.setAdapter(new BannerAdapter(this, mListBanner));
+
+//            SoundPool.Builder builder = new SoundPool.Builder();= new SoundPool.Builder();
+//            new AudioAttributes();
+//            builder.setMaxStreams(5).setAudioAttributes()
+//
+//            soundPool=builder.build();
+//            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+//                @Override
+//                public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+//                    soundPool.play(soundID_2, 0.8f, 0.8f,-1, -1, 1.0f);
+//
+//                }
+//            });
+
+
+
+            soundPool=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
+            soundID_2=soundPool.load(this, R.raw.bg_music, 1);
+            soundID_1 = soundPool.load(this, R.raw.catch_down, 1);
+            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+                    soundPool.play(soundID_2, 0.8f, 0.8f,-1, -1, 1.0f);
+
+                }
+            });
+
+
+
 
             initStreamList();
             initViews();
@@ -202,6 +238,14 @@ public class PlayActivity extends AppCompatActivity {
             for (ZegoStream zegoStream : mListStream) {
                 zegoStream.stopPlayStream();
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(soundPool!=null){
+            soundPool.release();
         }
     }
 
@@ -336,7 +380,7 @@ public class PlayActivity extends AppCompatActivity {
 
                 if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Ended) {
                     apply();
-                  }
+                   }
 
                 if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Boarding) {
                     if (mCountDownTimer != null){
@@ -344,6 +388,8 @@ public class PlayActivity extends AppCompatActivity {
                     }
 //                    enbleControl(false);
                     CMDCenter.getInstance().grub();
+                    soundPool.play(soundID_1, 0.8f, 0.8f,1, 0, 1.0f);
+
                 }
 
 
@@ -859,7 +905,7 @@ public class PlayActivity extends AppCompatActivity {
             gameResultHint = inflate.findViewById(R.id.dialog_result_hint);
             gameResultDialog = builder.setCancelable(false).setView(inflate).create();
             //TODO 打开兑换机器
-            MotorDrvUtil.openMotor(this,4);
+            MotorDrvUtil.openMotor(this,mRoom.number);
         } else {
             message = getString(R.string.grub_failed);
             View inflate = View.inflate(this, R.layout.dialog_result_none, null);
