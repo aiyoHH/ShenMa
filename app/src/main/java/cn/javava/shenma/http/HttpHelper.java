@@ -7,8 +7,8 @@ import java.io.File;
 import java.io.IOException;
 
 import cn.javava.shenma.bean.ConfigBean;
+import cn.javava.shenma.bean.NoneDataBean;
 import cn.javava.shenma.bean.RoomsBean;
-import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.PayResultBean;
 import cn.javava.shenma.bean.RoomO;
 import cn.javava.shenma.bean.TokenBean;
@@ -103,8 +103,8 @@ public class HttpHelper implements ApiInterface {
     }
 
     @Override
-    public void obtainUserInfo(Subscriber<UserInfoBean> subscriber, String userId) {
-        toSubscribe(httpApis.obtainUserInfo(userId),subscriber);
+    public void obtainUserInfo(Subscriber<UserInfoBean> subscriber, String deviceId) {
+        toSubscribe(httpApis.obtainUserInfo(deviceId),subscriber);
     }
 
     @Override
@@ -135,6 +135,16 @@ public class HttpHelper implements ApiInterface {
     @Override
     public void gainConfig(Subscriber<ConfigBean> subscriber, String accessToken, String sessionId,int confirm) {
         toSubscribe(httpApis.gainConfig(accessToken,sessionId,confirm),subscriber);
+    }
+
+    @Override
+    public void exitUser(Subscriber<NoneDataBean> subscriber, String deviceId) {
+        toSubscribe(httpApis.exitUser(deviceId,Session.openid,Session.memberid,Session.token),subscriber);
+    }
+
+    @Override
+    public void feeDeduction(Subscriber<NoneDataBean> subscriber,String deviceId, int fee) {
+        toSubscribe(httpApis.feeDeduction(deviceId,fee,Session.openid,Session.memberid,Session.token),subscriber);
     }
 
 

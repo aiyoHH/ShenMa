@@ -8,9 +8,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +16,7 @@ import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.MainAdapter;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.base.BaseActivity;
+import cn.javava.shenma.bean.NoneDataBean;
 import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.bean.RoomO;
@@ -29,6 +27,7 @@ import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.interf.OnPositionClickListener;
+import cn.javava.shenma.utils.SystemUtil;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.CustomMediaPlayerAssertFolder;
 import cn.javava.shenma.view.SpacesItemDecoration;
@@ -83,36 +82,13 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(15));
         mRecyclerView.setAdapter(mAdapter);
 
-        gainToken();
 
        //pullInfo();
 //        pullInfoTest();
 
     }
 
-    private void gainToken(){
-        //联网获取access_token
-        HttpHelper.getInstance().gainAccessToken(new Subscriber<TokenBean>() {
-            @Override
-            public void onCompleted() {
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(TokenBean bean) {
-                if(bean.getCode()==0){
-                    Session.accessToken=bean.getAccess_token();
-                    pullInfo();
-                }
-
-            }
-        },Key.GTANT_TYPE,Key.CLIENT_ID,Key.CLIENT_SECRET);
-    }
 
     @Override
     protected void onResume() {
@@ -147,19 +123,19 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         Log.e("lzh2017","..Main...dispatchKeyEvent..login="+Session.login);
-//        if(!Session.login&&loginFragment==null){
-//            loginFragment = ScanLoginFragment.getInstance("none");
-//            loginFragment.setCancelable(false);
-//            loginFragment.show(getFragmentManager(), "GameResultDialog");
-//            loginFragment.addOnDdismissListener(this);
-//        }else if(Session.login){
-//            if(MotionEvent.ACTION_UP==event.getAction()){
-//                Log.e("lzh2017","..Main...dispatchKeyEvent..=按钮计时触发=");
-//                if(task!=null)task.start();
-//            }else{
-//                if(timer!=null)timer.cancel();
-//            }
-//        }
+        if(!Session.login&&loginFragment==null){
+            loginFragment = ScanLoginFragment.getInstance("none");
+            loginFragment.setCancelable(false);
+            loginFragment.show(getFragmentManager(), "GameResultDialog");
+            loginFragment.addOnDdismissListener(this);
+        }else if(Session.login){
+            if(MotionEvent.ACTION_UP==event.getAction()){
+                Log.e("lzh2017","..Main...dispatchKeyEvent..=按钮计时触发=");
+                if(task!=null)task.start();
+            }else{
+                if(timer!=null)timer.cancel();
+            }
+        }
         return super.dispatchKeyEvent(event);
     }
 
@@ -216,7 +192,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                 }
         };
         addSubscrebe(subscriber);
-        HttpHelper.getInstance().obtainRoomList(subscriber,Session.accessToken,Key.CLIENT_STATE);
+        HttpHelper.getInstance().obtainRoomList(subscriber,Session.token,Key.CLIENT_STATE);
     }
 
     private void pullInfoTest(){
@@ -257,7 +233,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     public void onDisMiss() {
         if(Session.login){
             //设置头像 nickname
-            mAdapter.notifyItemChanged(1,"notify");
+            mAdapter.notifyItemChanged(2,"notify");
 
                 if(timer==null){
                     timer=new TimeCounter(WHEEL_TIME,1000);
@@ -304,22 +280,14 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
         @Override
         public void onTick(long millisUntilFinished) {
-            Log.e("lzh2017", "退出倒计时:" + millisUntilFinished / 1000);
             mAdapter.setTimer(millisUntilFinished / 1000);
         }
 
         @Override
         public void onFinish() {
-            Session.openid = null;
-            Session.nickname = null;
-            Session.headimgurl = null;
-            Session.unionid = null;
-            Session.login = false;
-            if (loginFragment != null) {
-                loginFragment.dismiss();
-                loginFragment = null;
-            }
-            mAdapter.notifyItemChanged(1, "notify");
+
+            exitUser();
+
         }
     }
 
@@ -342,6 +310,36 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         public void stop() {
             UIUtils.removeCallbacks(this);
         }
+    }
+
+    private void exitUser(){
+        HttpHelper.getInstance().exitUser(new Subscriber<NoneDataBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(NoneDataBean noneDataBean) {
+                if("success".equals(noneDataBean.getStatus())){
+                    Session.openid = null;
+                    Session.nickname = null;
+                    Session.headimgurl = null;
+                    Session.memberid = 0;
+                    Session.login = false;
+                    if (loginFragment != null) {
+                        loginFragment.dismiss();
+                        loginFragment = null;
+                    }
+                    mAdapter.notifyItemChanged(2, "notify");
+                }
+            }
+        },SystemUtil.getDeviceId(this));
     }
 
 }

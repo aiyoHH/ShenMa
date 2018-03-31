@@ -13,7 +13,6 @@ import com.zego.zegoliveroom.ZegoLiveRoom;
 import com.zego.zegoliveroom.callback.IZegoCustomCommandCallback;
 import com.zego.zegoliveroom.entity.ZegoUser;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,12 +23,10 @@ import cn.javava.shenma.R;
 import cn.javava.shenma.app.App;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.bean.ConfigBean;
-import cn.javava.shenma.http.HttpApis;
 import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.BoardState;
 import cn.javava.shenma.interf.CMDKey;
-import okhttp3.ResponseBody;
 import rx.Subscriber;
 
 /**
@@ -349,7 +346,7 @@ public class CMDCenter {
                         }
                     });
             }
-        },Session.accessToken,mSessionID,1);
+        },Session.token,mSessionID,1);
 
     }
 

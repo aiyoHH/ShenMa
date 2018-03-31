@@ -1,6 +1,7 @@
 package cn.javava.shenma.http;
 
 import cn.javava.shenma.bean.ConfigBean;
+import cn.javava.shenma.bean.NoneDataBean;
 import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.PayResultBean;
@@ -42,8 +43,9 @@ public interface HttpApis {
                                     @Field("client_id")String id,
                                     @Field("client_secret")String secret );
 
-    @GET("/users/{userid}")
-    Observable<UserInfoBean> obtainUserInfo(@Path("userid") String userId);
+    @FormUrlEncoded
+    @POST("/jiayi/index.php/index/Api/openmachine")
+    Observable<UserInfoBean> obtainUserInfo(@Field("machinenumber") String deviceId);
 
     @GET("/users/me")
     Observable<ResponseBody> obtainUserMe();
@@ -80,4 +82,20 @@ public interface HttpApis {
     Observable<ConfigBean> gainConfig(@Field("access_token")String accessToken,
                                       @Field("session_id")String sessionId,
                                       @Field("confirm")int id);
+
+    @FormUrlEncoded
+    @POST("/jiayi/index.php/index/Api/closemachine")
+    Observable<NoneDataBean> exitUser(@Field("machinenumber")String deviceId,
+                                      @Field("open_id")String openId,
+                                      @Field("member_id")int memberId,
+                                      @Field("token")String token);
+
+    @FormUrlEncoded
+    @POST("/jiayi/index.php/index/Api/updatebalance")
+    Observable<NoneDataBean> feeDeduction(@Field("machinenumber")String deviceId,
+                                      @Field("balance")int fee,
+                                      @Field("open_id")String openId,
+                                      @Field("member_id")int memberId,
+                                      @Field("token")String token);
 }
+

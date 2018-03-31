@@ -24,7 +24,7 @@ public class QRcodeUtil {
     private static int IMAGE_HALFWIDTH = 50;
 
     public static Bitmap createQRCode(String text) {
-        int size=400;
+        int size=500;
 
         try {
             Hashtable<EncodeHintType, Object> hints = new Hashtable<>();

@@ -1,6 +1,7 @@
 package cn.javava.shenma.http;
 
 import cn.javava.shenma.bean.ConfigBean;
+import cn.javava.shenma.bean.NoneDataBean;
 import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.LivesBean;
 import cn.javava.shenma.bean.PayResultBean;
@@ -39,5 +40,9 @@ public interface ApiInterface {
     void gainAccessToken(Subscriber<TokenBean> subscriber, String type, String id, String secret);
 
     void gainConfig(Subscriber<ConfigBean> subscriber, String accessToken, String sessionId,int confirm);
+
+    void exitUser(Subscriber<NoneDataBean>subscriber, String deviceId);
+
+    void feeDeduction(Subscriber<NoneDataBean>subscriber,String deviceId, int fee);
 
 }

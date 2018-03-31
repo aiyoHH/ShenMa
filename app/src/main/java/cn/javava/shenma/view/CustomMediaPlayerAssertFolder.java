@@ -81,6 +81,11 @@ public class CustomMediaPlayerAssertFolder extends JZMediaInterface implements M
     }
 
     @Override
+    public void setVolume(float leftVolume, float rightVolume) {
+
+    }
+
+    @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         mediaPlayer.start();
         if (currentDataSource.toString().toLowerCase().contains("mp3")) {

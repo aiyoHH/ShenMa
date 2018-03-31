@@ -22,7 +22,7 @@ public class IJsApi {
 
     @JavascriptInterface
     public void loginSuccess(String jsonObject) throws JSONException {
-        Log.e("lzh2017","accessToken="+jsonObject.toString());
+        Log.e("lzh2017","token="+jsonObject.toString());
 
         mLoadingListener.onFinish(jsonObject);
     }

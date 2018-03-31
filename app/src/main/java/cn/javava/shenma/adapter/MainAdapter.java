@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import java.util.List;
 import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.mainHolder.BannerHolder;
 import cn.javava.shenma.adapter.mainHolder.ContentHolder;
+import cn.javava.shenma.adapter.mainHolder.UserInfoHolder;
 import cn.javava.shenma.adapter.mainHolder.VideoHolder;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.interf.Key;
@@ -26,7 +26,7 @@ import cn.javava.shenma.interf.OnPositionClickListener;
 
 public class MainAdapter extends RecyclerView.Adapter {
 
-    private final int additional=2;
+    private final int additional=3;
     private TextView mTvTimer;
 
     Context mContext;
@@ -58,6 +58,8 @@ public class MainAdapter extends RecyclerView.Adapter {
             return new BannerHolder(mInflater.inflate(R.layout.item_main_banner,parent,false));
         }else if(viewType==Key.Type.video){
             return new VideoHolder(mInflater.inflate(R.layout.item_main_video,parent,false));
+        }else if(viewType==Key.Type.userInfo){
+            return new UserInfoHolder(mInflater.inflate(R.layout.item_main_userinfo,parent,false));
         }else{
             return new ContentHolder(mInflater.inflate(R.layout.item_main_content,parent,false));
         }
@@ -67,6 +69,8 @@ public class MainAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof VideoHolder){
             ((VideoHolder) holder).setData(mContext);
+        }else if(holder instanceof UserInfoHolder){
+            ((UserInfoHolder) holder).setData(mContext);
             mTvTimer=holder.itemView.findViewById(R.id.item_main_timer);
         }else if(holder instanceof  BannerHolder){
            ((BannerHolder) holder).setData(mContext,bannerList);
@@ -109,6 +113,8 @@ public class MainAdapter extends RecyclerView.Adapter {
                 return Key.Type.banner;
             case 1:
                 return Key.Type.video;
+            case 2:
+                return Key.Type.userInfo;
                 default:
                     return Key.Type.content;
         }

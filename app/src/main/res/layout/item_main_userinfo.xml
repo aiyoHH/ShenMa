@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/dp74"
+              android:focusable="false"
+              android:background="@color/colorFb3"
+              >
+
+    <ImageView
+        android:id="@+id/item_main_logo_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/logo_title"
+       android:layout_gravity="center"
+        />
+
+    <RelativeLayout
+        android:id="@+id/item_main_use_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+
+        <ImageView
+            android:id="@+id/item_main_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/avatar_default"
+            android:layout_marginStart="20dp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/item_main_avatar"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_main_nick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="代号昵称"
+                android:textColor="@color/colorF75"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/item_main_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorF75"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/item_main_gold_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@mipmap/gold_default"
+            android:gravity="center"
+            android:textColor="@color/colorF75"
+            android:textSize="18sp"/>
+
+
+        <TextView
+            android:id="@+id/item_main_get_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/get_count"
+            android:gravity="center"
+            android:text="抓中娃娃:0个"
+            android:textColor="@color/colorF75"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+
+</FrameLayout>
