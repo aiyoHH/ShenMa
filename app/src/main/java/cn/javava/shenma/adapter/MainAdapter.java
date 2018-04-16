@@ -16,6 +16,7 @@ import cn.javava.shenma.adapter.mainHolder.BannerHolder;
 import cn.javava.shenma.adapter.mainHolder.ContentHolder;
 import cn.javava.shenma.adapter.mainHolder.UserInfoHolder;
 import cn.javava.shenma.adapter.mainHolder.VideoHolder;
+import cn.javava.shenma.bean.BannerBean;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.interf.OnPositionClickListener;
@@ -32,10 +33,10 @@ public class MainAdapter extends RecyclerView.Adapter {
     Context mContext;
     LayoutInflater mInflater;
     List<Room> mList;
-    List<String> bannerList;
+    List<BannerBean.DataBean> bannerList;
     OnPositionClickListener mListener;
 
-    public MainAdapter(Context context, List<Room> list, List<String> bannerList, RecyclerView recyclerView, OnPositionClickListener listener) {
+    public MainAdapter(Context context, List<Room> list, List<BannerBean.DataBean> bannerList, RecyclerView recyclerView, OnPositionClickListener listener) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         this.mList = list;
@@ -73,7 +74,7 @@ public class MainAdapter extends RecyclerView.Adapter {
             ((UserInfoHolder) holder).setData(mContext);
             mTvTimer=holder.itemView.findViewById(R.id.item_main_timer);
         }else if(holder instanceof  BannerHolder){
-           ((BannerHolder) holder).setData(mContext,bannerList);
+           if(bannerList.size()>0)((BannerHolder) holder).setData(mContext,bannerList);
         }else if(holder instanceof ContentHolder){
             ((ContentHolder) holder).setData(mContext,mList.get(position-additional));
             holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {

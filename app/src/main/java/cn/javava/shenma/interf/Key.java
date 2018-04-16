@@ -21,6 +21,8 @@ public interface Key {
     String CLIENT_SECRET="b";
     String CLIENT_STATE="DeviceOnline";
 
+    String SUCCESS="success";
+
 
     interface Type{
         int banner=0;

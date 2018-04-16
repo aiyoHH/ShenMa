@@ -1,5 +1,6 @@
 package cn.javava.shenma.http;
 
+import cn.javava.shenma.bean.BannerBean;
 import cn.javava.shenma.bean.ConfigBean;
 import cn.javava.shenma.bean.NoneDataBean;
 import cn.javava.shenma.bean.RoomsBean;
@@ -19,30 +20,24 @@ public interface ApiInterface {
 
     void apiTest(Subscriber<RoomO> s,String appId);
 
-    void getEntrptedConfig(Subscriber<ResponseBody> subscriber,String url);
+    void obtainBanners(Subscriber<BannerBean> subscriber);
 
-    void obtainUserList(Subscriber<ResponseBody> subscriber);
+
 
     void obtainUserInfo(Subscriber<UserInfoBean> subscriber, String userId);
 
-    void obtainUserMe(Subscriber<ResponseBody> subscriber);
 
-    void obtainRoomList(Subscriber<RoomsBean> subscriber,String accessToken,String state);
+    void obtainRoomList(Subscriber<RoomsBean> subscriber);
 
-    void obtainLiveRoomList(Subscriber<RoomsBean> subscriber, int pager);
 
     void obtainQRCodePay(Subscriber<PayResultBean> subscriber, String useId,int money);
 
-    void checkResultPay(Subscriber<ResponseBody> subscriber,String tradeNo);
 
-    void scanQRCodeLogin(Subscriber<ResponseBody> subscriber);
-
-    void gainAccessToken(Subscriber<TokenBean> subscriber, String type, String id, String secret);
 
     void gainConfig(Subscriber<ConfigBean> subscriber, String accessToken, String sessionId,int confirm);
 
-    void exitUser(Subscriber<NoneDataBean>subscriber, String deviceId);
+    void exitUser(Subscriber<NoneDataBean>subscriber);
 
-    void feeDeduction(Subscriber<NoneDataBean>subscriber,String deviceId, int fee);
+    void feeDeduction(Subscriber<NoneDataBean>subscriber, int fee);
 
 }

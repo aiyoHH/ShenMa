@@ -54,7 +54,7 @@ dependencies {
     //fragmentation
     compile 'me.yokeyword:fragmentation:0.10.7'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'com.github.wendux:DSBridge-Android:2.0-SNAPSHOT'
+//    compile 'com.github.wendux:DSBridge-Android:2.0-SNAPSHOT'
     implementation files('libs/zing.jar')
     implementation project(':jiaozivideoplayer')
 }

@@ -1,7 +1,9 @@
 package cn.javava.shenma.act;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,6 +18,7 @@ import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.MainAdapter;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.base.BaseActivity;
+import cn.javava.shenma.bean.BannerBean;
 import cn.javava.shenma.bean.NoneDataBean;
 import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.Room;
@@ -32,6 +35,7 @@ import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.CustomMediaPlayerAssertFolder;
 import cn.javava.shenma.view.SpacesItemDecoration;
 import cn.jzvd.JZVideoPlayer;
+import okhttp3.Response;
 import rx.Subscriber;
 
 
@@ -53,7 +57,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
-    List<String> mBannerList;
+    List<BannerBean.DataBean> mBannerList;
     List<Room> mRoomList;
     MainAdapter mAdapter;
     ScanLoginFragment loginFragment;
@@ -73,9 +77,9 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     protected void initEventAndData() {
         mBannerList=new ArrayList<>();
         mRoomList=new ArrayList<>();
-        mBannerList.add("https://app-cdn.siy8.com/6320/images-1514876319180.png");
-        mBannerList.add("https://app-cdn.siy8.com/6320/images-1514632576278.png");
-        mBannerList.add("https://app-cdn.siy8.com/6320/images-1514037798443.jpg");
+//        mBannerList.add("https://app-cdn.siy8.com/6320/images-1514876319180.png");
+//        mBannerList.add("https://app-cdn.siy8.com/6320/images-1514632576278.png");
+//        mBannerList.add("https://app-cdn.siy8.com/6320/images-1514037798443.jpg");
 
         JZVideoPlayer.setMediaInterface(new CustomMediaPlayerAssertFolder());//进入此页面修改MediaInterface，让此页面的jzvd正常工作
         mAdapter = new MainAdapter(this, mRoomList,mBannerList,mRecyclerView,this);
@@ -83,8 +87,13 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         mRecyclerView.setAdapter(mAdapter);
 
 
-       //pullInfo();
-//        pullInfoTest();
+        Session.deviceId=SystemUtil.getDeviceId(this);
+        obtainBanner();
+        pullInfo();
+
+
+       //仅仅试用即构娃娃机，娃娃云请关闭
+        getToken();
 
     }
 
@@ -129,8 +138,29 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             loginFragment.show(getFragmentManager(), "GameResultDialog");
             loginFragment.addOnDdismissListener(this);
         }else if(Session.login){
-            if(MotionEvent.ACTION_UP==event.getAction()){
-                Log.e("lzh2017","..Main...dispatchKeyEvent..=按钮计时触发=");
+
+            Log.e("lzh2017","..Main...dispatchKeyEvent..=退出触发="+event.getKeyCode());
+            if(KeyEvent.KEYCODE_BACK==event.getKeyCode()){
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .setTitle("退出提示")
+                        .setMessage("确定退出当前登录用户")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                exitUser();
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
+            }else if(MotionEvent.ACTION_UP==event.getAction()){
+
                 if(task!=null)task.start();
             }else{
                 if(timer!=null)timer.cancel();
@@ -142,6 +172,32 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+    }
+
+    private void obtainBanner(){
+        Subscriber subscriber= new Subscriber<BannerBean>(){
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(BannerBean response) {
+                if(response.getStatus().equals(Key.SUCCESS)){
+                    mBannerList.addAll(response.getData());
+                    mAdapter.notifyItemChanged(0);
+                }
+
+            }
+        };
+
+        addSubscrebe(subscriber);
+        HttpHelper.getInstance().obtainBanners(subscriber);
     }
 
     private void pullInfo(){
@@ -160,7 +216,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             @Override
             public void onNext(RoomsBean roomsBean) {
                 Log.e("lzh2018","设置房间列表A");
-                if(roomsBean.getCode()==0){
+                if("success".equals(roomsBean.getStatus())){
 //                    RoomsBean.DataBean dataBean = roomsBean.getData();
 //                    for (RoomsBean.DataBean.RoomListBean roomListBean : dataBean.getRoom_list()) {
 //                        Room room = new Room();
@@ -187,16 +243,29 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
                     mAdapter.notifyDataSetChanged();
                     }else{
+                    for (int  i= 0; i < images.length; i++) {
+                        Room room = new Room();
+                        room.number=i+1;
+                        room.roomIcon =images[i];
+                        room.roomID="WWJ_ZEGO_3275f295eab4";
+                        room.roomName= room.number+"号房间";
+                        room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
+                        room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
+                        mRoomList.add(room);
+                    }
+
+                    mAdapter.notifyDataSetChanged();
                         Toast.makeText(MainActivity.this,"房间列表为空.....",Toast.LENGTH_LONG).show();
                     }
                 }
         };
         addSubscrebe(subscriber);
-        HttpHelper.getInstance().obtainRoomList(subscriber,Session.token,Key.CLIENT_STATE);
+        HttpHelper.getInstance().obtainRoomList(subscriber);
+
     }
 
-    private void pullInfoTest(){
-      Subscriber<RoomO> subscriber=new Subscriber<RoomO>() {
+    private void getToken(){
+      Subscriber<TokenBean> subscriber=new Subscriber<TokenBean>() {
             @Override
             public void onCompleted() {
 
@@ -208,25 +277,14 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             }
 
             @Override
-            public void onNext(RoomO roomO) {
+            public void onNext(TokenBean roomO) {
                 if (roomO.getCode() == 0) {
-                    for (RoomO.DataBean.RoomListBean roomListBean : roomO.getData().getRoom_list()) {
-                        if (roomListBean.getStream_info() == null || roomListBean.getStream_info().size() == 0) continue;
-                        Room room = new Room();
-                        room.roomIcon = R.mipmap.ic_room1;
-                        room.roomID = roomListBean.getRoom_id();
-                        room.roomName ="房间名"+ roomListBean.getRoom_name();
-                        for (RoomO.DataBean.RoomListBean.StreamInfoBean streamInfoBean : roomListBean.getStream_info()) {
-                            room.streamList.add(streamInfoBean.getStream_id());
-                        }
-                        mRoomList.add(room);
-                    }
-                    mAdapter.notifyDataSetChanged();
+                    Session.accessToken=roomO.getAccess_token();
                 }
             }
         };
         addSubscrebe(subscriber);
-        HttpHelper.getInstance().apiTest(subscriber, String.valueOf(ZegoApiManager.getInstance().getAppID()));
+        HttpHelper.getInstance().getAccessToken(subscriber);
     }
 
     @Override
@@ -339,7 +397,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                     mAdapter.notifyItemChanged(2, "notify");
                 }
             }
-        },SystemUtil.getDeviceId(this));
+        });
     }
 
 }

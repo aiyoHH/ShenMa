@@ -1,13 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_alignParentBottom="true"
+       >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="280dp"
+            android:src="@mipmap/bottom_bg"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+        />
+
+    <RelativeLayout
+        android:id="@+id/orientation_layout"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="200dp"
+
+        >
+
+        <ImageButton
+            android:id="@+id/play_console_center"
+            android:layout_width="80dp"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:background="@mipmap/center" />
+
+        <ImageButton
+            android:id="@+id/play_up"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_above="@+id/play_console_center"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/selector_btn_up" />
+
+        <ImageButton
+            android:id="@+id/play_right"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_toEndOf="@+id/play_console_center"
+            android:background="@drawable/selector_btn_right" />
+
+        <ImageButton
+            android:id="@+id/play_left"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_toStartOf="@+id/play_console_center"
+            android:background="@drawable/selector_btn_left" />
+
+        <ImageButton
+            android:id="@+id/play_down"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/play_console_center"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/selector_btn_down" />
+    </RelativeLayout>
+
+
+    <ImageButton
+        android:id="@+id/play_confirm"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="230dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/selector_btn_cancel"
+        />
+
+    <ImageButton
+        android:id="@+id/play_cancel"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="480dp"
+        android:layout_alignParentEnd="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/selector_btn_confirm"
+        />
+
+ <!--   <ImageButton
+        android:id="@+id/play_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="60dp"
+        android:background="@mipmap/apply" />-->
+</RelativeLayout>
+</RelativeLayout>
+
+<!--
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="1080px"
+    android:layout_height="1884px"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/banner"/>
+        />
 
     <Button
         android:id="@+id/push_good"
@@ -26,10 +134,72 @@
         android:textColor="@android:color/black"/>
 
 
-    <wendu.dsbridge.DWebView
-        android:id="@+id/test_webview"
+    <EditText
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="40dp"
+        android:textColor="@color/colorAccent"
+        android:hint="input text"/>
 
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/test_4_bottom"
+            android:background="@color/colorAccent"
+
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/test_3_bottom"
+            android:background="@color/colorAccent"
+
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/test_3_bottom"
+            android:background="@color/colorAccent"
+
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/test_4_bottom"
+            android:background="@color/colorAccent"
+
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/test_5_bottom"
+            android:background="@color/colorAccent"
+
+            />
+
+
+        <ImageView
+            android:layout_width="550dp"
+            android:layout_height="125dp"
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/paly_bottom"
+            android:background="@color/colorAccent"
+
+            />
+    </LinearLayout>
+
+
+</LinearLayout>-->

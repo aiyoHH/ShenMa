@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/play_top"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp400">
+        android:layout_height="440dp">
+
         <android.support.v4.view.ViewPager
             android:id="@+id/play_viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/play_points_behind"
@@ -22,28 +23,44 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
-            android:orientation="horizontal"
-            />
+            android:orientation="horizontal" />
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/play_middle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp43"
+        android:layout_height="@dimen/dp86"
         android:layout_below="@+id/play_top"
         android:background="@color/colorFdd"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/play_boarding_countdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@android:color/white"
+            android:textSize="45sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/play_queue_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/white"
+            android:textSize="38sp"/>
+
+
+    </RelativeLayout>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/play_middle"
-        >
+        android:layout_below="@+id/play_middle">
 
         <TextureView
             android:id="@+id/play_textureview1"
@@ -53,12 +70,22 @@
 
             />
 
-        <TextureView
-            android:id="@+id/play_textureview2"
-            android:layout_width="300dp"
-            android:layout_height="400dp"
+        <FrameLayout
+            android:id="@+id/play_textureview2_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorFdd"
+            android:paddingBottom="10dp"
             android:layout_alignParentEnd="true"
-            />
+            android:paddingStart="10dp">
+
+            <TextureView
+                android:id="@+id/play_textureview2"
+                android:layout_width="400dp"
+                android:layout_height="533dp"
+                 />
+
+        </FrameLayout>
 
 
         <TextView
@@ -71,143 +98,149 @@
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
-
-
-        <TextView
-        android:id="@+id/play_boarding_countdown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/play_textureview2"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:textSize="40sp"
-        android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/play_internet_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/play_textureview2"
+            android:layout_alignStart="@+id/play_textureview2_layout"
+            android:layout_below="@+id/play_textureview2_layout"
             android:layout_centerHorizontal="true"
-            android:layout_alignStart="@+id/play_textureview2"
             android:textSize="40sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp150"
+            android:layout_height="350dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="@dimen/dp43"
-            android:layout_marginStart="@dimen/dp43"
             >
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp120"
+                android:layout_width="wrap_content"
+                android:layout_height="280dp"
+                android:src="@mipmap/bottom_bg"
+                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
-                android:background="@mipmap/bottom_bg"
-                android:scaleType="fitXY"/>
+                />
+
+
+            <RelativeLayout
+                android:id="@+id/orientation_type_bg_layout"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="@mipmap/type_bg"
+                android:layout_marginStart="220dp"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/orientation_type_bg"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:layout_centerHorizontal="true"
+
+                    />
+            </RelativeLayout>
+
+
 
             <RelativeLayout
                 android:id="@+id/orientation_layout"
-                android:layout_width="180dp"
+                android:layout_width="250dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/dp30"
-                android:visibility="gone"
+                android:layout_marginStart="170dp"
+
                 >
 
                 <ImageButton
                     android:id="@+id/play_console_center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="120dp"
                     android:layout_centerInParent="true"
-                    android:background="@mipmap/center"
-                    />
+                    android:scaleType="centerCrop"
+                    android:background="@mipmap/center" />
 
                 <ImageButton
                     android:id="@+id/play_up"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_above="@+id/play_console_center"
                     android:layout_centerHorizontal="true"
                     android:layout_margin="10dp"
-                    android:background="@drawable/selector_btn_up"
-                    />
+                    android:background="@drawable/selector_btn_up" />
 
                 <ImageButton
                     android:id="@+id/play_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
                     android:layout_toEndOf="@+id/play_console_center"
-                    android:background="@drawable/selector_btn_left"
-                    />
+                    android:background="@drawable/selector_btn_right" />
 
                 <ImageButton
                     android:id="@+id/play_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
                     android:layout_toStartOf="@+id/play_console_center"
-                    android:background="@drawable/selector_btn_right"/>
+                    android:background="@drawable/selector_btn_left" />
 
                 <ImageButton
                     android:id="@+id/play_down"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_below="@+id/play_console_center"
                     android:layout_centerHorizontal="true"
                     android:layout_margin="10dp"
-                    android:background="@drawable/selector_btn_down"/>
+                    android:background="@drawable/selector_btn_down" />
             </RelativeLayout>
 
-            <ImageButton
-                android:id="@+id/play_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="60dp"
-                android:background="@drawable/selector_btn_cancel"
-                android:visibility="gone"
-                />
 
             <ImageButton
                 android:id="@+id/play_confirm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dp30"
-                android:layout_toStartOf="@+id/play_cancel"
-                android:background="@drawable/selector_btn_confirm"
-                android:visibility="gone"
+                android:layout_marginEnd="200dp"
+                android:scaleType="centerCrop"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/selector_btn_cancel"
                 />
 
             <ImageButton
-                android:id="@+id/play_apply"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/play_cancel"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="450dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="60dp"
-                android:background="@mipmap/apply"/>
+                android:scaleType="centerCrop"
+                android:background="@drawable/selector_btn_confirm"
+                />
+
+               <ImageButton
+                   android:id="@+id/play_apply"
+                   android:visibility="gone"
+                   android:layout_width="450dp"
+                   android:layout_height="200dp"
+                   android:layout_alignParentEnd="true"
+                   android:layout_marginEnd="160dp"
+                   android:background="@mipmap/apply" />
         </RelativeLayout>
 
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/avatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_below="@+id/play_top"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
-        android:background="@mipmap/ic_launcher"
-        android:contentDescription="TODO"/>
+        android:contentDescription="TODO"
+        android:src="@mipmap/ic_launcher" />
 
 
 </RelativeLayout>

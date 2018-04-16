@@ -6,6 +6,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
+import cn.javava.shenma.bean.BannerBean;
 import cn.javava.shenma.bean.ConfigBean;
 import cn.javava.shenma.bean.NoneDataBean;
 import cn.javava.shenma.bean.RoomsBean;
@@ -92,71 +93,54 @@ public class HttpHelper implements ApiInterface {
         toSubscribe(httpApis.apiTest(url), s);
     }
 
-    @Override
-    public void getEntrptedConfig(Subscriber<ResponseBody> subscriber,String url) {
-        toSubscribe(httpApis.getEntrptedConfig(url),subscriber);
+    public void getAccessToken(Subscriber<TokenBean> s){
+        String url="http://api.javava.cn/oauth/token";
+
+        toSubscribe(httpApis.gainToken(url,"client_credentials","a","b"), s);
     }
 
     @Override
-    public void obtainUserList(Subscriber<ResponseBody> subscriber) {
-        toSubscribe(httpApis.obtainUserList(),subscriber);
+    public void obtainBanners(Subscriber<BannerBean> subscriber) {
+        toSubscribe(httpApis.obtainBannerList(Session.deviceId,Session.openid,Session.memberid,Session.token),subscriber);
     }
+
+
 
     @Override
     public void obtainUserInfo(Subscriber<UserInfoBean> subscriber, String deviceId) {
         toSubscribe(httpApis.obtainUserInfo(deviceId),subscriber);
     }
 
-    @Override
-    public void obtainUserMe(Subscriber<ResponseBody> subscriber) {
-        toSubscribe(httpApis.obtainUserMe(),subscriber);
-    }
+
 
     @Override
-    public void obtainRoomList(Subscriber<RoomsBean> subscriber,String accessToken,String state) {
-        toSubscribe(httpApis.obtainRoomList(accessToken,state),subscriber);
+    public void obtainRoomList(Subscriber<RoomsBean> subscriber) {
+        toSubscribe(httpApis.obtainRoomList(Session.deviceId),subscriber);
     }
 
-    @Override
-    public void obtainLiveRoomList(Subscriber<RoomsBean> subscriber, int pager) {
-        toSubscribe(httpApis.obtainLiveRoomList(pager),subscriber);
-    }
 
     @Override
     public void obtainQRCodePay(Subscriber<PayResultBean> subscriber,String userId,int money) {
         toSubscribe(httpApis.obtainQRCodePay("c",userId,money),subscriber);
     }
 
-    @Override
-    public void gainAccessToken(Subscriber<TokenBean> subscriber, String type, String id, String secret) {
-        toSubscribe(httpApis.gainToken(type,id,secret),subscriber);
-    }
 
     @Override
     public void gainConfig(Subscriber<ConfigBean> subscriber, String accessToken, String sessionId,int confirm) {
-        toSubscribe(httpApis.gainConfig(accessToken,sessionId,confirm),subscriber);
+        String url="http://api.javava.cn/games";
+        toSubscribe(httpApis.gainConfig(url,accessToken,sessionId,confirm),subscriber);
     }
 
     @Override
-    public void exitUser(Subscriber<NoneDataBean> subscriber, String deviceId) {
-        toSubscribe(httpApis.exitUser(deviceId,Session.openid,Session.memberid,Session.token),subscriber);
+    public void exitUser(Subscriber<NoneDataBean> subscriber) {
+        toSubscribe(httpApis.exitUser(Session.deviceId,Session.openid,Session.memberid,Session.token),subscriber);
     }
 
     @Override
-    public void feeDeduction(Subscriber<NoneDataBean> subscriber,String deviceId, int fee) {
-        toSubscribe(httpApis.feeDeduction(deviceId,fee,Session.openid,Session.memberid,Session.token),subscriber);
+    public void feeDeduction(Subscriber<NoneDataBean> subscriber, int fee) {
+        toSubscribe(httpApis.feeDeduction(Session.deviceId,fee,Session.openid,Session.memberid,Session.token),subscriber);
     }
 
-
-    @Override
-    public void checkResultPay(Subscriber<ResponseBody> subscriber,String tradeNo) {
-        toSubscribe(httpApis.checkResultPay(tradeNo),subscriber);
-    }
-
-    @Override
-    public void scanQRCodeLogin(Subscriber<ResponseBody> subscriber) {
-        toSubscribe(httpApis.scanQRCodeLogin(),subscriber);
-    }
 
     Interceptor logInterceptor = new HttpLoggingInterceptor(
             new HttpLoggingInterceptor.Logger() {

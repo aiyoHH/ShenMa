@@ -10,29 +10,21 @@ public class RoomsBean {
 
 
     /**
-     * code : 0
-     * message : 成功
-     * content : [{"id":"488b72b91ef111e88dbe00163e0887cf","channel_id":"0xb-0x1","state":"DeviceOnline","create_date":"2018-03-03 22:43:48"},{"id":"8645c15c1ef111e88dbe00163e0887cf","channel_id":"0xa-0x1","state":"DeviceOnline","create_date":"2018-03-03 22:45:32"},{"id":"94acffa4233e11e8b35100163e0887cf","channel_id":"WWJ_ZEGO_3275f295eab4","state":"DeviceOnline","create_date":"2018-03-09 16:20:17"}]
-     * total_elements : 3
-     * total_pages : 1
-     * size : 10
-     * page : 0
+     * status : success
+     * message : 返回数据成功
+     * data : [{"id":3,"title":"主导航联系华智","balance":10,"kucun":1,"thumb":"http://weixin.javava.cn//jiayi/public/uploads/20180403\\6b971861d1341bb2517513d949e56b7f.png","is_zhong":0,"goods_id":3},{"id":4,"title":"主导航联系华智","balance":0,"kucun":1,"thumb":"http://weixin.javava.cn//jiayi/public/uploads/20180403\\7bc9b82fead45a641fa73bc4c1394b34.png","is_zhong":0,"goods_id":4}]
      */
 
-    private int code;
+    private String status;
     private String message;
-    private int total_elements;
-    private int total_pages;
-    private int size;
-    private int page;
-    private List<ContentBean> content;
+    private List<DataBean> data;
 
-    public int getCode() {
-        return code;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getMessage() {
@@ -43,89 +35,87 @@ public class RoomsBean {
         this.message = message;
     }
 
-    public int getTotal_elements() {
-        return total_elements;
+    public List<DataBean> getData() {
+        return data;
     }
 
-    public void setTotal_elements(int total_elements) {
-        this.total_elements = total_elements;
+    public void setData(List<DataBean> data) {
+        this.data = data;
     }
 
-    public int getTotal_pages() {
-        return total_pages;
-    }
-
-    public void setTotal_pages(int total_pages) {
-        this.total_pages = total_pages;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public List<ContentBean> getContent() {
-        return content;
-    }
-
-    public void setContent(List<ContentBean> content) {
-        this.content = content;
-    }
-
-    public static class ContentBean {
+    public static class DataBean {
         /**
-         * id : 488b72b91ef111e88dbe00163e0887cf
-         * channel_id : 0xb-0x1
-         * state : DeviceOnline
-         * create_date : 2018-03-03 22:43:48
+         * id : 3
+         * title : 主导航联系华智
+         * balance : 10
+         * kucun : 1
+         * thumb : http://weixin.javava.cn//jiayi/public/uploads/20180403\6b971861d1341bb2517513d949e56b7f.png
+         * is_zhong : 0
+         * goods_id : 3
          */
 
-        private String id;
-        private String channel_id;
-        private String state;
-        private String create_date;
+        private int id;
+        private String title;
+        private int balance;
+        private int kucun;
+        private String thumb;
+        private int is_zhong;
+        private int goods_id;
 
-        public String getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(int id) {
             this.id = id;
         }
 
-        public String getChannel_id() {
-            return channel_id;
+        public String getTitle() {
+            return title;
         }
 
-        public void setChannel_id(String channel_id) {
-            this.channel_id = channel_id;
+        public void setTitle(String title) {
+            this.title = title;
         }
 
-        public String getState() {
-            return state;
+        public int getBalance() {
+            return balance;
         }
 
-        public void setState(String state) {
-            this.state = state;
+        public void setBalance(int balance) {
+            this.balance = balance;
         }
 
-        public String getCreate_date() {
-            return create_date;
+        public int getKucun() {
+            return kucun;
         }
 
-        public void setCreate_date(String create_date) {
-            this.create_date = create_date;
+        public void setKucun(int kucun) {
+            this.kucun = kucun;
+        }
+
+        public String getThumb() {
+            return thumb;
+        }
+
+        public void setThumb(String thumb) {
+            this.thumb = thumb;
+        }
+
+        public int getIs_zhong() {
+            return is_zhong;
+        }
+
+        public void setIs_zhong(int is_zhong) {
+            this.is_zhong = is_zhong;
+        }
+
+        public int getGoods_id() {
+            return goods_id;
+        }
+
+        public void setGoods_id(int goods_id) {
+            this.goods_id = goods_id;
         }
     }
 }

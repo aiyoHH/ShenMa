@@ -1,5 +1,6 @@
 package cn.javava.shenma.http;
 
+import cn.javava.shenma.bean.BannerBean;
 import cn.javava.shenma.bean.ConfigBean;
 import cn.javava.shenma.bean.NoneDataBean;
 import cn.javava.shenma.bean.RoomsBean;
@@ -34,12 +35,12 @@ public interface HttpApis {
     @GET()
     Observable<RoomO> apiTest(@Url String url);
 
-    @GET("/users")
-    Observable<ResponseBody> obtainUserList();
 
     @FormUrlEncoded
-    @POST("/oauth/token")
-    Observable<TokenBean> gainToken(@Field("grant_type")String type,
+    @POST()
+    Observable<TokenBean> gainToken(
+            @Url String url,
+            @Field("grant_type")String type,
                                     @Field("client_id")String id,
                                     @Field("client_secret")String secret );
 
@@ -47,39 +48,44 @@ public interface HttpApis {
     @POST("/jiayi/index.php/index/Api/openmachine")
     Observable<UserInfoBean> obtainUserInfo(@Field("machinenumber") String deviceId);
 
-    @GET("/users/me")
-    Observable<ResponseBody> obtainUserMe();
+    /**
+     * 获取轮播图
+     * @param deviceId
+     * @param openId
+     * @param memberId
+     * @param token
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/jiayi/index.php/index/Api/bannerlist")
+    Observable<BannerBean> obtainBannerList(@Field("machinenumber")String deviceId,
+                                            @Field("open_id")String openId,
+                                            @Field("member_id")int memberId,
+                                            @Field("token")String token);
+
 
     /**
      * 获取房间列表
-     * @param accessToken
-     * @param state
+     * @param deviceId
      * @return
      */
-    @GET("/rooms")
-    Observable<RoomsBean> obtainRoomList(@Query("access_token")String accessToken,@Query("state")String state);
+    @FormUrlEncoded
+    @POST("/jiayi/index.php/index/Api/machinegoodslist")
+    Observable<RoomsBean> obtainRoomList(@Field("machinenumber")String deviceId);
 
 
-    @GET("/lives/rooms")
-    Observable<RoomsBean> obtainLiveRoomList(@Query("pager")int pager);
 
     @FormUrlEncoded
     @POST("/trades/generateQRCode")
     Observable<PayResultBean> obtainQRCodePay(@Query("access_token") String accessToken,@Field("userId")String useId,@Field("money")int money);
 
-    @GET("/pay/trades/{tradeNo}")
-    Observable<ResponseBody> checkResultPay(@Path("tradeNo") String tradeNo);
 
-    @GET("/authc/scanQRCodeComplete")
-    Observable<ResponseBody> scanQRCodeLogin();
-
-    @GET
-    Observable<ResponseBody> getEntrptedConfig(@Url String url);
 
 
     @FormUrlEncoded
-    @POST("/games")
-    Observable<ConfigBean> gainConfig(@Field("access_token")String accessToken,
+    @POST()
+    Observable<ConfigBean> gainConfig(
+            @Url String url,@Field("access_token")String accessToken,
                                       @Field("session_id")String sessionId,
                                       @Field("confirm")int id);
 

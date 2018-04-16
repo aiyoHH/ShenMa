@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.BannerAdapter;
+import cn.javava.shenma.bean.BannerBean;
 import cn.javava.shenma.utils.ImageLoader;
 import cn.javava.shenma.utils.ScreenUtil;
 import cn.javava.shenma.utils.UIUtils;
@@ -41,7 +42,7 @@ public class BannerHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this,itemView);
     }
 
-    public void setData(Context context,List<String> list){
+    public void setData(Context context,List<BannerBean.DataBean> list){
 
         mViewPager.setAdapter(new BannerAdapter(context,list));
         llContainer.removeAllViews();
@@ -86,9 +87,9 @@ public class BannerHolder extends RecyclerView.ViewHolder {
 
     public class BannerAdapter extends PagerAdapter {
         Context context;
-        List<String> list;
+        List<BannerBean.DataBean> list;
 
-        public BannerAdapter(Context context,List<String> list) {
+        public BannerAdapter(Context context,List<BannerBean.DataBean> list) {
             this.context=context;
             this.list=list;
         }
@@ -105,7 +106,7 @@ public class BannerHolder extends RecyclerView.ViewHolder {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            String uri=list.get(position%list.size());
+            String uri=list.get(position%list.size()).getThumb();
             ImageView imageView=new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             ImageLoader.loadTop(context,uri,imageView);

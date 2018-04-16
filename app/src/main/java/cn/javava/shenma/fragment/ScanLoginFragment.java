@@ -1,50 +1,30 @@
 package cn.javava.shenma.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
-import android.media.Image;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.zxing.qrcode.encoder.QRCode;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import butterknife.BindView;
 import cn.javava.shenma.R;
-import cn.javava.shenma.bean.TokenBean;
 import cn.javava.shenma.bean.UserInfoBean;
 import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
-import cn.javava.shenma.interf.IJsApi;
 import cn.javava.shenma.interf.Key;
-import cn.javava.shenma.interf.OnLoadingListener;
 import cn.javava.shenma.utils.QRcodeUtil;
 import cn.javava.shenma.utils.SystemUtil;
-import okhttp3.ResponseBody;
 import rx.Subscriber;
-import wendu.dsbridge.DWebView;
 
 /**
  * Description {des}
