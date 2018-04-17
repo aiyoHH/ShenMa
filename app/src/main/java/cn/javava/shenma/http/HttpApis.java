@@ -87,7 +87,8 @@ public interface HttpApis {
     Observable<ConfigBean> gainConfig(
             @Url String url,@Field("access_token")String accessToken,
                                       @Field("session_id")String sessionId,
-                                      @Field("confirm")int id);
+                                      @Field("confirm")int id,
+                                       @Field("is_zhua")int isZhua);
 
     @FormUrlEncoded
     @POST("/jiayi/index.php/index/Api/closemachine")
@@ -103,5 +104,13 @@ public interface HttpApis {
                                       @Field("open_id")String openId,
                                       @Field("member_id")int memberId,
                                       @Field("token")String token);
+
+    @FormUrlEncoded
+    @POST("/jiayi/index.php/index/Api/receivelog")
+    Observable<NoneDataBean> registerGood(@Field("machinenumber")String deviceId,
+                                          @Field("open_id")String openId,
+                                          @Field("member_id")int memberId,
+                                          @Field("token")String token,
+                                          @Field("goods_id")String goodsId);
 }
 

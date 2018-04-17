@@ -62,6 +62,21 @@ public class UserInfoBean {
         private String login_time;
         private String name;
 
+        public String getOpen_all_case() {
+            return open_all_case;
+        }
+
+        public void setOpen_all_case(String open_all_case) {
+            this.open_all_case = open_all_case;
+        }
+
+        private String open_all_case;
+
+
+
+
+
+
         public String getName() {
             return name;
         }

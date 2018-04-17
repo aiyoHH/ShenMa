@@ -40,4 +40,7 @@ public interface ApiInterface {
 
     void feeDeduction(Subscriber<NoneDataBean>subscriber, int fee);
 
+
+    void registerGood(Subscriber<NoneDataBean>subscriber, String goodId);
+
 }

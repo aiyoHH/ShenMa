@@ -34,14 +34,16 @@ public class MainAdapter extends RecyclerView.Adapter {
     LayoutInflater mInflater;
     List<Room> mList;
     List<BannerBean.DataBean> bannerList;
+    String mVideoUrl;
     OnPositionClickListener mListener;
 
-    public MainAdapter(Context context, List<Room> list, List<BannerBean.DataBean> bannerList, RecyclerView recyclerView, OnPositionClickListener listener) {
+    public MainAdapter(Context context, List<Room> list, List<BannerBean.DataBean> bannerList,String url, RecyclerView recyclerView, OnPositionClickListener listener) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         this.mList = list;
         this.bannerList=bannerList;
         this.mListener=listener;
+        this.mVideoUrl=url;
 
         GridLayoutManager layoutManager=new GridLayoutManager(context,2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -69,7 +71,7 @@ public class MainAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof VideoHolder){
-            ((VideoHolder) holder).setData(mContext);
+            ((VideoHolder) holder).setData(mContext,mVideoUrl);
         }else if(holder instanceof UserInfoHolder){
             ((UserInfoHolder) holder).setData(mContext);
             mTvTimer=holder.itemView.findViewById(R.id.item_main_timer);

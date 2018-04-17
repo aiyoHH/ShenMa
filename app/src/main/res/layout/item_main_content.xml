@@ -21,8 +21,9 @@
 
         <ImageView
             android:id="@+id/item_main_content_icon"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="280dp"
+            android:layout_centerInParent="true"
             />
 
         <TextView
@@ -34,6 +35,17 @@
             android:singleLine="true"
             android:textColor="@color/colorF75"
             android:textSize="@dimen/sp30"/>
+
+        <TextView
+            android:id="@+id/item_main_order"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="25sp"
+            android:textColor="@color/colorF75"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorAccent"/>
     </RelativeLayout>
 
 </LinearLayout>

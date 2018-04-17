@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cn.jzvd.JZVideoPlayerStandard
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="810dp"
+    android:background="#000000"
+    android:focusable="false">
+
+    <cn.javava.shenma.view.CustomVideoView
         android:id="@+id/item_main_video"
         android:layout_width="match_parent"
-        android:focusable="false"
-        android:layout_height="@dimen/dp600"/>
+        android:layout_height="810dp"
+        android:focusable="false" />
 
-
+</RelativeLayout>

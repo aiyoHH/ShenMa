@@ -22,6 +22,7 @@ import cn.javava.shenma.bean.UserInfoBean;
 import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.Key;
+import cn.javava.shenma.utils.MotorDrvUtil;
 import cn.javava.shenma.utils.QRcodeUtil;
 import cn.javava.shenma.utils.SystemUtil;
 import rx.Subscriber;
@@ -153,6 +154,9 @@ public class ScanLoginFragment extends DialogFragment  {
                         Session.headimgurl=data.getProfile_photo();
                         Session.balance=data.getBalance();
                         ScanLoginFragment.this.dismiss();
+                        if("open".equals(data.getOpen_all_case())){
+                            MotorDrvUtil.pushAllCase(getActivity());
+                        }
                     }
                 }
             },deviceId);

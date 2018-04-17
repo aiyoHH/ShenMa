@@ -38,6 +38,7 @@ public class App extends Application  {
 
         // 初始化sdk
         ZegoApiManager.getInstance().initSDK();
+
     }
 
 

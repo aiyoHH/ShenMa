@@ -44,12 +44,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.BannerAdapter;
+import cn.javava.shenma.adapter.mainHolder.BannerHolder;
 import cn.javava.shenma.app.ZegoApiManager;
+import cn.javava.shenma.bean.BannerBean;
 import cn.javava.shenma.bean.NoneDataBean;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.bean.TokenBean;
 import cn.javava.shenma.fragment.CatchExitFragment;
 import cn.javava.shenma.fragment.GameResultDialog;
+import cn.javava.shenma.fragment.RechargeFragment;
+import cn.javava.shenma.fragment.ScanLoginFragment;
 import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.BoardState;
@@ -58,6 +62,7 @@ import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.utils.CMDCenter;
 import cn.javava.shenma.utils.ImageLoader;
 import cn.javava.shenma.utils.MotorDrvUtil;
+import cn.javava.shenma.utils.SwitchBannerTask;
 import cn.javava.shenma.utils.SystemUtil;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.utils.ZegoStream;
@@ -114,7 +119,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private Room mRoom;
     private List<ZegoStream> mListStream = new ArrayList<>();
-    private List<String> mListBanner = new ArrayList<>();
+    private List<BannerBean.DataBean> mListBanner ;
     private ZegoLiveRoom mZegoLiveRoom = ZegoApiManager.getInstance().getZegoLiveRoom();
     /**
      * app是否在后台.
@@ -146,7 +151,8 @@ public class PlayActivity extends AppCompatActivity {
     private GameResultDialog mDialogGameResult;
     private SoundPool soundPool;
     int soundID_1;
-    int  soundID_2;
+    int soundID_2;
+    SwitchBannerTask switchBannerTaskn;
 
 
     public static void actionStart(Activity activity, Room room) {
@@ -173,9 +179,13 @@ public class PlayActivity extends AppCompatActivity {
 
             ButterKnife.bind(this);
 
-            mListBanner.add("https://app-cdn.siy8.com/6320/images-1514632576278.png");
+            mListBanner=Session.bannerList;
 
             mViewPager.setAdapter(new BannerAdapter(this, mListBanner));
+
+
+            switchBannerTaskn = new SwitchBannerTask();
+            switchBannerTaskn.start(mViewPager);
 
 //            SoundPool.Builder builder = new SoundPool.Builder();= new SoundPool.Builder();
 //            new AudioAttributes();
@@ -191,32 +201,31 @@ public class PlayActivity extends AppCompatActivity {
 //            });
 
 
-
-            soundPool=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
-            soundID_2=soundPool.load(this, R.raw.bg_music, 1);
+            soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+            soundID_2 = soundPool.load(this, R.raw.bg_music, 1);
             soundID_1 = soundPool.load(this, R.raw.catch_down, 1);
             soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
                 @Override
                 public void onLoadComplete(SoundPool soundPool, int i, int i1) {
-                    soundPool.play(soundID_2, 0.8f, 0.8f,-1, -1, 1.0f);
+                    soundPool.play(soundID_2, 0.8f, 0.8f, -1, -1, 1.0f);
 
                 }
             });
 
 
+            showControlPannel(false);
 
 
             initStreamList();
             initViews();
             startPlay();
 
-            UIUtils.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    apply();
-                }
-            },2000);
-
+//            UIUtils.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    apply();
+//                }
+//            },2000);
 
 
         } else {
@@ -226,7 +235,6 @@ public class PlayActivity extends AppCompatActivity {
 
         //从加速服务器拉流
         ZegoLiveRoom.setConfig(ZegoConstants.Config.PREFER_PLAY_ULTRA_SOURCE + "=1");
-
 
 
     }
@@ -262,38 +270,79 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(soundPool!=null){
+        if (soundPool != null) {
+            soundPool.pause(soundID_1);
+            soundPool.pause(soundID_2);
             soundPool.release();
+
         }
+
+        switchBannerTaskn.stop();
+
+        Session.isZhua=0;
     }
 
     protected void initViews() {
-        ImageLoader.loadCircular(this, Session.headimgurl,mIvAvatar);
+        ImageLoader.loadCircular(this, Session.headimgurl, mIvAvatar);
     }
 
+
+    private boolean isFeeing;
     //预约上机
     @OnClick(R.id.play_apply)
     public void apply() {
-        if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Ended) {
-            CMDCenter.getInstance().apply(false, new CMDCenter.OnCommandSendCallback() {
-                @Override
-                public void onSendFail() {
-                    sendCMDFail("Apply");
-                }
-            });
-        } else {
-            if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingBoard) {
-                CMDCenter.getInstance().cancelApply(new CMDCenter.OnCommandSendCallback() {
-                    @Override
-                    public void onSendFail() {
-                        Toast.makeText(PlayActivity.this, getString(R.string.cancel_apply_failed), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        if(isFeeing)return;
+        isFeeing=true;
+        //扣费环节
+        Subscriber<NoneDataBean> subscriber = new Subscriber<NoneDataBean>() {
+            @Override
+            public void onCompleted() {
+                isFeeing=false;
             }
-        }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("lzh2018","applay1##################"+e.getMessage());
+                doLogout();
+            }
+
+            @Override
+            public void onNext(NoneDataBean roomO) {
+                Log.e("lzh2018","applay1##################");
+                if (Key.SUCCESS.equals(roomO.getStatus())) {
+                    Log.e("lzh2018","applay##################");
+                    Session.balance = roomO.getData().getBalance();
+                    Session.isZhua=roomO.getData().getIs_zhua();
+                    if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Ended) {
+                        CMDCenter.getInstance().apply(PlayActivity.this, false, new CMDCenter.OnCommandSendCallback() {
+                            @Override
+                            public void onSendFail() {
+                                sendCMDFail("Apply");
+                            }
+                        });
+                    } else {
+                        if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingBoard) {
+                            CMDCenter.getInstance().cancelApply(new CMDCenter.OnCommandSendCallback() {
+                                @Override
+                                public void onSendFail() {
+                                    Toast.makeText(PlayActivity.this, getString(R.string.cancel_apply_failed), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                } else {
+
+                    Log.e("lzh2018","applay#doLoyout#################");
+                    doLogout();
+                }
+            }
+        };
+        HttpHelper.getInstance().feeDeduction(subscriber, mRoom.balance);
+
     }
 
     private void logout() {
@@ -313,7 +362,7 @@ public class PlayActivity extends AppCompatActivity {
                 }
             });
 
-            catchExitFragment.show(getFragmentManager(),"");
+            catchExitFragment.show(getFragmentManager(), "");
 
         } else {
             doLogout();
@@ -406,15 +455,15 @@ public class PlayActivity extends AppCompatActivity {
 
                 if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Ended) {
                     apply();
-                   }
+                }
 
                 if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Boarding) {
-                    if (mCountDownTimer != null){
+                    if (mCountDownTimer != null) {
                         mCountDownTimer.cancel();
                     }
 //                    enbleControl(false);
                     CMDCenter.getInstance().grub();
-                    soundPool.play(soundID_1, 0.8f, 0.8f,1, 0, 1.0f);
+                    soundPool.play(soundID_1, 0.8f, 0.8f, 1, 0, 1.0f);
 
                 }
 
@@ -429,7 +478,6 @@ public class PlayActivity extends AppCompatActivity {
                 if (CMDCenter.getInstance().getCurrentBoardSate() != BoardState.Applying) {
                     logout();
                 }
-
 
 
                 mBtnCancel.setActivated(false);
@@ -498,9 +546,6 @@ public class PlayActivity extends AppCompatActivity {
                     if (CMDCenter.getInstance().getUserInfoOfWaWaJi() == null) {
                         CMDCenter.getInstance().printLog("[onLoginCompletion] error, No UserInfo Of WaWaJi");
                     }
-
-//                    mIBtnApply.setEnabled(true);
-//                    mIbtnSwitchCamera.setEnabled(true);
 
                     // 查询游戏信息
                     CMDCenter.getInstance().queryGameInfo();
@@ -787,9 +832,6 @@ public class PlayActivity extends AppCompatActivity {
             return;
         }
 
-//        if (mCountDownTimer != null){
-//            mCountDownTimer.cancel();
-//        }
 
         // 通知服务器，客户端已经收到GameReady指令
         CMDCenter.getInstance().replyRecvGameReady(rspSeq);
@@ -807,13 +849,17 @@ public class PlayActivity extends AppCompatActivity {
             return;
         }
 
+        readingGo();
 
+
+    }
+
+    private void readingGo() {
         View inflate = View.inflate(this, R.layout.dialog_star_play, null);
         final TextView dialogMsg = inflate.findViewById(R.id.dialog_star_play_hint);
         final AlertDialog dialog = new AlertDialog.Builder(this, R.style.dialog_show_style)
                 .setCancelable(false)
                 .setView(inflate).create();
-        dialog.show();
 
 
         mCountDownTimer = new CountDownTimer(5000, 500) {
@@ -831,30 +877,7 @@ public class PlayActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }
             }
-        };
-
-
-        //扣费环节
-        Subscriber<NoneDataBean> subscriber=new Subscriber<NoneDataBean>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(NoneDataBean roomO) {
-                if (Key.SUCCESS.equals(roomO.getStatus())) {
-                    mCountDownTimer.start();
-                }
-            }
-        };
-        HttpHelper.getInstance().feeDeduction(subscriber,10);
-
+        }.start();
 
     }
 
@@ -916,7 +939,6 @@ public class PlayActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * 处理服务器返回的"游戏结果".
      */
@@ -951,11 +973,9 @@ public class PlayActivity extends AppCompatActivity {
         }
 
 
-
-
         Log.e("lzh2018", "handleGameResult========================");
 
-        if(mDialogGameResult!=null&&mDialogGameResult.isVisible())return;
+        if (mDialogGameResult != null && mDialogGameResult.isVisible()) return;
 
         int result = ((Double) data.get(CMDKey.RESULT)).intValue();
 //        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_show_style);
@@ -968,7 +988,7 @@ public class PlayActivity extends AppCompatActivity {
             mDialogGameResult.setBackGround(true);
 
             //TODO 打开兑换机器
-            MotorDrvUtil.openMotor(this,mRoom.number);
+            MotorDrvUtil.openMotor(this, mRoom.number);
         } else {
 
             mDialogGameResult.setBackGround(false);
@@ -991,9 +1011,8 @@ public class PlayActivity extends AppCompatActivity {
                 mCountDownTimer.cancel();
                 mDialogGameResult.dismiss();
                 mTvBoardingCountDown.setText("");
+                kouFee(rspSeq);
 
-                CMDCenter.getInstance().confirmGameResult(rspSeq, true);
-                continueToPlay();
             }
         });
         mDialogGameResult.show(getFragmentManager(), "GameResultDialog");
@@ -1002,7 +1021,7 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingGameResult) {
-                    mDialogGameResult.setContinueText(getString(R.string.continue_to_play, (millisUntilFinished / 1000)  + ""));
+                    mDialogGameResult.setContinueText(getString(R.string.continue_to_play, (millisUntilFinished / 1000) + ""));
                 }
             }
 
@@ -1014,6 +1033,42 @@ public class PlayActivity extends AppCompatActivity {
                 }
             }
         }.start();
+    }
+
+
+    private void kouFee(final int rspSeq){
+        //扣费环节
+        if(isFeeing)return;
+        isFeeing=true;
+        Subscriber<NoneDataBean> subscriber=new Subscriber<NoneDataBean>() {
+            @Override
+            public void onCompleted() {
+                isFeeing=false;
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("lzh2018","Continue11##################"+e.getMessage());
+                doLogout();
+            }
+
+            @Override
+            public void onNext(NoneDataBean roomO) {
+                Log.e("lzh2018","Continue11##################");
+                if (Key.SUCCESS.equals(roomO.getStatus())) {
+
+                    Log.e("lzh2018","Continue##################");
+                    CMDCenter.getInstance().confirmGameResult(rspSeq, true);
+                    continueToPlay();
+                    Session.isZhua=roomO.getData().getIs_zhua();
+                   Session.balance=roomO.getData().getBalance();
+                }else{
+                    doLogout();
+                }
+            }
+        };
+        HttpHelper.getInstance().feeDeduction(subscriber,10);
+
     }
 
     /**
@@ -1033,7 +1088,6 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void startGame() {
-//        btnApply.setVisibility(View.INVISIBLE);
         showControlPannel(true);
     }
 
@@ -1050,7 +1104,10 @@ public class PlayActivity extends AppCompatActivity {
             showApplyBtn(false, R.mipmap.ic_room2, text, getString(R.string.apply_grub).length());
         }
 
-        CMDCenter.getInstance().apply(true, new CMDCenter.OnCommandSendCallback() {
+
+        CMDCenter.getInstance().getEntrptedConfig();
+
+        CMDCenter.getInstance().apply(this,true, new CMDCenter.OnCommandSendCallback() {
             @Override
             public void onSendFail() {
                 sendCMDFail("Apply");
@@ -1135,7 +1192,6 @@ public class PlayActivity extends AppCompatActivity {
 
     private void showApplyBtn(boolean enable, int background, String text, int mainTextLen) {
 
-        Log.e("lzh2018", "msg==" + text);
 
         mTvQueueCount.setText(text);
     }
@@ -1148,7 +1204,7 @@ public class PlayActivity extends AppCompatActivity {
         orientationLayou.setVisibility(enable?View.VISIBLE:View.INVISIBLE);
         typeBgLayout.setVisibility(enable?View.INVISIBLE:View.VISIBLE);
         if(!enable){
-            ImageLoader.load(this,R.mipmap.demo7,mIvTypeBg);
+            if(mIvTypeBg!=null)ImageLoader.load(this,R.mipmap.demo7,mIvTypeBg);
         }
 
         btnApply.setVisibility(enable?View.INVISIBLE:View.VISIBLE);

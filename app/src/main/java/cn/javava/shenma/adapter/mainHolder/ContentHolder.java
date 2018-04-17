@@ -24,6 +24,8 @@ public class ContentHolder extends RecyclerView.ViewHolder {
     ImageView mIvIcon;
     @BindView(R.id.item_main_content_des)
     TextView mTvDes;
+    @BindView(R.id.item_main_order)
+    TextView mTvOrder;
 
     public ContentHolder(View itemView) {
         super(itemView);
@@ -32,7 +34,9 @@ public class ContentHolder extends RecyclerView.ViewHolder {
     }
 
     public void setData(final Context context, final Room room){
-        mTvDes.setText(room.roomName);
+//        mTvDes.setText(room.roomName+" "+room.balance+"币/次");
+        mTvOrder.setText(room.number+"号房间");
+        mTvDes.setText(room.balance+"币/次");
         ImageLoader.load(context,room.roomIcon,mIvIcon);
 
     }

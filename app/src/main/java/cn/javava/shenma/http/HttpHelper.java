@@ -86,6 +86,13 @@ public class HttpHelper implements ApiInterface {
                 .subscribe(s);
     }
 
+    private <T> void toIOSubscribe(Observable<T> o, Subscriber<T> s) {
+        o.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(s);
+    }
+
 
     @Override
     public void apiTest(Subscriber<RoomO> s, String appId) {
@@ -128,7 +135,7 @@ public class HttpHelper implements ApiInterface {
     @Override
     public void gainConfig(Subscriber<ConfigBean> subscriber, String accessToken, String sessionId,int confirm) {
         String url="http://api.javava.cn/games";
-        toSubscribe(httpApis.gainConfig(url,accessToken,sessionId,confirm),subscriber);
+        toSubscribe(httpApis.gainConfig(url,accessToken,sessionId,confirm,Session.isZhua),subscriber);
     }
 
     @Override
@@ -139,6 +146,12 @@ public class HttpHelper implements ApiInterface {
     @Override
     public void feeDeduction(Subscriber<NoneDataBean> subscriber, int fee) {
         toSubscribe(httpApis.feeDeduction(Session.deviceId,fee,Session.openid,Session.memberid,Session.token),subscriber);
+    }
+
+    @Override
+    public void registerGood(Subscriber<NoneDataBean> subscriber, String goodId) {
+        toSubscribe(httpApis.registerGood(Session.deviceId,Session.openid,Session.memberid,Session.token,goodId),subscriber);
+
     }
 
 

@@ -1,5 +1,7 @@
 package cn.javava.shenma.utils;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -23,10 +25,13 @@ import cn.javava.shenma.R;
 import cn.javava.shenma.app.App;
 import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.bean.ConfigBean;
+import cn.javava.shenma.bean.NoneDataBean;
+import cn.javava.shenma.fragment.RechargeFragment;
 import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.BoardState;
 import cn.javava.shenma.interf.CMDKey;
+import cn.javava.shenma.interf.Key;
 import rx.Subscriber;
 
 /**
@@ -325,6 +330,7 @@ public class CMDCenter {
 //                        "app_id=%s&id_name=%s&session_id=%s&confirm=1&time_stamp=%s&item_type=123&item_price=200"
 //                , appID, appID, Session.userId, mSessionID, timeStamp);
 
+
         HttpHelper.getInstance().gainConfig(new Subscriber<ConfigBean>() {
             @Override
             public void onCompleted() {
@@ -392,7 +398,12 @@ public class CMDCenter {
      *
      * @param needContinue
      */
-    public void apply(boolean needContinue, final OnCommandSendCallback callback) {
+    public void apply(final Activity activity, final boolean needContinue, final OnCommandSendCallback callback) {
+        starApplay(needContinue,callback);
+
+    }
+
+    private void starApplay(boolean needContinue, final OnCommandSendCallback callback){
         printLog("[CommandUtil_apply], needContinue: " + needContinue + ", currentState: " + mCurrentBoardSate);
 
         if (mCurrentBoardSate != BoardState.Ended) {

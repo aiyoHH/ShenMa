@@ -1,7 +1,5 @@
 package cn.javava.shenma.bean;
 
-import java.util.List;
-
 /**
  * Created by aiyoRui on 2018/3/31.
  */
@@ -11,13 +9,13 @@ public class NoneDataBean {
 
     /**
      * status : success
-     * message : 退出游戏成功
-     * data : []
+     * message : 扣费成功
+     * data : {"is_zhua":0,"balance":2}
      */
 
     private String status;
     private String message;
-    private List<?> data;
+    private DataBean data;
 
     public String getStatus() {
         return status;
@@ -35,11 +33,37 @@ public class NoneDataBean {
         this.message = message;
     }
 
-    public List<?> getData() {
+    public DataBean getData() {
         return data;
     }
 
-    public void setData(List<?> data) {
+    public void setData(DataBean data) {
         this.data = data;
+    }
+
+    public static class DataBean {
+        /**
+         * is_zhua : 0
+         * balance : 2
+         */
+
+        private int is_zhua;
+        private int balance;
+
+        public int getIs_zhua() {
+            return is_zhua;
+        }
+
+        public void setIs_zhua(int is_zhua) {
+            this.is_zhua = is_zhua;
+        }
+
+        public int getBalance() {
+            return balance;
+        }
+
+        public void setBalance(int balance) {
+            this.balance = balance;
+        }
     }
 }

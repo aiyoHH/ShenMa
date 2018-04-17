@@ -1,6 +1,10 @@
 package cn.javava.shenma.http;
 
 
+import java.util.List;
+
+import cn.javava.shenma.bean.BannerBean;
+
 /**
  * Created by Li'O on 2017/7/5.
  * Description {TODO}.
@@ -20,6 +24,10 @@ public class Session {
 
     //仅仅试用既够娃娃机
     public static String accessToken ;
+
+    public static int isZhua ;
+
+    public static List<BannerBean.DataBean> bannerList;
 
 }
 

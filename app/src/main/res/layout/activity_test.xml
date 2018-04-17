@@ -5,104 +5,25 @@
     android:layout_height="match_parent"
 
     >
-    <RelativeLayout
+
+
+    <WebView
+
+        android:id="@+id/webView"
+
+        android:layout_width="fill_parent"
+
+        android:layout_height="fill_parent"
+
+        android:paddingLeft="5dp"
+
+        android:paddingRight="5dp" />
+
+    <VideoView
+        android:id="@+id/videoView"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_alignParentBottom="true"
-       >
+        android:layout_height="800dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="280dp"
-            android:src="@mipmap/bottom_bg"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-        />
-
-    <RelativeLayout
-        android:id="@+id/orientation_layout"
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="200dp"
-
-        >
-
-        <ImageButton
-            android:id="@+id/play_console_center"
-            android:layout_width="80dp"
-            android:layout_height="120dp"
-            android:layout_centerInParent="true"
-            android:scaleType="centerCrop"
-            android:background="@mipmap/center" />
-
-        <ImageButton
-            android:id="@+id/play_up"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_above="@+id/play_console_center"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
-            android:background="@drawable/selector_btn_up" />
-
-        <ImageButton
-            android:id="@+id/play_right"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:layout_toEndOf="@+id/play_console_center"
-            android:background="@drawable/selector_btn_right" />
-
-        <ImageButton
-            android:id="@+id/play_left"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:layout_toStartOf="@+id/play_console_center"
-            android:background="@drawable/selector_btn_left" />
-
-        <ImageButton
-            android:id="@+id/play_down"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_below="@+id/play_console_center"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
-            android:background="@drawable/selector_btn_down" />
-    </RelativeLayout>
-
-
-    <ImageButton
-        android:id="@+id/play_confirm"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="230dp"
-        android:scaleType="centerCrop"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/selector_btn_cancel"
-        />
-
-    <ImageButton
-        android:id="@+id/play_cancel"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="480dp"
-        android:layout_alignParentEnd="true"
-        android:scaleType="centerCrop"
-        android:background="@drawable/selector_btn_confirm"
-        />
-
- <!--   <ImageButton
-        android:id="@+id/play_apply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="60dp"
-        android:background="@mipmap/apply" />-->
-</RelativeLayout>
 </RelativeLayout>
 
 <!--
