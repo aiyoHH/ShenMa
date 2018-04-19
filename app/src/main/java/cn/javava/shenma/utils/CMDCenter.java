@@ -352,7 +352,7 @@ public class CMDCenter {
                         }
                     });
             }
-        },Session.accessToken,mSessionID,1);
+        },mSessionID,1);
     }
 
     Map<String, Object> getCMDHeader(int seq, int cmd, String sessionID){

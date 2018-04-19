@@ -100,11 +100,11 @@ public class HttpHelper implements ApiInterface {
         toSubscribe(httpApis.apiTest(url), s);
     }
 
-    public void getAccessToken(Subscriber<TokenBean> s){
-        String url="http://api.javava.cn/oauth/token";
-
-        toSubscribe(httpApis.gainToken(url,"client_credentials","a","b"), s);
-    }
+//    public void getAccessToken(Subscriber<TokenBean> s){
+//        String url="http://api.javava.cn/oauth/token";
+//
+//        toSubscribe(httpApis.gainToken(url,"client_credentials","a","b"), s);
+//    }
 
     @Override
     public void obtainBanners(Subscriber<BannerBean> subscriber) {
@@ -133,9 +133,9 @@ public class HttpHelper implements ApiInterface {
 
 
     @Override
-    public void gainConfig(Subscriber<ConfigBean> subscriber, String accessToken, String sessionId,int confirm) {
+    public void gainConfig(Subscriber<ConfigBean> subscriber,  String sessionId,int confirm) {
         String url="http://api.javava.cn/games";
-        toSubscribe(httpApis.gainConfig(url,accessToken,sessionId,confirm,Session.isZhua),subscriber);
+        toSubscribe(httpApis.gainConfig(url,sessionId,confirm,String.valueOf(Session.isZhua)),subscriber);
     }
 
     @Override

@@ -34,7 +34,7 @@ public interface ApiInterface {
 
 
 
-    void gainConfig(Subscriber<ConfigBean> subscriber, String accessToken, String sessionId,int confirm);
+    void gainConfig(Subscriber<ConfigBean> subscriber,  String sessionId,int confirm);
 
     void exitUser(Subscriber<NoneDataBean>subscriber);
 

@@ -102,6 +102,8 @@ public class PlayActivity extends AppCompatActivity {
     TextView mTvInternetStatus;
     @BindView(R.id.play_apply)
     ImageButton btnApply;
+    @BindView(R.id.play_fee)
+    TextView mTvFee;
     @BindView(R.id.orientation_layout)
     RelativeLayout orientationLayou;
     @BindView(R.id.orientation_type_bg)
@@ -182,7 +184,7 @@ public class PlayActivity extends AppCompatActivity {
             mListBanner=Session.bannerList;
 
             mViewPager.setAdapter(new BannerAdapter(this, mListBanner));
-
+            mTvFee.setText(mRoom.balance);
 
             switchBannerTaskn = new SwitchBannerTask();
             switchBannerTaskn.start(mViewPager);
@@ -1208,6 +1210,7 @@ public class PlayActivity extends AppCompatActivity {
         }
 
         btnApply.setVisibility(enable?View.INVISIBLE:View.VISIBLE);
+        mTvFee.setVisibility(enable?View.INVISIBLE:View.VISIBLE);
 
 
     }

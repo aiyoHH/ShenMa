@@ -82,22 +82,18 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     protected void initEventAndData() {
         mBannerList = new ArrayList<>();
         mRoomList = new ArrayList<>();
+        Session.deviceId = SystemUtil.getDeviceId(this);
 
         Uri uri = Uri.parse("android.resource://cn.javava.shenma/"+R.raw.local_video);
         videoUrl=uri.toString();
-//        JZVideoPlayer.setMediaInterface(new CustomMediaPlayerAssertFolder());//进入此页面修改MediaInterface，让此页面的jzvd正常工作
+
         mAdapter = new MainAdapter(this, mRoomList, mBannerList,videoUrl,mRecyclerView, this);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(15));
         mRecyclerView.setAdapter(mAdapter);
 
 
-        Session.deviceId = SystemUtil.getDeviceId(this);
-
         obtainBanner();
         pullInfo();
-
-        //仅仅试用即构娃娃机，娃娃云请关闭
-        getToken();
 
     }
 
@@ -105,7 +101,10 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @Override
     protected void onResume() {
         super.onResume();
+
+        Log.e("LZH2018","onResume-----");
         if (Session.login) {
+            mAdapter.notifyItemChanged(2, "notify");
             if (timer == null) {
                 timer = new TimeCounter(WHEEL_TIME, 1000);
             } else {
@@ -194,9 +193,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                 if (response.getStatus().equals(Key.SUCCESS)) {
                     mBannerList.clear();
                     mBannerList.addAll(response.getData());
-//                    videoUrl="http://v.mifile.cn/b2c-mimall-media/53fc775dd6b29ecd8df3e2ea35129766.mp4";
                     mAdapter.notifyItemChanged(0);
-//                    mAdapter.notifyItemChanged(1);
                     Session.bannerList=mBannerList;
                 }
 
@@ -250,28 +247,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
     }
 
-    private void getToken() {
-        Subscriber<TokenBean> subscriber = new Subscriber<TokenBean>() {
-            @Override
-            public void onCompleted() {
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(TokenBean roomO) {
-                if (roomO.getCode() == 0) {
-                    Session.accessToken = roomO.getAccess_token();
-                }
-            }
-        };
-        addSubscrebe(subscriber);
-        HttpHelper.getInstance().getAccessToken(subscriber);
-    }
 
     @Override
     public void onDisMiss() {
@@ -279,6 +255,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             //设置头像 nickname
             mAdapter.notifyItemChanged(2, "notify");
 
+            //登录成功后,在刷新数据
             obtainBanner();
             pullInfo();
 
@@ -306,17 +283,8 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             if (!Session.login) return;
             currentClickPosition = position;
          }
-
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.e("lzh2017", "onActivityResult============");
-        if (requestCode == Key.ACTION_PLAY) {
-            PlayActivity.actionStart(this, mRoomList.get(currentClickPosition));
-        }
-    }
 
     public class TimeCounter extends CountDownTimer {
 
