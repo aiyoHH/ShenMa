@@ -193,7 +193,7 @@ public class CMDCenter {
         mListLog = new LinkedList<>();
         mCountDownTimerRetryHttpRequest = null;
         mSessionID = null;
-        mUserBoardingTime = 30 * 1000;
+        mUserBoardingTime = 20 * 1000;
     }
 
     public static CMDCenter getInstance() {
@@ -219,7 +219,7 @@ public class CMDCenter {
             mCountDownTimerMove.cancel();
         }
         mSessionID = null;
-        mUserBoardingTime = 30 * 1000;
+        mUserBoardingTime = 20 * 1000;
     }
 
     public  void reinitGame(){

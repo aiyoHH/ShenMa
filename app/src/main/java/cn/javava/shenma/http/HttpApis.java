@@ -84,11 +84,10 @@ public interface HttpApis {
 
     @FormUrlEncoded
     @POST()
-    Observable<ConfigBean> gainConfig(
-            @Url String url,@Field("access_token")String accessToken,
+    Observable<ConfigBean> gainConfig(@Url String url,@Field("access_token")String accessToken,
                                       @Field("session_id")String sessionId,
                                       @Field("confirm")int id,
-                                       @Field("is_zhua")int isZhua);
+                                      @Field("is_zhua")int isZhua);
 
     @FormUrlEncoded
     @POST("/jiayi/index.php/index/Api/closemachine")
