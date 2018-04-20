@@ -1,48 +1,35 @@
 package cn.javava.shenma.act;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import cn.javava.shenma.R;
 import cn.javava.shenma.adapter.MainAdapter;
-import cn.javava.shenma.app.ZegoApiManager;
 import cn.javava.shenma.base.BaseActivity;
 import cn.javava.shenma.bean.BannerBean;
 import cn.javava.shenma.bean.NoneDataBean;
-import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.bean.Room;
-import cn.javava.shenma.bean.RoomO;
-import cn.javava.shenma.bean.TokenBean;
-import cn.javava.shenma.bean.UserInfoBean;
-import cn.javava.shenma.fragment.QRCodeFragment;
+import cn.javava.shenma.bean.RoomsBean;
 import cn.javava.shenma.fragment.RechargeFragment;
 import cn.javava.shenma.fragment.ScanLoginFragment;
 import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.interf.OnPositionClickListener;
-import cn.javava.shenma.utils.CMDCenter;
-import cn.javava.shenma.utils.MotorDrvUtil;
 import cn.javava.shenma.utils.SystemUtil;
 import cn.javava.shenma.utils.UIUtils;
-import cn.javava.shenma.view.CustomMediaPlayerAssertFolder;
 import cn.javava.shenma.view.SpacesItemDecoration;
 import cn.jzvd.JZVideoPlayer;
-import okhttp3.Response;
 import rx.Subscriber;
 
 
