@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/play_top"
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <LinearLayout
             android:id="@+id/play_points_behind"
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"/>
 
         <TextView
             android:id="@+id/play_internet_status"
@@ -34,7 +34,7 @@
             android:background="@drawable/internet_status_bg"
             android:padding="10dp"
             android:textSize="40sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -53,7 +53,7 @@
             android:layout_centerInParent="true"
             android:textColor="@android:color/white"
             android:textSize="45sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/play_queue_count"
@@ -85,16 +85,16 @@
             android:id="@+id/play_textureview2_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:background="@color/colorFdd"
             android:paddingBottom="10dp"
-            android:layout_alignParentEnd="true"
             android:paddingStart="10dp">
 
             <TextureView
                 android:id="@+id/play_textureview2"
                 android:layout_width="400dp"
                 android:layout_height="533dp"
-                 />
+                />
 
         </FrameLayout>
 
@@ -109,9 +109,7 @@
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            android:visibility="gone" />
-
-
+            android:visibility="gone"/>
 
 
         <RelativeLayout
@@ -123,9 +121,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="280dp"
-                android:src="@mipmap/bottom_bg"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/bottom_bg"
                 />
 
 
@@ -133,9 +131,10 @@
                 android:id="@+id/orientation_type_bg_layout"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:background="@mipmap/type_bg"
                 android:layout_marginStart="220dp"
+                android:background="@mipmap/type_bg"
                 android:visibility="gone">
+
                 <ImageView
                     android:id="@+id/orientation_type_bg"
                     android:layout_width="180dp"
@@ -144,7 +143,6 @@
 
                     />
             </RelativeLayout>
-
 
 
             <RelativeLayout
@@ -160,8 +158,8 @@
                     android:layout_width="80dp"
                     android:layout_height="120dp"
                     android:layout_centerInParent="true"
-                    android:scaleType="centerCrop"
-                    android:background="@mipmap/center" />
+                    android:background="@mipmap/center"
+                    android:scaleType="centerCrop"/>
 
                 <ImageButton
                     android:id="@+id/play_up"
@@ -170,7 +168,7 @@
                     android:layout_above="@+id/play_console_center"
                     android:layout_centerHorizontal="true"
                     android:layout_margin="10dp"
-                    android:background="@drawable/selector_btn_up" />
+                    android:background="@drawable/selector_btn_up"/>
 
                 <ImageButton
                     android:id="@+id/play_right"
@@ -179,7 +177,7 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
                     android:layout_toEndOf="@+id/play_console_center"
-                    android:background="@drawable/selector_btn_right" />
+                    android:background="@drawable/selector_btn_right"/>
 
                 <ImageButton
                     android:id="@+id/play_left"
@@ -188,7 +186,7 @@
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
                     android:layout_toStartOf="@+id/play_console_center"
-                    android:background="@drawable/selector_btn_left" />
+                    android:background="@drawable/selector_btn_left"/>
 
                 <ImageButton
                     android:id="@+id/play_down"
@@ -197,7 +195,7 @@
                     android:layout_below="@+id/play_console_center"
                     android:layout_centerHorizontal="true"
                     android:layout_margin="10dp"
-                    android:background="@drawable/selector_btn_down" />
+                    android:background="@drawable/selector_btn_down"/>
             </RelativeLayout>
 
 
@@ -205,43 +203,49 @@
                 android:id="@+id/play_confirm"
                 android:layout_width="125dp"
                 android:layout_height="125dp"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="200dp"
-                android:scaleType="centerCrop"
-                android:layout_alignParentEnd="true"
                 android:background="@drawable/selector_btn_cancel"
+                android:scaleType="centerCrop"
                 />
 
             <ImageButton
                 android:id="@+id/play_cancel"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="450dp"
-                android:layout_alignParentEnd="true"
-                android:scaleType="centerCrop"
                 android:background="@drawable/selector_btn_confirm"
+                android:scaleType="centerCrop"
                 />
 
-               <ImageButton
-                   android:id="@+id/play_apply"
-                   android:visibility="gone"
-                   android:layout_width="450dp"
-                   android:layout_height="200dp"
-                   android:layout_alignParentEnd="true"
-                   android:layout_marginEnd="160dp"
-                   android:background="@mipmap/apply" />
-
-            <TextView
-                android:id="@+id/play_fee"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="160dp"
-                android:textColor="@color/colorF75"
-                android:textSize="30sp"
-                android:text="这里设置单次费用"/>
+                android:layout_marginEnd="160dp">
+
+                <ImageButton
+                    android:id="@+id/play_apply"
+                    android:layout_width="450dp"
+                    android:layout_height="200dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@mipmap/apply"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/play_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="90dp"
+                    android:layout_marginTop="65dp"
+                    android:text="这里设置单次费用"
+                    android:textColor="@color/colorF75"
+                    android:textSize="30sp"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
         </RelativeLayout>
 
     </RelativeLayout>
@@ -254,7 +258,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
         android:contentDescription="TODO"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"/>
 
 
 </RelativeLayout>
