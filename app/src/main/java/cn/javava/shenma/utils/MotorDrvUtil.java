@@ -5,8 +5,6 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.Date;
-
 import cn.javava.shenma.bean.NoneDataBean;
 import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.motordrv.YtMainBoard;
@@ -22,26 +20,24 @@ import rx.Subscriber;
  */
 
 public class MotorDrvUtil {
-    public static void openMotor(Context context, int slotid){
-        String comid="/dev/ttyS3";
+    public static void openMotor(Context context, int slotid) {
+        String comid = "/dev/ttyS3";
 
-        int ret= YtMainBoard.getInstance().EF_OpenDev(comid, 9600);
+        int ret = YtMainBoard.getInstance().EF_OpenDev(comid, 9600);
 
-        if(ret== clsErrorConst.MDB_ERR_NO_ERR)
-        {
-
-            pushRight(context,slotid);
+        if (ret == clsErrorConst.MDB_ERR_NO_ERR) {
+            pushRight(context, slotid);
             registerGood(String.valueOf(slotid));
+        } else {
+
+            Toast.makeText(context, "打开失败", Toast.LENGTH_SHORT).show();
         }
-//        else
-//        {
-//
-//            Toast.makeText(context, "打开失败",  Toast.LENGTH_SHORT).show();
-//        }
     }
+
     private static int err_count;
-    private static  void pushRight(final Context context, final int id){
-        err_count=0;
+
+    private static void pushRight(final Context context, final int id) {
+        err_count = 0;
         final clsTransforPara para = new clsTransforPara();
         int addr = clsToolBox.ParseInt("00");
         int slotid = clsToolBox.ParseInt(String.valueOf(id));
@@ -63,15 +59,14 @@ public class MotorDrvUtil {
                         if (paraPoll.getMotorState() == clsConst.STATE_MOTOR_MOTOR_RUNNING_END) {
 
                             if (paraPoll.getMotorFault() == 0) {
-                                Toast.makeText(context, String.format("  %d号货道，出货成功\r\n", para.getSlotId()),  Toast.LENGTH_SHORT).show();
-                                }
-                            else {
-                                Toast.makeText(context, String.format("  %d号货道，出货失败,故障码", para.getSlotId()),  Toast.LENGTH_SHORT).show();
-                                }
+                                Toast.makeText(context, String.format("  %d号货道，出货成功\r\n", para.getSlotId()), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, String.format("  %d号货道，出货失败,故障码", para.getSlotId()), Toast.LENGTH_SHORT).show();
+                            }
                             UIUtils.getMainHandler().removeCallbacks(this);
                         }
                     } else {
-                        Toast.makeText(context, String.format("  出货Poll指令发送失败\n"),  Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, String.format("  出货Poll指令发送失败\n"), Toast.LENGTH_SHORT).show();
                         if (err_count++ > 3) {
                             UIUtils.getMainHandler().removeCallbacks(this);
                         }
@@ -79,22 +74,22 @@ public class MotorDrvUtil {
                 }
             }, 200);
         } else {
-            Toast.makeText(context, String.format(" 出货指令发送失败\n"),  Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, String.format(" 出货指令发送失败\n"), Toast.LENGTH_SHORT).show();
         }
     }
 
-    public static void pushAllCase(final Context context){
-        String comid="/dev/ttyS3";
+    public static void pushAllCase(final Context context) {
+        String comid = "/dev/ttyS3";
 
-        int ret= YtMainBoard.getInstance().EF_OpenDev(comid, 9600);
-        if(ret== clsErrorConst.MDB_ERR_NO_ERR)
-        {
+        int ret = YtMainBoard.getInstance().EF_OpenDev(comid, 9600);
+        if (ret == clsErrorConst.MDB_ERR_NO_ERR) {
 
-            new CountDownTimer(60*1000,5000){
+            new CountDownTimer(60 * 1000, 5000) {
                 int current;
+
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    Log.e("LZH2018","onTick======");
+                    Log.e("LZH2018", "onTick======");
                     pushRight(context, current++);
                 }
 
@@ -107,7 +102,7 @@ public class MotorDrvUtil {
     }
 
 
-    public static void registerGood(String id){
+    public static void registerGood(String id) {
         HttpHelper.getInstance().registerGood(new Subscriber<NoneDataBean>() {
             @Override
             public void onCompleted() {
@@ -123,7 +118,7 @@ public class MotorDrvUtil {
             public void onNext(NoneDataBean noneDataBean) {
 
             }
-        },id);
+        }, id);
 
     }
 

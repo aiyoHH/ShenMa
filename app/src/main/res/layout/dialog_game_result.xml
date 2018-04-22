@@ -29,7 +29,7 @@
             android:id="@+id/btn_continue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="75dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="110dp"
             android:text="倒计时:0s"

@@ -61,6 +61,7 @@ public class RoomsBean {
         private String thumb;
         private int is_zhong;
         private int goods_id;
+        private String isdata;
 
         public int getId() {
             return id;
@@ -116,6 +117,13 @@ public class RoomsBean {
 
         public void setGoods_id(int goods_id) {
             this.goods_id = goods_id;
+        }
+        public String getIsdata() {
+            return isdata;
+        }
+
+        public void setIsdata(String isdata) {
+            this.isdata = isdata;
         }
     }
 }

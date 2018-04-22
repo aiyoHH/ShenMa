@@ -1,6 +1,7 @@
 package cn.javava.shenma.act;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
@@ -58,7 +59,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     TimeCounter timer;
     SwitchTask task;
     int currentClickPosition;
-    String videoUrl="";
+    String videoUrl = "";
 
     @Override
     protected int initLayout() {
@@ -70,26 +71,20 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         mBannerList = new ArrayList<>();
         mRoomList = new ArrayList<>();
         Session.deviceId = SystemUtil.getDeviceId(this);
-
-        Uri uri = Uri.parse("android.resource://cn.javava.shenma/"+R.raw.local_video);
-        videoUrl=uri.toString();
-
-        mAdapter = new MainAdapter(this, mRoomList, mBannerList,videoUrl,mRecyclerView, this);
+        Uri uri = Uri.parse("android.resource://cn.javava.shenma/" + R.raw.local_video);
+        videoUrl = uri.toString();
+        mAdapter = new MainAdapter(this, mRoomList, mBannerList, videoUrl, mRecyclerView, this);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(15));
         mRecyclerView.setAdapter(mAdapter);
-
-
         obtainBanner();
         pullInfo();
-
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        Log.e("LZH2018","onResume-----");
+        Log.e("LZH2018", "onResume-----");
         if (Session.login) {
             mAdapter.notifyItemChanged(2, "notify");
             if (timer == null) {
@@ -99,17 +94,19 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             }
             timer.start();
 
-            if (task == null) task = new SwitchTask();
+            if (task == null)
+                task = new SwitchTask();
         }
     }
-
 
     @Override
     protected void onStop() {
         super.onStop();
-//        JZVideoPlayer.releaseAllVideos();
-        if (task != null) task.stop();
-        if (timer != null) timer.cancel();
+        //        JZVideoPlayer.releaseAllVideos();
+        if (task != null)
+            task.stop();
+        if (timer != null)
+            timer.cancel();
     }
 
     @Override
@@ -126,11 +123,8 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             loginFragment.setCancelable(false);
             loginFragment.show(getFragmentManager(), "GameResultDialog");
             loginFragment.addOnDdismissListener(this);
-
         } else if (Session.login) {
-
             if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(this)
                         .setTitle("退出提示")
                         .setMessage("确定退出当前登录用户")
@@ -150,9 +144,11 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                 builder.create().show();
             } else if (MotionEvent.ACTION_UP == event.getAction()) {
 
-                if (task != null) task.start();
+                if (task != null)
+                    task.start();
             } else {
-                if (timer != null) timer.cancel();
+                if (timer != null)
+                    timer.cancel();
             }
         }
         return super.dispatchKeyEvent(event);
@@ -181,7 +177,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                     mBannerList.clear();
                     mBannerList.addAll(response.getData());
                     mAdapter.notifyItemChanged(0);
-                    Session.bannerList=mBannerList;
+                    Session.bannerList = mBannerList;
                 }
 
             }
@@ -212,17 +208,17 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                     mRoomList.clear();
                     List<RoomsBean.DataBean> data = roomsBean.getData();
                     for (int i = 0; i < data.size(); i++) {
-
                         RoomsBean.DataBean dataBean = data.get(i);
                         Room room = new Room();
-                        room.roomIcon = images[i];
                         room.roomID = "WWJ_ZEGO_3275f295eab4";
+                        room.roomIcon = dataBean.getThumb();
                         room.roomName = dataBean.getTitle();
                         room.balance = dataBean.getBalance();
                         room.number = dataBean.getGoods_id();
-
+                        room.isData = "yes".equals(dataBean.getIsdata());
                         room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
                         room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
+                        Log.e("jason",room.toString());
                         mRoomList.add(room);
                     }
                     mAdapter.notifyDataSetChanged();
@@ -233,7 +229,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         HttpHelper.getInstance().obtainRoomList(subscriber);
 
     }
-
 
 
     @Override
@@ -253,23 +248,30 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             }
             timer.start();
 
-            if (task == null) task = new SwitchTask();
+            if (task == null)
+                task = new SwitchTask();
         }
         loginFragment = null;
     }
 
 
     @Override
-    public void onClick(int position) {
+    public void onClick(int position, boolean isResponse) {
+        if (!isResponse)
+            return;
         Room room = mRoomList.get(position);
-        if(Session.balance<room.balance){
+        if (Session.balance < room.balance) {
             RechargeFragment rechargeFragment = RechargeFragment.getInstance("");
-            rechargeFragment.show(getFragmentManager(),"");
-        }else{
-            PlayActivity.actionStart(this, mRoomList.get(position));
-            if (!Session.login) return;
+            rechargeFragment.show(getFragmentManager(), "");
+        } else {
+            Intent intent = new Intent(this,PlayActivity.class);
+            Room selectRoom = mRoomList.get(position);
+            intent.putExtra("selectRoom",selectRoom);
+            startActivityForResult(intent,0x081);
+            if (!Session.login)
+                return;
             currentClickPosition = position;
-         }
+        }
     }
 
 
@@ -295,12 +297,12 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
     private class SwitchTask implements Runnable {
 
-
         @Override
         public void run() {
 
             Log.e("lzh2017", "计时重置点.......");
-            if (timer != null) timer.start();
+            if (timer != null)
+                timer.start();
         }
 
         public void start() {
@@ -355,10 +357,12 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         });
     }
 
-
-
-
-
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 0x088){
+            obtainBanner();
+            pullInfo();
+        }
+    }
 }

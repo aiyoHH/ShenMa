@@ -6,5 +6,5 @@ package cn.javava.shenma.interf;
  */
 
 public interface OnPositionClickListener {
-    void onClick(int position);
+    void onClick(int position,boolean isResponse);
 }

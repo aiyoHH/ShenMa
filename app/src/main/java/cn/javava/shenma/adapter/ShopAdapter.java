@@ -1,8 +1,6 @@
 package cn.javava.shenma.adapter;
 
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +9,7 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-import butterknife.OnClick;
 import cn.javava.shenma.R;
-import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.bean.ShopBean;
 import cn.javava.shenma.interf.OnPositionClickListener;
 import cn.javava.shenma.utils.ImageLoader;
@@ -51,7 +47,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopItemHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onClick(position);
+                mListener.onClick(position,true);
             }
         });
 

@@ -15,10 +15,22 @@ public class Room implements Serializable {
 
     public String roomID;
 
-    public int  balance;
-
+    public int balance;
+    public  boolean isData;
     public ArrayList<String> streamList = new ArrayList<>();
 
-    public int roomIcon;
+    public String roomIcon;
 
+    @Override
+    public String toString() {
+        return "Room{" +
+                "number=" + number +
+                ", roomName='" + roomName + '\'' +
+                ", roomID=" + roomID +
+                ", balance=" + balance +
+                ", isData=" + isData +
+                ", streamList=" + streamList +
+                ", roomIcon='" + roomIcon + '\'' +
+                '}';
+    }
 }

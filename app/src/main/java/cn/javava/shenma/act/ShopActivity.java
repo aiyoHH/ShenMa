@@ -1,8 +1,5 @@
 package cn.javava.shenma.act;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,12 +14,8 @@ import cn.javava.shenma.base.BaseActivity;
 import cn.javava.shenma.bean.PayResultBean;
 import cn.javava.shenma.bean.ShopBean;
 import cn.javava.shenma.fragment.QRCodeFragment;
-import cn.javava.shenma.fragment.ScanLoginFragment;
 import cn.javava.shenma.http.HttpHelper;
-import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.OnPositionClickListener;
-import cn.javava.shenma.utils.QRcodeUtil;
-import okhttp3.ResponseBody;
 import rx.Subscriber;
 
 /**
@@ -65,13 +58,6 @@ public class ShopActivity extends BaseActivity implements OnPositionClickListene
         mRecyclerView.setAdapter(new ShopAdapter(this,mShopBeanList,this));
     }
 
-    @Override
-    public void onClick(int position) {
-
-
-        obtainQRText(moneyS[position]);
-
-    }
 
     private void obtainQRText(int money){
 
@@ -98,5 +84,10 @@ public class ShopActivity extends BaseActivity implements OnPositionClickListene
         };
         addSubscrebe(subscriber);
         HttpHelper.getInstance().obtainQRCodePay(subscriber,"9527",money);
+    }
+
+    @Override
+    public void onClick(int position, boolean isResponse) {
+        obtainQRText(moneyS[position]);
     }
 }

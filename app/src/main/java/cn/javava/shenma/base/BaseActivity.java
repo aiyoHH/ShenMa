@@ -4,11 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-
-
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -35,7 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         mBinder = ButterKnife.bind(this);
         //NotificationsUtils.setStatusBar(this, Color.WHITE);
         initEventAndData();
-
         App.getInstance().addActivity(this);
     }
 
