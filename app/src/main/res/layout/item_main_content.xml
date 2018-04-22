@@ -30,8 +30,9 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:singleLine="true"
+            android:layout_marginBottom="15dp"
             android:textColor="@color/colorF75"
-            android:textSize="@dimen/sp30"/>
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/item_main_order"

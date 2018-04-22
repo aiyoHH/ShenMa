@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorF3F7"
+    android:focusable="false"
     tools:context="cn.javava.shenma.act.MainActivity">
 
 

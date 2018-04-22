@@ -7,17 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.javava.shenma.R;
-import cn.javava.shenma.adapter.BannerAdapter;
 import cn.javava.shenma.bean.BannerBean;
 import cn.javava.shenma.utils.ImageLoader;
-import cn.javava.shenma.utils.ScreenUtil;
 import cn.javava.shenma.utils.UIUtils;
 
 /**
@@ -32,8 +29,8 @@ public class BannerHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.item_main_banner_viewPager)
     ViewPager mViewPager;
-    @BindView(R.id.item_main_banner_points)
-    LinearLayout llContainer;
+//    @BindView(R.id.item_main_banner_points)
+//    LinearLayout llContainer;
     SwitchTask task;
     private final  static int WHEEL_TIME=5000;
 
@@ -45,25 +42,27 @@ public class BannerHolder extends RecyclerView.ViewHolder {
     public void setData(Context context,List<BannerBean.DataBean> list){
 
         mViewPager.setAdapter(new BannerAdapter(context,list));
-        llContainer.removeAllViews();
-        for (int i = 0; i <list.size(); i++) {
-            ImageView point = new ImageView(context);
-            point.setImageResource(i == 0 ? R.drawable.shape_point_black : R.drawable.shape_point_white);
-            LinearLayout.LayoutParams params =
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            if (i != 0) params.leftMargin = ScreenUtil.dip2px(10);
-            llContainer.addView(point, params);
-        }
+//        llContainer.removeAllViews();
+//        for (int i = 0; i <list.size(); i++) {
+//            ImageView point = new ImageView(context);
+//            point.setFocusable(false);
+//            point.setImageResource(i == 0 ? R.drawable.shape_point_black : R.drawable.shape_point_white);
+//            LinearLayout.LayoutParams params =
+//                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            if (i != 0) params.leftMargin = ScreenUtil.dip2px(10);
+//            llContainer.addView(point, params);
+//        }
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                int count = llContainer.getChildCount();
-                position = position % count;
-                for (int i = 0; i < count; i++) {
-                    ImageView iv = (ImageView) llContainer.getChildAt(i);
-                    iv.setImageResource(i == position ? R.drawable.shape_point_black : R.drawable.shape_point_white);
-                }
+//                int count = llContainer.getChildCount();
+//                int count = mViewPager.getChildCount();
+//                position = position % count;
+//                for (int i = 0; i < count; i++) {
+////                    ImageView iv = (ImageView) llContainer.getChildAt(i);
+//                    iv.setImageResource(i == position ? R.drawable.shape_point_black : R.drawable.shape_point_white);
+//                }
             }
 
             @Override
