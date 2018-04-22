@@ -14,14 +14,13 @@
     <RelativeLayout
         android:id="@+id/is_can_select"
         android:layout_width="match_parent"
-        android:layout_height="370dp"
-        android:background="@drawable/good_bg"
+        android:layout_height="390dp"
         android:padding="10dp">
 
         <ImageView
             android:id="@+id/item_main_content_icon"
             android:layout_width="wrap_content"
-            android:layout_height="280dp"
+            android:layout_height="270dp"
             android:layout_centerInParent="true"/>
 
         <TextView
@@ -39,8 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/unselect_item_icon"
-            android:backgroundTint="@color/colorYellow"
             android:gravity="center"
             android:padding="5dp"
             android:textColor="@color/colorF75"

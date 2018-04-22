@@ -151,6 +151,7 @@ public class PlayActivity extends AppCompatActivity {
     int soundID_1;
     int soundID_2;
     SwitchBannerTask switchBannerTaskn;
+    private AlertDialog mDialog;
 
 
     @Override
@@ -460,9 +461,6 @@ public class PlayActivity extends AppCompatActivity {
                 break;
             case KeyEvent.KEYCODE_BUTTON_C:
                 mBtnConfirm.setActivated(true);
-                //                if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Ended) {
-                //                    apply();
-                //                }
 
                 if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Boarding) {
                     if (mCountDownTimer != null) {
@@ -471,7 +469,12 @@ public class PlayActivity extends AppCompatActivity {
                     //                    enbleControl(false);
                     CMDCenter.getInstance().grub();
                     soundPool.play(soundID_1, 0.8f, 0.8f, 1, 0, 1.0f);
-
+                    UIUtils.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            waitResult();
+                        }
+                    }, 3500);
                 }
                 break;
             case KeyEvent.KEYCODE_BACK:
@@ -856,6 +859,15 @@ public class PlayActivity extends AppCompatActivity {
 
     }
 
+    private void waitResult() {
+        showControlPannel(false);
+        View inflate = View.inflate(this, R.layout.wait_result_dialog_layout, null);
+        mDialog = new AlertDialog.Builder(this, R.style.dialog_show_style)
+                .setCancelable(false)
+                .setView(inflate).create();
+        mDialog.show();
+    }
+
     private void readingGo() {
         View inflate = View.inflate(this, R.layout.dialog_star_play, null);
         final TextView dialogMsg = inflate.findViewById(R.id.dialog_star_play_hint);
@@ -977,7 +989,10 @@ public class PlayActivity extends AppCompatActivity {
 
         if (mDialogGameResult != null && mDialogGameResult.isVisible())
             return;
-
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+            showControlPannel(true);
+        }
         int result = ((Double) data.get(CMDKey.RESULT)).intValue();
         //        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_show_style);
 

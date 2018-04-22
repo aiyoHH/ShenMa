@@ -1,10 +1,8 @@
 package cn.javava.shenma.act;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.CountDownTimer;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -21,6 +19,7 @@ import cn.javava.shenma.bean.BannerBean;
 import cn.javava.shenma.bean.NoneDataBean;
 import cn.javava.shenma.bean.Room;
 import cn.javava.shenma.bean.RoomsBean;
+import cn.javava.shenma.fragment.LogoutDialog;
 import cn.javava.shenma.fragment.RechargeFragment;
 import cn.javava.shenma.fragment.ScanLoginFragment;
 import cn.javava.shenma.http.HttpHelper;
@@ -125,23 +124,32 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             loginFragment.addOnDdismissListener(this);
         } else if (Session.login) {
             if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle("退出提示")
-                        .setMessage("确定退出当前登录用户")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                exitUser();
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                builder.create().show();
+                final LogoutDialog logoutDialog = new LogoutDialog();
+                logoutDialog.setCancelable(false);
+                logoutDialog.setGameResultCallback(new LogoutDialog.OnGameResultCallback() {
+                    @Override
+                    public void onGiveUpPlaying() {
+                        logoutDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onContinueToPlay() {
+                        exitUser();
+                        logoutDialog.dismiss();
+                    }
+                });
+                logoutDialog.show(getFragmentManager(), "LogoutDialog");
+                new CountDownTimer(6000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        logoutDialog.setContinueText(getString(R.string.continue_to_play, (millisUntilFinished / 1000) + ""));
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        logoutDialog.dismiss();
+                    }
+                }.start();
             } else if (MotionEvent.ACTION_UP == event.getAction()) {
 
                 if (task != null)
@@ -218,7 +226,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                         room.isData = "yes".equals(dataBean.getIsdata());
                         room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
                         room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
-                        Log.e("jason",room.toString());
+                        Log.e("jason", room.toString());
                         mRoomList.add(room);
                     }
                     mAdapter.notifyDataSetChanged();
@@ -264,10 +272,10 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             RechargeFragment rechargeFragment = RechargeFragment.getInstance("");
             rechargeFragment.show(getFragmentManager(), "");
         } else {
-            Intent intent = new Intent(this,PlayActivity.class);
+            Intent intent = new Intent(this, PlayActivity.class);
             Room selectRoom = mRoomList.get(position);
-            intent.putExtra("selectRoom",selectRoom);
-            startActivityForResult(intent,0x081);
+            intent.putExtra("selectRoom", selectRoom);
+            startActivityForResult(intent, 0x081);
             if (!Session.login)
                 return;
             currentClickPosition = position;
@@ -360,7 +368,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == 0x088){
+        if (resultCode == 0x088) {
             obtainBanner();
             pullInfo();
         }
