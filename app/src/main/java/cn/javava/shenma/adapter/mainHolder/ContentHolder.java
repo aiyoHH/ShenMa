@@ -36,7 +36,7 @@ public class ContentHolder extends RecyclerView.ViewHolder {
 
     public void setData(final Context context, final Room room) {
         //mTvDes.setText(room.roomName+" "+room.balance+"币/次");
-        mTvOrder.setText(room.number + " 号");
+        mTvOrder.setText(room.room_id + " 号");
         mTvDes.setText(room.balance + "币/次");
         ImageLoader.load(context, room.roomIcon, mIvIcon);
         if (!room.isData) {

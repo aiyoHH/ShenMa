@@ -117,7 +117,7 @@ public class PlayActivity extends AppCompatActivity {
     private List<ZegoStream> mListStream = new ArrayList<>();
     private List<BannerBean.DataBean> mListBanner;
     private boolean isFirst = true;
-    private boolean isShowing = false;
+    private boolean isWaitResult = false;
     private ZegoLiveRoom mZegoLiveRoom = ZegoApiManager.getInstance().getZegoLiveRoom();
     /**
      * app是否在后台.
@@ -395,7 +395,6 @@ public class PlayActivity extends AppCompatActivity {
         }
         finish();
         setResult(0x088);
-
     }
 
 
@@ -469,6 +468,7 @@ public class PlayActivity extends AppCompatActivity {
                     //                    enbleControl(false);
                     CMDCenter.getInstance().grub();
                     soundPool.play(soundID_1, 0.8f, 0.8f, 1, 0, 1.0f);
+                    showControlPannel(false);
                     UIUtils.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -860,7 +860,6 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void waitResult() {
-        showControlPannel(false);
         View inflate = View.inflate(this, R.layout.wait_result_dialog_layout, null);
         mDialog = new AlertDialog.Builder(this, R.style.dialog_show_style)
                 .setCancelable(false)
@@ -957,8 +956,8 @@ public class PlayActivity extends AppCompatActivity {
      * 处理服务器返回的"游戏结果".
      */
     private void handleGameResult(final int rspSeq, String sessionID, Map<String, Object> data) {
-        CMDCenter.getInstance().printLog("[handleGameResult] enter");
 
+        CMDCenter.getInstance().printLog("[handleGameResult] enter");
         if (!checkSessionID(sessionID)) {
             return;
         }
@@ -981,6 +980,9 @@ public class PlayActivity extends AppCompatActivity {
             return;
         }
 
+        if (isWaitResult)
+            return;
+
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
         }
@@ -989,18 +991,18 @@ public class PlayActivity extends AppCompatActivity {
 
         if (mDialogGameResult != null && mDialogGameResult.isVisible())
             return;
+
+        isWaitResult = true;
         if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
             showControlPannel(true);
         }
         int result = ((Double) data.get(CMDKey.RESULT)).intValue();
-        //        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.dialog_show_style);
 
         mDialogGameResult = new GameResultDialog();
         mDialogGameResult.setRspSeq(rspSeq);
         if (result == 1) {
             mDialogGameResult.setBackGround(true);
-            //TODO 打开兑换机器
             MotorDrvUtil.openMotor(this, mRoom.number);
         } else {
             mDialogGameResult.setBackGround(false);
@@ -1014,7 +1016,7 @@ public class PlayActivity extends AppCompatActivity {
                 public void onGiveUpPlaying() {
                     mCountDownTimer.cancel();
                     mDialogGameResult.dismiss();
-                    isShowing = false;
+                    isWaitResult = false;
                     mTvBoardingCountDown.setText("");
                     CMDCenter.getInstance().confirmGameResult(rspSeq, false);
                     reinitGame();
@@ -1026,17 +1028,15 @@ public class PlayActivity extends AppCompatActivity {
                 public void onContinueToPlay() {
                     mCountDownTimer.cancel();
                     mDialogGameResult.dismiss();
-                    isShowing = false;
+                    isWaitResult = false;
                     mTvBoardingCountDown.setText("");
                     kouFee(rspSeq);
                 }
             });
         }
 
-        if (!isShowing) {
-            mDialogGameResult.show(getFragmentManager(), "GameResultDialog");
-            isShowing = true;
-        }
+
+        mDialogGameResult.show(getFragmentManager(), "GameResultDialog");
         mCountDownTimer = new CountDownTimer(6000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -1049,13 +1049,14 @@ public class PlayActivity extends AppCompatActivity {
             public void onFinish() {
                 if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingGameResult) {
                     mDialogGameResult.dismiss();
-                    isShowing = false;
+                    isWaitResult = false;
                     reinitGame();
                     finish();
                     setResult(0x088);
                 }
             }
         }.start();
+
     }
 
 

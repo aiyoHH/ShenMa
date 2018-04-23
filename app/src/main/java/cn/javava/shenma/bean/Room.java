@@ -14,9 +14,9 @@ public class Room implements Serializable {
     public String roomName;
 
     public String roomID;
-
+    public int room_id;
     public int balance;
-    public  boolean isData;
+    public boolean isData;
     public ArrayList<String> streamList = new ArrayList<>();
 
     public String roomIcon;

@@ -221,6 +221,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                         room.roomID = "WWJ_ZEGO_3275f295eab4";
                         room.roomIcon = dataBean.getThumb();
                         room.roomName = dataBean.getTitle();
+                        room.room_id = dataBean.getRoom_id();
                         room.balance = dataBean.getBalance();
                         room.number = dataBean.getGoods_id();
                         room.isData = "yes".equals(dataBean.getIsdata());
