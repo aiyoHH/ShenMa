@@ -148,6 +148,15 @@ public class HttpHelper implements ApiInterface {
 
     @Override
     public void registerGood(Subscriber<NoneDataBean> subscriber, String goodId) {
+        Log.e("jason","start send game result");
+        Log.e("jason","DeviceID:"+Session.deviceId);
+        Log.e("jason","openID:"+Session.openid);
+        Log.e("jason","memberid:"+Session.memberid);
+        Log.e("jason","token:"+Session.token);
+        Log.e("jason","goodId:"+goodId);
+        Log.e("jason","start send game end");
+
+
         toSubscribe(httpApis.registerGood(Session.deviceId,Session.openid,Session.memberid,Session.token,goodId),subscriber);
 
     }

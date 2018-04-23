@@ -62,11 +62,8 @@ public class GameResultDialog extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.DialogFragmentStyle);
     }
-
-
 
     @Override
     public void onStart() {

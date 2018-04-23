@@ -106,17 +106,18 @@ public class MotorDrvUtil {
         HttpHelper.getInstance().registerGood(new Subscriber<NoneDataBean>() {
             @Override
             public void onCompleted() {
-
+                Log.e("jason", "send game result Completed");
             }
 
             @Override
             public void onError(Throwable e) {
-
+                Log.e("jason", "send game result error");
             }
 
             @Override
             public void onNext(NoneDataBean noneDataBean) {
-
+                Log.e("jason", "send game result ok");
+                Log.e("jason", "send game result ok result:" + noneDataBean.toString());
             }
         }, id);
 

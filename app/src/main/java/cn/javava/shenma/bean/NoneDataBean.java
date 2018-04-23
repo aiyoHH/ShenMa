@@ -66,4 +66,13 @@ public class NoneDataBean {
             this.balance = balance;
         }
     }
+
+    @Override
+    public String toString() {
+        return "NoneDataBean{" +
+                "status='" + status + '\'' +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

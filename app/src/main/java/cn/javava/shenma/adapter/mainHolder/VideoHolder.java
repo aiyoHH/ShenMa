@@ -2,30 +2,14 @@ package cn.javava.shenma.adapter.mainHolder;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.VideoView;
-
-import java.io.IOException;
-import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.javava.shenma.R;
-import cn.javava.shenma.http.Session;
-import cn.javava.shenma.utils.ImageLoader;
 import cn.javava.shenma.view.CustomVideoView;
-import cn.jzvd.JZMediaManager;
-import cn.jzvd.JZUserAction;
-import cn.jzvd.JZVideoPlayer;
-import cn.jzvd.JZVideoPlayerManager;
-import cn.jzvd.JZVideoPlayerStandard;
 
 /**
  * Created by aiyoRui on 2018/1/5.

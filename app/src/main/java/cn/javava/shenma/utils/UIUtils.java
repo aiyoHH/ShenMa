@@ -13,8 +13,7 @@ import android.widget.TextView;
 import cn.javava.shenma.app.App;
 
 
-public class UIUtils
-{
+public class UIUtils {
 
 
 	/**

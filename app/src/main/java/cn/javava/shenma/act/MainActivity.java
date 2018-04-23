@@ -44,9 +44,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
     private final static int WHEEL_TIME = 1000 * 60;
     private final static int KEY_TIME = 1000 * 10;
-    private int[] images = {R.mipmap.demo, R.mipmap.demo7, R.mipmap.ic_room1,
-            R.mipmap.ic_room2, R.mipmap.ic_room3, R.mipmap.ic_room4, R.mipmap.ic_room5,
-            R.mipmap.ic_room6};
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -79,10 +76,9 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         pullInfo();
     }
 
-
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onPostResume() {
+        super.onPostResume();
         Log.e("LZH2018", "onResume-----");
         if (Session.login) {
             mAdapter.notifyItemChanged(2, "notify");
@@ -91,8 +87,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             } else {
                 timer.cancel();
             }
-            timer.start();
-
             if (task == null)
                 task = new SwitchTask();
         }
@@ -101,7 +95,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @Override
     protected void onStop() {
         super.onStop();
-        //        JZVideoPlayer.releaseAllVideos();
         if (task != null)
             task.stop();
         if (timer != null)
@@ -116,7 +109,8 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-
+        if (timer != null)
+            timer.start();
         if (!Session.login && loginFragment == null) {
             loginFragment = ScanLoginFragment.getInstance("none");
             loginFragment.setCancelable(false);
@@ -164,24 +158,26 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
+        //        super.onBackPressed();
     }
 
     private void obtainBanner() {
         Subscriber subscriber = new Subscriber<BannerBean>() {
             @Override
             public void onCompleted() {
-
+                Log.e("jason","obtain");
             }
 
             @Override
             public void onError(Throwable e) {
-
+                Log.e("jason","obtain2");
             }
 
             @Override
             public void onNext(BannerBean response) {
+                Log.e("jason","obtain1");
                 if (response.getStatus().equals(Key.SUCCESS)) {
+                    Log.e("jason","obtain3");
                     mBannerList.clear();
                     mBannerList.addAll(response.getData());
                     mAdapter.notifyItemChanged(0);
@@ -200,17 +196,16 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         Subscriber subscriber = new Subscriber<RoomsBean>() {
             @Override
             public void onCompleted() {
-
+                Log.e("jason","network error");
             }
 
             @Override
             public void onError(Throwable e) {
-
+                Log.e("jason","network error");
             }
 
             @Override
             public void onNext(RoomsBean roomsBean) {
-
                 if ("success".equals(roomsBean.getStatus())) {
                     Log.e("lzh2018", "设置房间列表S");
                     mRoomList.clear();
@@ -236,7 +231,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         };
         addSubscrebe(subscriber);
         HttpHelper.getInstance().obtainRoomList(subscriber);
-
     }
 
 
@@ -245,7 +239,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         if (Session.login) {
             //设置头像 nickname
             mAdapter.notifyItemChanged(2, "notify");
-
             //登录成功后,在刷新数据
             obtainBanner();
             pullInfo();
@@ -276,7 +269,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             Intent intent = new Intent(this, PlayActivity.class);
             Room selectRoom = mRoomList.get(position);
             intent.putExtra("selectRoom", selectRoom);
-            startActivityForResult(intent, 0x081);
+            startActivityForResult(intent, 0x81);
             if (!Session.login)
                 return;
             currentClickPosition = position;
@@ -298,9 +291,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
         @Override
         public void onFinish() {
-
             exitUser();
-
         }
     }
 
@@ -317,7 +308,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         public void start() {
             stop();
             UIUtils.postDelayed(this, KEY_TIME);
-
         }
 
         public void stop() {
@@ -327,6 +317,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
     private void exitUser() {
         HttpHelper.getInstance().exitUser(new Subscriber<NoneDataBean>() {
+
             @Override
             public void onCompleted() {
 
@@ -366,10 +357,14 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         });
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 0x088) {
+        Log.e("jason", "end:" + System.currentTimeMillis());
+        Log.e("jason","resultCode:"+5);
+        if (resultCode == 5) {
+            Log.e("jason", "刷新数据啦！！！！");
             obtainBanner();
             pullInfo();
         }

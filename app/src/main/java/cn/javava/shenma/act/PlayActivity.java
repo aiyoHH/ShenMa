@@ -152,16 +152,17 @@ public class PlayActivity extends AppCompatActivity {
     int soundID_2;
     SwitchBannerTask switchBannerTaskn;
     private AlertDialog mDialog;
+    private Intent mIntent;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
+        mIntent = getIntent();
 
-        if (intent != null) {
-            mRoom = (Room) intent.getSerializableExtra("selectRoom");
+        if (mIntent != null) {
+            mRoom = (Room) mIntent.getSerializableExtra("selectRoom");
 
             Log.e("lzh2017", "room =" + mRoom.toString());
 
@@ -220,8 +221,8 @@ public class PlayActivity extends AppCompatActivity {
 
         } else {
             Toast.makeText(this, "房间信息初始化错误, 请重新开始", Toast.LENGTH_LONG).show();
+            setResult(5, mIntent);
             finish();
-            setResult(0x088);
         }
 
         //从加速服务器拉流
@@ -253,7 +254,6 @@ public class PlayActivity extends AppCompatActivity {
 
         if (!SystemUtil.isAppForeground()) {
             mIsAppInBackground = true;
-
             for (ZegoStream zegoStream : mListStream) {
                 zegoStream.stopPlayStream();
             }
@@ -268,7 +268,6 @@ public class PlayActivity extends AppCompatActivity {
             soundPool.pause(soundID_1);
             soundPool.pause(soundID_2);
             soundPool.release();
-
         }
         switchBannerTaskn.stop();
         Session.isZhua = 0;
@@ -393,8 +392,8 @@ public class PlayActivity extends AppCompatActivity {
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
         }
+        setResult(5, mIntent);
         finish();
-        setResult(0x088);
     }
 
 
@@ -474,7 +473,7 @@ public class PlayActivity extends AppCompatActivity {
                         public void run() {
                             waitResult();
                         }
-                    }, 3500);
+                    }, 3000);
                 }
                 break;
             case KeyEvent.KEYCODE_BACK:
@@ -724,7 +723,9 @@ public class PlayActivity extends AppCompatActivity {
                 handleConfirmBoardReply(rspSeq, sessionID, data);
                 break;
             case CMDCenter.CMD_GAME_RESULT:
-                handleGameResult(rspSeq, sessionID, data);
+                synchronized (this) {
+                    handleGameResult(rspSeq, sessionID, data);
+                }
                 break;
             case CMDCenter.CMD_RESPONSE_GAME_INFO:
                 handleResponseGameInfo(rspSeq, data);
@@ -1001,6 +1002,7 @@ public class PlayActivity extends AppCompatActivity {
 
         mDialogGameResult = new GameResultDialog();
         mDialogGameResult.setRspSeq(rspSeq);
+        Log.e("jason","Start:"+System.currentTimeMillis());
         if (result == 1) {
             mDialogGameResult.setBackGround(true);
             MotorDrvUtil.openMotor(this, mRoom.number);
@@ -1020,8 +1022,8 @@ public class PlayActivity extends AppCompatActivity {
                     mTvBoardingCountDown.setText("");
                     CMDCenter.getInstance().confirmGameResult(rspSeq, false);
                     reinitGame();
+                    setResult(5, mIntent);
                     finish();
-                    setResult(0x088);
                 }
 
                 @Override
@@ -1037,7 +1039,7 @@ public class PlayActivity extends AppCompatActivity {
 
 
         mDialogGameResult.show(getFragmentManager(), "GameResultDialog");
-        mCountDownTimer = new CountDownTimer(6000, 1000) {
+        mCountDownTimer = new CountDownTimer(11000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingGameResult) {
@@ -1051,8 +1053,8 @@ public class PlayActivity extends AppCompatActivity {
                     mDialogGameResult.dismiss();
                     isWaitResult = false;
                     reinitGame();
+                    setResult(5, mIntent);
                     finish();
-                    setResult(0x088);
                 }
             }
         }.start();
@@ -1225,7 +1227,7 @@ public class PlayActivity extends AppCompatActivity {
         typeBgLayout.setVisibility(enable ? View.INVISIBLE : View.VISIBLE);
         if (!enable) {
             if (mIvTypeBg != null)
-                ImageLoader.load(this, R.mipmap.demo7, mIvTypeBg);
+                ImageLoader.load(this, mRoom.roomIcon, mIvTypeBg);
         }
 
         btnApply.setVisibility(enable ? View.INVISIBLE : View.VISIBLE);
