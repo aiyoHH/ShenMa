@@ -37,7 +37,7 @@ import rx.Subscriber;
  * Description {des}
  *
  * @author Li'O
- * @date 2018/1/5
+ * @date 2018/1/5addSubscrebe
  * Todo {TODO}.
  */
 public class MainActivity extends BaseActivity implements ScanLoginFragment.onDismissListener, OnPositionClickListener {
@@ -76,10 +76,10 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         pullInfo();
     }
 
+
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        Log.e("LZH2018", "onResume-----");
         if (Session.login) {
             mAdapter.notifyItemChanged(2, "notify");
             if (timer == null) {
@@ -89,7 +89,14 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             }
             if (task == null)
                 task = new SwitchTask();
+            timer.start();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 
     @Override
@@ -165,19 +172,19 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         Subscriber subscriber = new Subscriber<BannerBean>() {
             @Override
             public void onCompleted() {
-                Log.e("jason","obtain");
+                Log.e("jason", "obtain");
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("jason","obtain2");
+                Log.e("jason", "obtain2");
             }
 
             @Override
             public void onNext(BannerBean response) {
-                Log.e("jason","obtain1");
+                Log.e("jason", "obtain1");
                 if (response.getStatus().equals(Key.SUCCESS)) {
-                    Log.e("jason","obtain3");
+                    Log.e("jason", "obtain3");
                     mBannerList.clear();
                     mBannerList.addAll(response.getData());
                     mAdapter.notifyItemChanged(0);
@@ -196,12 +203,12 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         Subscriber subscriber = new Subscriber<RoomsBean>() {
             @Override
             public void onCompleted() {
-                Log.e("jason","network error");
+                Log.e("jason", "network error");
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("jason","network error");
+                Log.e("jason", "network error");
             }
 
             @Override
@@ -362,7 +369,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.e("jason", "end:" + System.currentTimeMillis());
-        Log.e("jason","resultCode:"+5);
+        Log.e("jason", "resultCode:" + 5);
         if (resultCode == 5) {
             Log.e("jason", "刷新数据啦！！！！");
             obtainBanner();

@@ -29,14 +29,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(initLayout());
         mBinder = ButterKnife.bind(this);
         //NotificationsUtils.setStatusBar(this, Color.WHITE);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         initEventAndData();
         App.getInstance().addActivity(this);
     }
+
 
     protected abstract int initLayout();
 
@@ -47,12 +43,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unSubscribe();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unSubscribe();
         mBinder.unbind();
         App.getInstance().removeActivity(this);
     }

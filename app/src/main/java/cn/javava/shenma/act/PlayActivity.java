@@ -1002,7 +1002,7 @@ public class PlayActivity extends AppCompatActivity {
 
         mDialogGameResult = new GameResultDialog();
         mDialogGameResult.setRspSeq(rspSeq);
-        Log.e("jason","Start:"+System.currentTimeMillis());
+        Log.e("jason", "Start:" + System.currentTimeMillis());
         if (result == 1) {
             mDialogGameResult.setBackGround(true);
             MotorDrvUtil.openMotor(this, mRoom.number);
@@ -1039,7 +1039,7 @@ public class PlayActivity extends AppCompatActivity {
 
 
         mDialogGameResult.show(getFragmentManager(), "GameResultDialog");
-        mCountDownTimer = new CountDownTimer(11000, 1000) {
+        mCountDownTimer = new CountDownTimer(6000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingGameResult) {
