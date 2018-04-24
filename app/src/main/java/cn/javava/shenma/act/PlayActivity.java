@@ -146,7 +146,7 @@ public class PlayActivity extends AppCompatActivity {
      * 计时器.
      */
     private CountDownTimer mCountDownTimer;
-    private GameResultDialog mDialogGameResult;
+    private GameResultDialog mDialogGameResult = new GameResultDialog();
     private SoundPool soundPool;
     int soundID_1;
     int soundID_2;
@@ -174,7 +174,7 @@ public class PlayActivity extends AppCompatActivity {
             mListBanner = Session.bannerList;
 
             mViewPager.setAdapter(new BannerAdapter(this, mListBanner));
-            mTvFee.setText(mRoom.balance + "");
+            mTvFee.setText(mRoom.balance + "币/次");
 
             switchBannerTaskn = new SwitchBannerTask();
             switchBannerTaskn.start(mViewPager);
@@ -251,13 +251,15 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
         if (!SystemUtil.isAppForeground()) {
             mIsAppInBackground = true;
             for (ZegoStream zegoStream : mListStream) {
                 zegoStream.stopPlayStream();
             }
+            switchBannerTaskn.stop();
+            CMDCenter.getInstance().moveBackward();
         }
+        doLogout();
     }
 
 
@@ -741,7 +743,6 @@ public class PlayActivity extends AppCompatActivity {
      */
     private void handleGameInfoUpdate(Map<String, Object> data) {
         CMDCenter.getInstance().printLog("[handleGameInfoUpdate] enter");
-
         showGameInfo(data);
     }
 
@@ -959,14 +960,11 @@ public class PlayActivity extends AppCompatActivity {
     private void handleGameResult(final int rspSeq, String sessionID, Map<String, Object> data) {
 
         CMDCenter.getInstance().printLog("[handleGameResult] enter");
-        if (!checkSessionID(sessionID)) {
+        if (!checkSessionID(sessionID))
             return;
-        }
 
-        if (!checkIsMyMsg((LinkedTreeMap<String, String>) data.get(CMDKey.PLAYER))) {
+        if (!checkIsMyMsg((LinkedTreeMap<String, String>) data.get(CMDKey.PLAYER)))
             return;
-        }
-
         CMDCenter.getInstance().printLog("[handleGameResult], currentSate: " + CMDCenter.getInstance().getCurrentBoardSate());
 
         if (CMDCenter.getInstance().getCurrentBoardSate() != BoardState.WaitingGameResult) {
@@ -992,15 +990,13 @@ public class PlayActivity extends AppCompatActivity {
 
         if (mDialogGameResult != null && mDialogGameResult.isVisible())
             return;
-
         isWaitResult = true;
+        CMDCenter.getInstance().confirmGameResult(rspSeq, false);
         if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
             showControlPannel(true);
         }
         int result = ((Double) data.get(CMDKey.RESULT)).intValue();
-
-        mDialogGameResult = new GameResultDialog();
         mDialogGameResult.setRspSeq(rspSeq);
         Log.e("jason", "Start:" + System.currentTimeMillis());
         if (result == 1) {
@@ -1020,7 +1016,6 @@ public class PlayActivity extends AppCompatActivity {
                     mDialogGameResult.dismiss();
                     isWaitResult = false;
                     mTvBoardingCountDown.setText("");
-                    CMDCenter.getInstance().confirmGameResult(rspSeq, false);
                     reinitGame();
                     setResult(5, mIntent);
                     finish();
@@ -1036,8 +1031,7 @@ public class PlayActivity extends AppCompatActivity {
                 }
             });
         }
-
-
+        Log.e("jason","fragmentDialog Start:"+System.currentTimeMillis());
         mDialogGameResult.show(getFragmentManager(), "GameResultDialog");
         mCountDownTimer = new CountDownTimer(6000, 1000) {
             @Override
