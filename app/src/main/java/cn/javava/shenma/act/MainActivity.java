@@ -29,7 +29,6 @@ import cn.javava.shenma.interf.OnPositionClickListener;
 import cn.javava.shenma.utils.SystemUtil;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.SpacesItemDecoration;
-import cn.jzvd.JZVideoPlayer;
 import rx.Subscriber;
 
 
@@ -108,11 +107,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             timer.cancel();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        JZVideoPlayer.releaseAllVideos();
-    }
+
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {

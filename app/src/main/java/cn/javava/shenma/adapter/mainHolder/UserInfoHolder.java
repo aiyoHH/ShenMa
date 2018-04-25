@@ -7,17 +7,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.util.LinkedHashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.javava.shenma.R;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.utils.ImageLoader;
-import cn.jzvd.JZUserAction;
-import cn.jzvd.JZVideoPlayer;
-import cn.jzvd.JZVideoPlayerStandard;
 
 /**
  * Created by aiyoRui on 2018/1/5.
