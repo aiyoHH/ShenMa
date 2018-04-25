@@ -49,6 +49,16 @@ public class NoneDataBean {
 
         private int is_zhua;
         private int balance;
+        private int count;
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
 
         public int getIs_zhua() {
             return is_zhua;

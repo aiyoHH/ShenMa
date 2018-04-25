@@ -44,6 +44,7 @@ public class UserInfoHolder extends RecyclerView.ViewHolder {
             userInfo.setVisibility(View.VISIBLE);
             nick.setText(Session.nickname);
             goldCount.setText("余额:"+Session.balance+"币");
+            getCount.setText("抓中娃娃:"+Session.goodCount+"个");
             ImageLoader.loadCircular(context,Session.headimgurl,avatar);
         }else{
             logoTitle.setVisibility(View.VISIBLE);

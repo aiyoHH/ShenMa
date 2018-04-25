@@ -167,19 +167,15 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         Subscriber subscriber = new Subscriber<BannerBean>() {
             @Override
             public void onCompleted() {
-                Log.e("jason", "obtain");
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("jason", "obtain2");
             }
 
             @Override
             public void onNext(BannerBean response) {
-                Log.e("jason", "obtain1");
                 if (response.getStatus().equals(Key.SUCCESS)) {
-                    Log.e("jason", "obtain3");
                     mBannerList.clear();
                     mBannerList.addAll(response.getData());
                     mAdapter.notifyItemChanged(0);
@@ -198,18 +194,15 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         Subscriber subscriber = new Subscriber<RoomsBean>() {
             @Override
             public void onCompleted() {
-                Log.e("jason", "network error");
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("jason", "network error");
             }
 
             @Override
             public void onNext(RoomsBean roomsBean) {
-                if ("success".equals(roomsBean.getStatus())) {
-                    Log.e("lzh2018", "设置房间列表S");
+                if (Key.SUCCESS.equals(roomsBean.getStatus())) {
                     mRoomList.clear();
                     List<RoomsBean.DataBean> data = roomsBean.getData();
                     for (int i = 0; i < data.size(); i++) {
@@ -224,7 +217,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                         room.isData = "yes".equals(dataBean.getIsdata());
                         room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4_2");
                         room.streamList.add("WWJ_ZEGO_STREAM_3275f295eab4");
-                        Log.e("jason", room.toString());
                         mRoomList.add(room);
                     }
                     mAdapter.notifyDataSetChanged();
@@ -233,6 +225,31 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         };
         addSubscrebe(subscriber);
         HttpHelper.getInstance().obtainRoomList(subscriber);
+    }
+
+    private void goodCount(){
+        Subscriber subscriber=new Subscriber<NoneDataBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(NoneDataBean noneDataBean) {
+                if (Key.SUCCESS.equals(noneDataBean.getStatus())) {
+                    Session.goodCount=noneDataBean.getData().getCount();
+                    mAdapter.notifyItemChanged(2);
+
+                }
+            }
+        };
+        addSubscrebe(subscriber);
+        HttpHelper.getInstance().goodCount(subscriber);
     }
 
 
@@ -302,7 +319,6 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         @Override
         public void run() {
 
-            Log.e("lzh2017", "计时重置点.......");
             if (timer != null)
                 timer.start();
         }
@@ -331,6 +347,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                 Session.nickname = null;
                 Session.headimgurl = null;
                 Session.memberid = 0;
+                Session.goodCount = 0;
                 Session.login = false;
                 if (loginFragment != null) {
                     loginFragment.dismiss();
@@ -343,11 +360,12 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
             @Override
             public void onNext(NoneDataBean noneDataBean) {
-                if ("success".equals(noneDataBean.getStatus())) {
+                if (Key.SUCCESS.equals(noneDataBean.getStatus())) {
                     Session.openid = null;
                     Session.nickname = null;
                     Session.headimgurl = null;
                     Session.memberid = 0;
+                    Session.goodCount = 0;
                     Session.login = false;
                     if (loginFragment != null) {
                         loginFragment.dismiss();
@@ -363,12 +381,10 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("jason", "end:" + System.currentTimeMillis());
-        Log.e("jason", "resultCode:" + 5);
         if (resultCode == 5) {
-            Log.e("jason", "刷新数据啦！！！！");
             obtainBanner();
             pullInfo();
+            goodCount();
         }
     }
 }

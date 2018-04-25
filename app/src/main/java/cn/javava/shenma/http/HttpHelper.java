@@ -98,11 +98,6 @@ public class HttpHelper implements ApiInterface {
         toSubscribe(httpApis.apiTest(url), s);
     }
 
-//    public void getAccessToken(Subscriber<TokenBean> s){
-//        String url="http://api.javava.cn/oauth/token";
-//
-//        toSubscribe(httpApis.gainToken(url,"client_credentials","a","b"), s);
-//    }
 
     @Override
     public void obtainBanners(Subscriber<BannerBean> subscriber) {
@@ -148,17 +143,13 @@ public class HttpHelper implements ApiInterface {
 
     @Override
     public void registerGood(Subscriber<NoneDataBean> subscriber, String goodId) {
-        Log.e("jason","start send game result");
-        Log.e("jason","DeviceID:"+Session.deviceId);
-        Log.e("jason","openID:"+Session.openid);
-        Log.e("jason","memberid:"+Session.memberid);
-        Log.e("jason","token:"+Session.token);
-        Log.e("jason","goodId:"+goodId);
-        Log.e("jason","start send game end");
-
-
         toSubscribe(httpApis.registerGood(Session.deviceId,Session.openid,Session.memberid,Session.token,goodId),subscriber);
 
+    }
+
+    @Override
+    public void goodCount(Subscriber<NoneDataBean> subscriber) {
+        toSubscribe(httpApis.goodCount(Session.deviceId,Session.openid,Session.memberid,Session.token),subscriber);
     }
 
 

@@ -21,6 +21,7 @@ public class Session {
     public static int memberid;
     public static int point;
     public static int balance;
+    public static int goodCount;
 
     //仅仅试用既够娃娃机
     public static String accessToken ;

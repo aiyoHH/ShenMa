@@ -111,5 +111,13 @@ public interface HttpApis {
                                           @Field("member_id")int memberId,
                                           @Field("token")String token,
                                           @Field("goods_id")String goodsId);
+
+
+    @FormUrlEncoded
+    @POST("/jiayi/index.php/index/Api/princecount")
+    Observable<NoneDataBean> goodCount(@Field("machinenumber")String deviceId,
+                                          @Field("open_id")String openId,
+                                          @Field("member_id")int memberId,
+                                          @Field("token")String token);
 }
 

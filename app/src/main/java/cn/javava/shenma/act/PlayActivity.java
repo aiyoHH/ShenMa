@@ -164,7 +164,6 @@ public class PlayActivity extends AppCompatActivity {
         if (mIntent != null) {
             mRoom = (Room) mIntent.getSerializableExtra("selectRoom");
 
-            Log.e("lzh2017", "room =" + mRoom.toString());
 
             //setTitle(mRoom.roomName);
             setContentView(R.layout.activity_play);
@@ -178,19 +177,6 @@ public class PlayActivity extends AppCompatActivity {
 
             switchBannerTaskn = new SwitchBannerTask();
             switchBannerTaskn.start(mViewPager);
-
-            //            SoundPool.Builder builder = new SoundPool.Builder();= new SoundPool.Builder();
-            //            new AudioAttributes();
-            //            builder.setMaxStreams(5).setAudioAttributes()
-            //
-            //            soundPool=builder.build();
-            //            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-            //                @Override
-            //                public void onLoadComplete(SoundPool soundPool, int i, int i1) {
-            //                    soundPool.play(soundID_2, 0.8f, 0.8f,-1, -1, 1.0f);
-            //
-            //                }
-            //            });
 
 
             soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
@@ -317,37 +303,15 @@ public class PlayActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e("lzh2018", "applay1##################" + e.getMessage());
                 doLogout();
             }
 
             @Override
             public void onNext(NoneDataBean roomO) {
-                Log.e("lzh2018", "applay1##################");
                 if (Key.SUCCESS.equals(roomO.getStatus())) {
-                    Log.e("lzh2018", "applay##################");
                     Session.balance = roomO.getData().getBalance();
                     Session.isZhua = roomO.getData().getIs_zhua();
-                    //                    if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Ended) {
-                    //                        CMDCenter.getInstance().apply(PlayActivity.this, false, new CMDCenter.OnCommandSendCallback() {
-                    //                            @Override
-                    //                            public void onSendFail() {
-                    //                                sendCMDFail("Apply");
-                    //                            }
-                    //                        });
-                    //                    } else {
-                    //                        if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.WaitingBoard) {
-                    //                            CMDCenter.getInstance().cancelApply(new CMDCenter.OnCommandSendCallback() {
-                    //                                @Override
-                    //                                public void onSendFail() {
-                    //                                    Toast.makeText(PlayActivity.this, getString(R.string.cancel_apply_failed), Toast.LENGTH_SHORT).show();
-                    //                                }
-                    //                            });
-                    //                        }
-                    //                    }
                 } else {
-
-                    Log.e("lzh2018", "applay#doLoyout#################");
                     doLogout();
                 }
             }
@@ -466,7 +430,6 @@ public class PlayActivity extends AppCompatActivity {
                     if (mCountDownTimer != null) {
                         mCountDownTimer.cancel();
                     }
-                    //                    enbleControl(false);
                     CMDCenter.getInstance().grub();
                     soundPool.play(soundID_1, 0.8f, 0.8f, 1, 0, 1.0f);
                     showControlPannel(false);
@@ -768,7 +731,6 @@ public class PlayActivity extends AppCompatActivity {
 
         int result = ((Double) data.get(CMDKey.RESULT)).intValue();
         if (result == 0) {
-            Log.e("jason", "预约成功");
             String sessionID = (String) data.get(CMDKey.SESSION_ID);
             if (TextUtils.isEmpty(sessionID)) {
                 CMDCenter.getInstance().printLog("[handleApplyResult] error, sessionID is null");
@@ -986,7 +948,6 @@ public class PlayActivity extends AppCompatActivity {
             mCountDownTimer.cancel();
         }
 
-        Log.e("lzh2018", "handleGameResult========================");
 
         if (mDialogGameResult != null && mDialogGameResult.isVisible())
             return;
@@ -998,7 +959,7 @@ public class PlayActivity extends AppCompatActivity {
         }
         int result = ((Double) data.get(CMDKey.RESULT)).intValue();
         mDialogGameResult.setRspSeq(rspSeq);
-        Log.e("jason", "Start:" + System.currentTimeMillis());
+
         if (result == 1) {
             mDialogGameResult.setBackGround(true);
             MotorDrvUtil.openMotor(this, mRoom.number);
@@ -1031,7 +992,7 @@ public class PlayActivity extends AppCompatActivity {
                 }
             });
         }
-        Log.e("jason","fragmentDialog Start:"+System.currentTimeMillis());
+
         mDialogGameResult.show(getFragmentManager(), "GameResultDialog");
         mCountDownTimer = new CountDownTimer(6000, 1000) {
             @Override
@@ -1069,16 +1030,14 @@ public class PlayActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e("lzh2018", "Continue11##################" + e.getMessage());
                 doLogout();
             }
 
             @Override
             public void onNext(NoneDataBean roomO) {
-                Log.e("lzh2018", "Continue11##################");
+
                 if (Key.SUCCESS.equals(roomO.getStatus())) {
 
-                    Log.e("lzh2018", "Continue##################");
                     CMDCenter.getInstance().confirmGameResult(rspSeq, true);
                     continueToPlay();
                     Session.isZhua = roomO.getData().getIs_zhua();
@@ -1147,12 +1106,7 @@ public class PlayActivity extends AppCompatActivity {
         int myPosition = 0;
         if (queueList != null) {
             mUsersInQueue = queueList.size();
-            //            for (int index = 0, size = queueList.size(); index < size; index++) {
-            //                if (PreferenceUtil.getInstance().getUserID().equals(((Map<String, Object>) queueList.get(index)).get(CMDKey.USER_ID))) {
-            //                    myPosition = index;
-            //                    break;
-            //                }
-            //            }
+
         }
 
         if (CMDCenter.getInstance().getCurrentBoardSate() == BoardState.Ended ||
@@ -1246,11 +1200,6 @@ public class PlayActivity extends AppCompatActivity {
             return false;
         }
 
-        //        if (!PreferenceUtil.getInstance().getUserID().equals(mapPlayer.get(CMDKey.USER_ID))){
-        //            CMDCenter.getInstance().printLog("Error, msg is not mine, my UserID: "
-        //                    + PreferenceUtil.getInstance().getUserID() + ", player UserID: " + mapPlayer.get(CMDKey.USER_ID));
-        //            return false;
-        //        }
 
         return true;
     }

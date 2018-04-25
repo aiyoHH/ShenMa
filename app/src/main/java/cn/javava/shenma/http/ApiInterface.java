@@ -43,4 +43,6 @@ public interface ApiInterface {
 
     void registerGood(Subscriber<NoneDataBean>subscriber, String goodId);
 
+    void goodCount(Subscriber<NoneDataBean>subscriber);
+
 }
