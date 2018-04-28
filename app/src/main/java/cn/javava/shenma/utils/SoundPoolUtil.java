@@ -64,7 +64,7 @@ public class SoundPoolUtil {
 
 
     public void soundLeiSure(){
-        soundPool.play(SOUND_LEISURE, 0.8f, 0.8f, 4, 4, 1.0f);
+        soundPool.play(SOUND_LEISURE, 0.8f, 0.8f, 1, 0, 1.0f);
     }
 
     public void endLeiSure(){
@@ -72,7 +72,7 @@ public class SoundPoolUtil {
     }
 
     public void soundLogin(){
-        soundPool.play(SOUND_LOGIN, 0.8f, 0.8f, 4, 4, 1.0f);
+        soundPool.play(SOUND_LOGIN, 0.8f, 0.8f, 1, 0, 1.0f);
     }
 
     public void soundLaunch(){
