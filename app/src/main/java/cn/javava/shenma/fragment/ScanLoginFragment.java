@@ -24,6 +24,7 @@ import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.utils.MotorDrvUtil;
 import cn.javava.shenma.utils.QRcodeUtil;
+import cn.javava.shenma.utils.SoundPoolUtil;
 import cn.javava.shenma.utils.SystemUtil;
 import rx.Subscriber;
 
@@ -40,9 +41,7 @@ public class ScanLoginFragment extends DialogFragment  {
 
     private long TIME_LIMIT_LOGIN=2*60*1000;
     private CountDownTimer countDownTimer;
-    private SoundPool soundPool;
-    int soundID_1;
-    int  soundID_2;
+
 
 
     private String qrcode_url="http://weixin.javava.cn/jiayi/index.php/index/Login/index/machinenumber/";
@@ -71,9 +70,7 @@ public class ScanLoginFragment extends DialogFragment  {
         RelativeLayout mIvRootView=view.findViewById(R.id.qr_rootview);
         mIvRootView.setBackgroundResource(R.drawable.login_bg);
 
-        soundPool=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
-        soundID_1=soundPool.load(getActivity(), R.raw.login_success, 1);
-        soundID_2= soundPool.load(getActivity(), R.raw.login_failure, 1);
+
 
         return view;
     }
@@ -104,7 +101,7 @@ public class ScanLoginFragment extends DialogFragment  {
             @Override
             public void onFinish() {
                 //提示登录失败
-                soundPool.play(soundID_2, 0.8f, 0.8f,1, 0, 1.0f);
+                SoundPoolUtil.getInstance().soundFailure();
 
                 ScanLoginFragment.this.dismiss();
             }
@@ -144,7 +141,7 @@ public class ScanLoginFragment extends DialogFragment  {
                 public void onNext(UserInfoBean bean) {
                     if("success".equals(bean.getStatus())){
                         countDownTimer.cancel();
-                        soundPool.play(soundID_1, 0.8f, 0.8f,1, 0, 1.0f);
+                        SoundPoolUtil.getInstance().soundLogining();
                         UserInfoBean.DataBean data = bean.getData();
                         Session.login=true;
                         Session.openid=data.getOpen_id();

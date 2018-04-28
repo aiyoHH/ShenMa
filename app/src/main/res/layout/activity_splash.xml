@@ -7,77 +7,13 @@
 
 
 
-    <!--  <ImageView
+      <ImageView
 
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_centerInParent="true"
-          android:src="@mipmap/loading"/>-->
+          android:src="@mipmap/loading"/>
 
-      <Button
-          android:id="@+id/play1"
-          android:layout_width="match_parent"
-          android:layout_marginTop="60dp"
-          android:text="lancher"
-          android:layout_height="40dp" />
-
-      <Button
-          android:id="@+id/play2"
-          android:layout_width="match_parent"
-          android:layout_marginTop="120dp"
-          android:text="success"
-          android:layout_height="40dp" />
-
-      <Button
-          android:id="@+id/play3"
-          android:layout_width="match_parent"
-          android:layout_marginTop="80dp"
-          android:text="failure"
-          android:layout_height="40dp" />
-
-
-      <Button
-          android:id="@+id/play4"
-          android:layout_width="match_parent"
-          android:layout_marginTop="160dp"
-          android:text="catch"
-          android:layout_height="40dp" />
-
-
-      <Button
-          android:id="@+id/play5"
-          android:layout_width="match_parent"
-          android:layout_marginTop="220dp"
-          android:text="BGM"
-          android:layout_height="40dp" />
-
-  <Button
-      android:id="@+id/play6"
-      android:layout_width="match_parent"
-      android:layout_marginTop="280dp"
-      android:text="END BGM"
-      android:layout_height="40dp" />
-
-  <Button
-      android:id="@+id/play7"
-      android:layout_width="match_parent"
-      android:layout_marginTop="340dp"
-      android:text="主界面空闲提醒"
-      android:layout_height="40dp" />
-
-  <Button
-      android:id="@+id/play8"
-      android:layout_width="match_parent"
-      android:layout_marginTop="400dp"
-      android:text="LOGINING"
-      android:layout_height="40dp" />
-
-  <Button
-      android:id="@+id/play9"
-      android:layout_width="match_parent"
-      android:layout_marginTop="460dp"
-      android:text="余额不足"
-      android:layout_height="40dp" />
 
 
 

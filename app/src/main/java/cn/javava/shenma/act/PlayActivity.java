@@ -56,6 +56,7 @@ import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.utils.CMDCenter;
 import cn.javava.shenma.utils.ImageLoader;
 import cn.javava.shenma.utils.MotorDrvUtil;
+import cn.javava.shenma.utils.SoundPoolUtil;
 import cn.javava.shenma.utils.SwitchBannerTask;
 import cn.javava.shenma.utils.SystemUtil;
 import cn.javava.shenma.utils.UIUtils;
@@ -147,9 +148,7 @@ public class PlayActivity extends AppCompatActivity {
      */
     private CountDownTimer mCountDownTimer;
     private GameResultDialog mDialogGameResult = new GameResultDialog();
-    private SoundPool soundPool;
-    int soundID_1;
-    int soundID_2;
+
     SwitchBannerTask switchBannerTaskn;
     private AlertDialog mDialog;
     private Intent mIntent;
@@ -179,17 +178,7 @@ public class PlayActivity extends AppCompatActivity {
             switchBannerTaskn.start(mViewPager);
 
 
-            soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
-            soundID_2 = soundPool.load(this, R.raw.bg_music, 1);
-            soundID_1 = soundPool.load(this, R.raw.catch_down, 1);
-            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-                @Override
-                public void onLoadComplete(SoundPool soundPool, int i, int i1) {
-                    soundPool.play(soundID_2, 0.8f, 0.8f, -1, -1, 1.0f);
-
-                }
-            });
-
+            SoundPoolUtil.getInstance().soundBGM();
 
             showControlPannel(false);
 
@@ -252,11 +241,8 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (soundPool != null) {
-            soundPool.pause(soundID_1);
-            soundPool.pause(soundID_2);
-            soundPool.release();
-        }
+
+        SoundPoolUtil.getInstance().endBGM();
         switchBannerTaskn.stop();
         Session.isZhua = 0;
     }
@@ -431,7 +417,7 @@ public class PlayActivity extends AppCompatActivity {
                         mCountDownTimer.cancel();
                     }
                     CMDCenter.getInstance().grub();
-                    soundPool.play(soundID_1, 0.8f, 0.8f, 1, 0, 1.0f);
+                    SoundPoolUtil.getInstance().soundCatch();
                     showControlPannel(false);
                     UIUtils.postDelayed(new Runnable() {
                         @Override

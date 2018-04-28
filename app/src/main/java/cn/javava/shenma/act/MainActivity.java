@@ -26,6 +26,7 @@ import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.interf.OnPositionClickListener;
+import cn.javava.shenma.utils.SoundPoolUtil;
 import cn.javava.shenma.utils.SystemUtil;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.SpacesItemDecoration;
@@ -73,6 +74,8 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         mRecyclerView.setAdapter(mAdapter);
         obtainBanner();
         pullInfo();
+
+        SoundPoolUtil.getInstance().soundLeiSure();
     }
 
 
@@ -117,6 +120,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
             loginFragment = ScanLoginFragment.getInstance("none");
             loginFragment.setCancelable(false);
             loginFragment.show(getFragmentManager(), "GameResultDialog");
+            SoundPoolUtil.getInstance().soundLogin();
             loginFragment.addOnDdismissListener(this);
         } else if (Session.login) {
             if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
@@ -284,6 +288,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         if (Session.balance < room.balance) {
             RechargeFragment rechargeFragment = RechargeFragment.getInstance("");
             rechargeFragment.show(getFragmentManager(), "");
+            SoundPoolUtil.getInstance().soundNotSufficentFound();
         } else {
             Intent intent = new Intent(this, PlayActivity.class);
             Room selectRoom = mRoomList.get(position);

@@ -59,7 +59,7 @@ public class SoundPoolUtil {
         SOUND_LOGIN = soundPool.load(context, R.raw.login, 1);
         SOUND_NOT_SUFFICENT_FOUND=soundPool.load(context, R.raw.not_sufficient_found, 1);
 
-        mediaPlayer= MediaPlayer.create(context, R.raw.insert_coin_bgm);
+        mediaPlayer= MediaPlayer.create(context, R.raw.bg_music);
     }
 
 
