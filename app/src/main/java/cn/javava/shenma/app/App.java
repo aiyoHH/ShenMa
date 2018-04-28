@@ -10,6 +10,8 @@ import com.zego.zegoliveroom.ZegoLiveRoom;
 import java.util.HashSet;
 import java.util.Set;
 
+import cn.javava.shenma.utils.SoundPoolUtil;
+
 /**
  * Created by aiyoRui on 2017/6/12.
  */
@@ -38,6 +40,8 @@ public class App extends Application  {
 
         // 初始化sdk
         ZegoApiManager.getInstance().initSDK();
+
+        SoundPoolUtil.getInstance();
 
     }
 
