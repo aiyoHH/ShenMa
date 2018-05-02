@@ -26,6 +26,7 @@ import cn.javava.shenma.http.HttpHelper;
 import cn.javava.shenma.http.Session;
 import cn.javava.shenma.interf.Key;
 import cn.javava.shenma.interf.OnPositionClickListener;
+import cn.javava.shenma.timer.LeiSureTimerTask;
 import cn.javava.shenma.utils.SoundPoolUtil;
 import cn.javava.shenma.utils.SystemUtil;
 import cn.javava.shenma.utils.UIUtils;
@@ -56,6 +57,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     SwitchTask task;
     int currentClickPosition;
     String videoUrl = "";
+    LeiSureTimerTask leiSureTimerTask;
 
     @Override
     protected int initLayout() {
@@ -72,10 +74,15 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         mAdapter = new MainAdapter(this, mRoomList, mBannerList, videoUrl, mRecyclerView, this);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(15));
         mRecyclerView.setAdapter(mAdapter);
+
+
+        if(leiSureTimerTask==null){
+            leiSureTimerTask=new LeiSureTimerTask();
+        }
+        leiSureTimerTask.start();
+
         obtainBanner();
         pullInfo();
-
-        SoundPoolUtil.getInstance().soundLeiSure();
     }
 
 
@@ -114,6 +121,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        leiSureTimerTask.stop();
         if (timer != null)
             timer.start();
         if (!Session.login && loginFragment == null) {
@@ -275,6 +283,8 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
 
             if (task == null)
                 task = new SwitchTask();
+        }else {
+            leiSureTimerTask.start();
         }
         loginFragment = null;
     }
@@ -292,6 +302,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         } else {
             Intent intent = new Intent(this, PlayActivity.class);
             Room selectRoom = mRoomList.get(position);
+            Log.e("lzh2018","onclick room number="+selectRoom.number);
             intent.putExtra("selectRoom", selectRoom);
             startActivityForResult(intent, 0x81);
             if (!Session.login)
@@ -359,7 +370,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                     loginFragment = null;
                 }
                 mAdapter.notifyItemChanged(2, "notify");
-
+                leiSureTimerTask.start();
 
             }
 
@@ -377,6 +388,7 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
                         loginFragment = null;
                     }
                     mAdapter.notifyItemChanged(2, "notify");
+                    leiSureTimerTask.start();
                 }
             }
         });

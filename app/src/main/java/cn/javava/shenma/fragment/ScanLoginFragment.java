@@ -70,8 +70,6 @@ public class ScanLoginFragment extends DialogFragment  {
         RelativeLayout mIvRootView=view.findViewById(R.id.qr_rootview);
         mIvRootView.setBackgroundResource(R.drawable.login_bg);
 
-
-
         return view;
     }
 

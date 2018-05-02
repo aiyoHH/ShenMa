@@ -20,14 +20,14 @@ import rx.Subscriber;
  */
 
 public class MotorDrvUtil {
-    public static void openMotor(Context context, int slotid) {
+    public static void openMotor(Context context, int slotid,int goodId) {
         String comid = "/dev/ttyS3";
 
         int ret = YtMainBoard.getInstance().EF_OpenDev(comid, 9600);
 
         if (ret == clsErrorConst.MDB_ERR_NO_ERR) {
-            pushRight(context, slotid);
-            registerGood(String.valueOf(slotid));
+            pushRight(context, (slotid-1));
+            registerGood(String.valueOf(goodId));
         } else {
 
             Toast.makeText(context, "打开失败", Toast.LENGTH_SHORT).show();
