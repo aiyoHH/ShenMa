@@ -17,6 +17,7 @@ import cn.javava.shenma.http.HttpHelper;
 public class SoundPoolUtil {
 
     private static volatile SoundPoolUtil soundPoolUtil = null;
+
     private SoundPool soundPool;
     private MediaPlayer mediaPlayer;
     private int SOUND_CATCH;
@@ -64,7 +65,11 @@ public class SoundPoolUtil {
 
 
     public void soundLeiSure(){
-        soundPool.play(SOUND_LEISURE, 0.8f, 0.8f, 1, 0, 1.0f);
+        endLeiSure();
+        synchronized (SoundPoolUtil.class){
+            soundPool.play(SOUND_LEISURE, 0.8f, 0.8f, 1, 0, 1.0f);
+        }
+
     }
 
     public void endLeiSure(){

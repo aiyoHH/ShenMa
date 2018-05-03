@@ -948,7 +948,8 @@ public class PlayActivity extends AppCompatActivity {
 
         if (result == 1) {
             mDialogGameResult.setBackGround(true);
-            MotorDrvUtil.openMotor(this, mRoom.number);
+
+            MotorDrvUtil.openMotor(this, mRoom.room_id,mRoom.number);
         } else {
             mDialogGameResult.setBackGround(false);
             MotorDrvUtil.registerGood("0");

@@ -37,10 +37,9 @@
         <TextView
             android:id="@+id/item_main_order"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="38dp"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:padding="5dp"
             android:textColor="@color/colorF75"
             android:textSize="25sp"/>
     </RelativeLayout>

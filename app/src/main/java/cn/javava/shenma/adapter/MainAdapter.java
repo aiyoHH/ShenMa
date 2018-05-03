@@ -97,6 +97,9 @@ public class MainAdapter extends RecyclerView.Adapter {
                         mListener.onClick(position - additional,mList.get(position - additional).isData);
                 }
             });
+
+
+            if(position==3)holder.itemView.requestFocus();
         }
 
     }
