@@ -119,5 +119,12 @@ public interface HttpApis {
                                           @Field("open_id")String openId,
                                           @Field("member_id")int memberId,
                                           @Field("token")String token);
+
+
+
+
+    @FormUrlEncoded
+    @POST("/jiayi/index.php/index/Api/clertlogin")
+    Observable<ResponseBody> clearLogin(@Field("machinenumber")String deviceId);
 }
 

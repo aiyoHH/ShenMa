@@ -45,4 +45,6 @@ public interface ApiInterface {
 
     void goodCount(Subscriber<NoneDataBean>subscriber);
 
+    void clearLogin(Subscriber<ResponseBody>subscriber);
+
 }

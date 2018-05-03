@@ -30,6 +30,7 @@ import cn.javava.shenma.utils.SoundPoolUtil;
 import cn.javava.shenma.utils.SystemUtil;
 import cn.javava.shenma.utils.UIUtils;
 import cn.javava.shenma.view.SpacesItemDecoration;
+import okhttp3.ResponseBody;
 import rx.Subscriber;
 
 
@@ -72,6 +73,8 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         mAdapter = new MainAdapter(this, mRoomList, mBannerList, videoUrl, mRecyclerView, this);
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(15));
         mRecyclerView.setAdapter(mAdapter);
+
+        clearLogin();
         obtainBanner();
         pullInfo();
 
@@ -165,6 +168,25 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
     @Override
     public void onBackPressed() {
         //        super.onBackPressed();
+    }
+
+    private void clearLogin(){
+        HttpHelper.getInstance().clearLogin(new Subscriber<ResponseBody>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+
+            }
+        });
     }
 
     private void obtainBanner() {

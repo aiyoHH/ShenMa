@@ -21,6 +21,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -61,7 +62,7 @@ public class HttpHelper implements ApiInterface {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(headerInterceptor)
-                .addInterceptor(logInterceptor)
+//                .addInterceptor(logInterceptor)
                 .addNetworkInterceptor(cacheInterceptor)
                 .addInterceptor(cacheInterceptor)
                 .cache(cache)
@@ -150,6 +151,11 @@ public class HttpHelper implements ApiInterface {
     @Override
     public void goodCount(Subscriber<NoneDataBean> subscriber) {
         toSubscribe(httpApis.goodCount(Session.deviceId,Session.openid,Session.memberid,Session.token),subscriber);
+    }
+
+    @Override
+    public void clearLogin(Subscriber<ResponseBody> subscriber) {
+        toSubscribe(httpApis.clearLogin(Session.deviceId),subscriber);
     }
 
 
