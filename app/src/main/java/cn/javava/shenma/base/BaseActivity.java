@@ -33,6 +33,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         App.getInstance().addActivity(this);
     }
 
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+    }
 
     protected abstract int initLayout();
 
