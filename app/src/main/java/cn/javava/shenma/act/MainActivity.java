@@ -130,11 +130,13 @@ public class MainActivity extends BaseActivity implements ScanLoginFragment.onDi
         if (timer != null)
             timer.start();
         if (!Session.login && loginFragment == null) {
+            if(event.getKeyCode()==KeyEvent.KEYCODE_BUTTON_C||event.getKeyCode()==KeyEvent.KEYCODE_BACK){
             loginFragment = ScanLoginFragment.getInstance("none");
             loginFragment.setCancelable(false);
             loginFragment.show(getFragmentManager(), "GameResultDialog");
             SoundPoolUtil.getInstance().soundLogin();
             loginFragment.addOnDdismissListener(this);
+            }
         } else if (Session.login) {
             if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
                 final LogoutDialog logoutDialog = new LogoutDialog();

@@ -241,7 +241,9 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        if (dialog != null&&dialog.isShowing()) {
+            dialog.dismiss();
+        }
         SoundPoolUtil.getInstance().endBGM();
         switchBannerTaskn.stop();
         Session.isZhua = 0;
@@ -817,10 +819,16 @@ public class PlayActivity extends AppCompatActivity {
         mDialog.show();
     }
 
+     AlertDialog dialog;
+
     private void readingGo() {
         View inflate = View.inflate(this, R.layout.dialog_star_play, null);
         final TextView dialogMsg = inflate.findViewById(R.id.dialog_star_play_hint);
-        final AlertDialog dialog = new AlertDialog.Builder(this, R.style.dialog_show_style)
+
+        if (dialog != null&&dialog.isShowing()) {
+            dialog.dismiss();
+        }
+          dialog = new AlertDialog.Builder(this, R.style.dialog_show_style)
                 .setCancelable(false)
                 .setView(inflate).create();
         dialog.show();
